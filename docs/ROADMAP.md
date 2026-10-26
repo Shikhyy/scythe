@@ -11,7 +11,7 @@
 | ---------------- | ------- | ---------------------------------------------------------- | ---------------------------------------- |
 | 0 — Bootstrap    | 00      | Repo setup, docs, skills audit, first ticket               | ✅ complete                              |
 | 1 — Foundation   | 01–04   | Toolchain, rights, spec, monorepo scaffold                 | ✅ complete (01 ✅, 02 ✅, 03 ✅, 04 ✅) |
-| 2 — Rules engine | 05–12   | Domain model, turn loop, all actions, combat, test harness | 🔲 next (Prompt 05 next)                 |
+| 2 — Rules engine | 05–12   | Domain model, turn loop, all actions, combat, test harness | 🟡 in-progress (05 ✅, Prompt 06 next)   |
 | 3 — Multiplayer  | 13–14   | Colyseus server, accounts, persistence, reconnect          | 🔲                                       |
 | 4 — Presentation | 15–20   | UI shell, 3D board, components, animations, cinematics     | 🔲                                       |
 | 5 — Audio + UX   | 21–22   | Audio system, onboarding tutorial                          | 🔲                                       |
@@ -65,15 +65,26 @@
 
 ---
 
-## Prompt 05 (next) — Domain model, state machine, commands, and events
+## Prompt 05 — Completed ✅
 
-- [ ] Complete match lifecycle states in `@scythe/domain`
-- [ ] Implement full command and domain event discriminated unions
-- [ ] Define public/private state projections (redacting hidden information)
-- [ ] Author reducer tests for schema invariants and event determinism
-- [ ] Implement initial minimal typed exports in `packages/domain` and `packages/rules`
-- [ ] Create `docs/ARCHITECTURE.md` with ADR-001 through ADR-006
-- [ ] Verify `pnpm run typecheck`, `pnpm run lint`, `pnpm run test`, and `pnpm run build` with real code stubs
+- [x] Complete domain models in `@scythe/domain`: `GameCommand` and `DomainEvent` discriminated unions with runtime guards
+- [x] Cards model: `CombatCard` (values 2–5), `ObjectiveCard`, `EncounterCard` (3 choices), `FactoryCard`
+- [x] Player & Faction Mat models: section structures, tech upgrade slots, recruit rewards, worker production cost track formula ($0, \$1\text{ power}, \$1\text{ power}+1\text{ pop}, \$1\text{ power}+1\text{ pop}+1\text{ coin}$)
+- [x] Scoring & territory control engine: `calculatePopularityTier` ($3/2/1, 4/3/2, 5/4/3$ multipliers), `calculateTerritoryControl` (units, structures, enemy overrides, factory = 3 territories, lakes/bases excluded), `calculateFinalScore`
+- [x] State projections: `projectPublicState` and `projectSeatState` with complete hidden information redaction
+- [x] Rules pure boundary: `validateCommand` and `applyCommand` reducer with non-mutating state transitions and deterministic event IDs
+- [x] Protocol schemas: Zod schemas for all individual commands and `GameCommandSchema` union
+- [x] Test scenario fixtures: `buildMockSeat`, `buildMockHex`, `buildMockUnit`, `buildActiveMatchScenario`
+- [x] 72 unit tests across 11 test suites passing with 100% green exit code
+
+---
+
+## Prompt 06 (next) — Setup, board graph, terrain, and initial state
+
+- [ ] Author canonical board data file with 44+ base hexes, coordinates, river edges, tunnels, encounter spaces, and faction home bases
+- [ ] Implement deterministic setup procedure for 1–5 player matches with faction/mat assignments
+- [ ] Author board graph topology tests (reciprocal adjacency, impassable rivers without mech abilities)
+- [ ] Author setup snapshot fixtures and piece accounting tests (80 resources, 42 combat cards, etc.)
 
 ---
 
