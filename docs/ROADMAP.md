@@ -10,7 +10,7 @@
 | Phase | Prompts | Description | Status |
 |---|---|---|---|
 | 0 — Bootstrap | 00 | Repo setup, docs, skills audit, first ticket | ✅ complete |
-| 1 — Foundation | 01–04 | Toolchain, rights, spec, monorepo scaffold | 🟡 in-progress (01 ✅) |
+| 1 — Foundation | 01–04 | Toolchain, rights, spec, monorepo scaffold | 🟡 in-progress (01 ✅, 02 ✅) |
 | 2 — Rules engine | 05–12 | Domain model, turn loop, all actions, combat, test harness | 🔲 |
 | 3 — Multiplayer | 13–14 | Colyseus server, accounts, persistence, reconnect | 🔲 |
 | 4 — Presentation | 15–20 | UI shell, 3D board, components, animations, cinematics | 🔲 |
@@ -32,14 +32,23 @@
 
 ---
 
-## Prompt 02 (next) — Source-of-truth, rights, and asset provenance
+## Prompt 02 — Completed ✅
 
-- [ ] Audit `docs/scythe rules.pdf` with `pdftotext` / `pypdf`
-- [ ] Complete `docs/SOURCE_REGISTER.md` with official rulebook extraction
-- [ ] Complete `docs/licensing/rights-register.md`
-- [ ] Set up `packages/content/` schema drafts
-- [ ] Set up `packages/asset-manifest/` schema drafts
-- [ ] Document exact blockers and placeholder strategy for all art/audio/copy assets
+- [x] Authoritative rulebook audited (`docs/scythe rules.pdf`, 32 pages, `SRC-001`)
+- [x] Component quantities verified from source (80 resources, 80 coins, 42 combat, 28 encounter, 23 objective, 12 factory cards)
+- [x] Rights register established (`docs/licensing/rights-register.md`) across 9 content domains
+- [x] Asset Bible updated (`docs/ASSET_BIBLE.md`) with world units, scale, and procedural placeholder specs
+- [x] Content package schema and validation contract established (`packages/content/README.md`)
+- [x] Asset manifest schema, loading priorities, and fallback contracts defined (`packages/asset-manifest/README.md`)
+
+---
+
+## Prompt 03 (next) — Exhaustive product and rules specification
+
+- [ ] Complete `docs/RULES_MATRIX.md` with granular `RULE-*` IDs mapped to `SRC-001` page citations
+- [ ] Complete `docs/COMPONENT_CATALOG.md`
+- [ ] Complete `docs/OPEN_RULE_QUESTIONS.md` resolution audit against `docs/scythe rules.pdf`
+- [ ] Complete `docs/PRODUCT_SPEC.md` for all 5 factions and player mats
 
 ---
 

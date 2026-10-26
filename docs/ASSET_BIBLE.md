@@ -1,148 +1,199 @@
-# ASSET_BIBLE.md
+# ASSET_BIBLE.md — Scythe 3D Digital Implementation
 
-> **Status:** Prompt 00 — Framework. Full asset specs to be written in Prompt 02.
-> **Last updated:** 2026-10-26
-
----
-
-## Purpose
-
-This document defines the asset pipeline, naming conventions, manifest schema, quality standards, and rights gate for every visual, audio, and font asset in the project.
+> **Status:** Active & Authoritative Asset Specification
+> **Last updated:** 2026-10-26 (Prompt 02 update)
+> **Source-of-Truth:** `docs/scythe rules.pdf` (`SRC-001`), `docs/licensing/rights-register.md`
 
 ---
 
-## Asset manifest schema
+## 1. Asset Pipeline Architecture
 
-```typescript
-// packages/asset-manifest/src/types.ts
-
-export type RightsStatus =
-  | "approved"
-  | "owner-supplied-awaiting-review"
-  | "placeholder-only"
-  | "original-created"
-  | "license-needed"
-  | "rejected"
-  | "unknown";
-
-export type AssetLoadPriority = "critical" | "high" | "normal" | "lazy";
-
-export interface ModelAsset {
-  id: string;                     // stable, e.g. "MODEL-MECH-NORDIC-01"
-  type: "model";
-  format: "glb" | "gltf";
-  localPath: string;              // relative to /public/models/
-  thumbnailPath?: string;
-  lodLevels?: string[];
-  animationClips?: string[];      // names matching GLB animation tracks
-  scale: [number, number, number];
-  pivot: [number, number, number];
-  textureIds: string[];
-  rightsStatus: RightsStatus;
-  creator: string;
-  sourceUrl?: string;
-  license?: string;
-  checksum?: string;
-  loadPriority: AssetLoadPriority;
-  fallbackId?: string;            // ID of simpler fallback asset
-  notes?: string;
-}
-
-export interface TextureAsset {
-  id: string;
-  type: "texture";
-  format: "ktx2" | "webp" | "png";
-  localPath: string;
-  dimensions: [number, number];
-  mipMapped: boolean;
-  rightsStatus: RightsStatus;
-  creator: string;
-  license?: string;
-}
-
-export interface AudioAsset {
-  id: string;
-  type: "audio";
-  category: "music" | "ambience" | "sfx" | "ui" | "voice";
-  format: "ogg" | "mp3" | "webm";
-  localPath: string;
-  durationSeconds: number;
-  loop: boolean;
-  loudnessLUFS?: number;
-  sampleRate: number;
-  rightsStatus: RightsStatus;
-  creator: string;
-  license?: string;
-  triggerEventId?: string;
-  fallbackId?: string;
-}
-
-export type Asset = ModelAsset | TextureAsset | AudioAsset;
+```text
+3D Models (.glb) ──┐
+Textures (.webp)  ──┼──> packages/asset-manifest ──> apps/web (R3F Canvas / useGLTF)
+Audio (.mp3/.ogg) ──┘           │
+                                ▼
+                     CI Strict Validation Gate
+             (Checks: on-disk existence, valid checksums,
+              cleared rightsStatus, fallback availability)
 ```
 
 ---
 
-## Asset naming conventions
+## 2. World Coordinate System & Scale Standards
 
-| Asset type | Format | Example |
+All 3D assets in `apps/web` conform to a unified scale and orientation standard:
+
+| Parameter | Standard | Description / Notes |
 |---|---|---|
-| Character model | `MODEL-CHAR-{FACTION}` | `MODEL-CHAR-NORDIC` |
-| Mech model | `MODEL-MECH-{FACTION}-{01-04}` | `MODEL-MECH-RUSVIET-01` |
-| Worker model | `MODEL-WORKER-{FACTION}` | `MODEL-WORKER-CRIMEA` |
-| Structure model | `MODEL-STRUCT-{TYPE}` | `MODEL-STRUCT-MILL` |
-| Resource model | `MODEL-RES-{TYPE}` | `MODEL-RES-WOOD` |
-| Hex tile model | `MODEL-HEX-{TERRAIN}` | `MODEL-HEX-FOREST` |
-| Terrain texture | `TEX-TERRAIN-{TYPE}-{MAP}` | `TEX-TERRAIN-MOUNTAIN-ALBEDO` |
-| Music track | `AUDIO-MUSIC-{SCENE}` | `AUDIO-MUSIC-GAMEPLAY-01` |
-| SFX cue | `AUDIO-SFX-{EVENT}` | `AUDIO-SFX-MECH-DEPLOY` |
-| UI sound | `AUDIO-UI-{ACTION}` | `AUDIO-UI-BUTTON-CONFIRM` |
+| **World Unit** | `1.0 unit = 1.0 meter` | Tabletop scale representation |
+| **Hex Orientation** | **Flat-topped** | Pointy sides left/right; flat edges top/bottom |
+| **Hex Outer Radius ($R$)** | `1.0 unit` | Distance from center to vertex |
+| **Hex Inner Radius ($r$)** | $\frac{\sqrt{3}}{2} \approx 0.866\text{ units}$ | Distance from center to flat edge midpoint |
+| **Hex-to-Hex Distance** | $\sqrt{3} \approx 1.732\text{ units}$ | Center-to-center distance between adjacent flat edges |
+| **Up Vector** | $+Y$ | Y-axis is vertical elevation |
+| **Forward Vector** | $-Z$ | Direction units face by default |
+| **Right Vector** | $+X$ | Lateral horizontal axis |
 
----
+### Piece Scale & Vertical Budget
 
-## Placeholder strategy
-
-Until licensed assets are cleared:
-1. All 3D models use simple geometric primitives (capsules for characters, boxes for mechs/structures, cylinders for resources).
-2. Faction colors are the primary differentiator (color + text label, never color alone).
-3. Textures use procedural materials (roughness/metalness values, no illustrations).
-4. Audio uses Web Audio API generated tones / silent placeholder cues.
-5. All placeholder assets have `rightsStatus: "placeholder-only"` and a `fallbackId` pointing to themselves.
-
----
-
-## Component inventory (quantities — verify from source in Prompt 02)
-
-| Component | Expected qty | Model type | Current status |
+| Component Class | Max Width/Depth | Max Height ($Y$) | Pivot Placement |
 |---|---|---|---|
-| Faction characters | 5 | Unique model per faction | `placeholder-only` |
-| Mechs | 20 (4×5) | 4 unique per faction | `placeholder-only` |
-| Workers | 48 | Instanced per faction color | `placeholder-only` |
-| Structures | 20 (4×5) | 4 types, faction-colored | `placeholder-only` |
-| Resource tokens (wood) | ~20 of 80 | Shared model | `placeholder-only` |
-| Resource tokens (metal) | ~20 of 80 | Shared model | `placeholder-only` |
-| Resource tokens (food) | ~20 of 80 | Shared model | `placeholder-only` |
-| Resource tokens (oil) | ~20 of 80 | Shared model | `placeholder-only` |
-| Hex tiles | ~81 | 6 terrain variants | `placeholder-only` |
-| Encounter tokens | 12 | Token model | `placeholder-only` |
-| Star tokens | 36 | Token model | `placeholder-only` |
+| **Terrain Hex Tile** | $2.0 \times 1.732\text{ units}$ | $0.2\text{ units}$ (top at $Y=0$) | Center bottom `[0, -0.2, 0]` |
+| **The Factory** | $1.6 \times 1.6\text{ units}$ | $1.8\text{ units}$ | Ground center `[0, 0, 0]` |
+| **Faction Character** | $0.5 \times 0.5\text{ units}$ | $0.85\text{ units}$ | Ground center `[0, 0, 0]` |
+| **Mech Miniature** | $0.8 \times 0.8\text{ units}$ | $1.05\text{ units}$ | Ground center `[0, 0, 0]` |
+| **Worker Meeple** | $0.35 \times 0.35\text{ units}$ | $0.48\text{ units}$ | Ground center `[0, 0, 0]` |
+| **Structure Token** | $0.55 \times 0.55\text{ units}$ | $0.65\text{ units}$ | Ground center `[0, 0, 0]` |
+| **Resource Token** | $0.25 \times 0.25\text{ units}$ | $0.22\text{ units}$ | Stacking center `[0, 0, 0]` |
+| **Encounter Token** | $0.4 \times 0.4\text{ units}$ | $0.1\text{ units}$ | Ground center `[0, 0, 0]` |
 
 ---
 
-## Pipeline steps (target — Prompt 17)
+## 3. Verified Physical Component Inventory (`SRC-001` p. 2–3)
 
-1. Create or receive model in Blender (verify Blender availability in Prompt 01).
-2. Export as GLB with embedded textures; check scale (1 unit = 1 cm or defined scale).
-3. Validate: normals correct, UVs unwrapped, materials named, animations named.
-4. Compress: use `gltf-transform` for Draco mesh compression, KTX2 texture compression.
-5. Add to `packages/asset-manifest/manifest.json` with all required fields.
-6. Update `docs/licensing/rights-register.md` with rights status.
-7. Run manifest validation in CI: missing fields, unlicensed assets fail strict mode.
+All quantities verified against the official Stonemaier Games rulebook:
+
+| Component Category | Total Qty | Per Faction / Distribution | Visual Pipeline Strategy | Rights Status |
+|---|---:|---|---|---|
+| **Game Board** | 1 | 1 central board (~81 hexes) | Procedural hex grid + PBR materials | `placeholder-only` |
+| **Faction Mats** | 5 | 1 per faction (Nordic, Rusviet, Crimea, Saxony, Polania) | High-DPI responsive HUD overlay | `owner-supplied-awaiting-review` |
+| **Player Mats** | 5 | 5 asymmetric mats (Industrial, Engineering, Militant, etc.) | High-DPI responsive HUD overlay | `owner-supplied-awaiting-review` |
+| **Characters** | 5 | 1 unique sculpt per faction | Procedural stylized miniature mesh | `placeholder-only` |
+| **Mechs** | 20 | 4 unique sculpts per faction | Procedural dieselpunk walker chassis | `placeholder-only` |
+| **Workers** | 40 | 8 per faction (2 start on board, 6 on Produce mat) | Instanced wooden meeple geometry | `placeholder-only` |
+| **Structures** | 20 | 4 types per faction (Monument, Mill, Mine, Armory) | Distinct procedural building meshes | `placeholder-only` |
+| **Technology Cubes** | 30 | 6 per faction | Wooden cube geometry (`0.12m`) | `placeholder-only` |
+| **Recruit Tokens** | 20 | 4 per faction (Enlist mat bonuses) | Circular enamel token geometry | `placeholder-only` |
+| **Star Tokens** | 30 | 6 per faction | Faction-tinted star mesh | `placeholder-only` |
+| **Action Tokens** | 5 | 1 per faction | Cylinder token with faction crest | `placeholder-only` |
+| **Popularity Tokens**| 5 | 1 per faction (Popularity track) | Wooden heart/flame token | `placeholder-only` |
+| **Power Tokens** | 5 | 1 per faction (Power track) | Wooden lightning token | `placeholder-only` |
+| **Food Tokens** | 20 | Shared global supply | Grain sack / harvest bundle mesh | `placeholder-only` |
+| **Metal Tokens** | 20 | Shared global supply | Iron ingot / beam mesh | `placeholder-only` |
+| **Wood Tokens** | 20 | Shared global supply | Chopped lumber / log stack mesh | `placeholder-only` |
+| **Oil Tokens** | 20 | Shared global supply | Industrial oil drum / barrel mesh | `placeholder-only` |
+| **Coins** | 80 | Denominations: $1, $3, $5, $10, $20 | Embossed metal coin cylinders | `placeholder-only` |
+| **Combat Cards** | 42 | Values: 2, 3, 4, 5 | Vector SVG tactical cards | `placeholder-only` |
+| **Encounter Cards** | 28 | 3 choices per card | Vector SVG dialog / choice panel | `placeholder-only` |
+| **Objective Cards** | 23 | 2 starting per player | Secret card modal overlay | `placeholder-only` |
+| **Factory Cards** | 12 | Purple extra action sections | Expandable action card overlay | `placeholder-only` |
+| **Encounter Tokens**| 12 | Placed on compass icon hexes | Compass-embossed token mesh | `placeholder-only` |
+| **Structure Bonus** | 6 | Randomly drawn setup tile | Hexagonal scoring tile overlay | `placeholder-only` |
+| **Power Dials** | 2 | Combat dials (0–7 power) | Interactive circular slider UI | `original-created` |
+| **Multiplier Tokens**| 12 | Resource/worker stacking aids | Numeric multiplier badge overlay | `original-created` |
+| **Riverwalk Cards** | 5 | 1 per faction reference | Reference tooltip / quick card | `owner-supplied-awaiting-review` |
 
 ---
 
-## Open questions
+## 4. Faction Design Tokens & Color Palettes
 
-- [ ] Is Blender installed on developer machines? (verify in Prompt 01)
-- [ ] What is the target polygon budget per unit at strategic camera distance?
-- [ ] Will final art be 2.5D stylized or full 3D photorealistic?
-- [ ] Are any CC0/royalty-free 3D model libraries acceptable as starting points? (rights decision needed)
+To maintain legibility and accessibility (WCAG 2.1 AA), faction identity uses **color + shape + text + heraldry**, never color alone:
+
+```typescript
+export const FACTION_TOKENS = {
+  NORDIC: {
+    id: "FACTION_NORDIC",
+    name: "Nordic Kingdoms",
+    colorHex: "#2B547E",       // Deep Baltic Navy
+    accentHex: "#6CA0DC",      // Ice Blue
+    contrastText: "#FFFFFF",
+    heraldrySymbol: "trident-compass",
+    materialRoughness: 0.45,
+    materialMetalness: 0.25,
+  },
+  RUSVIET: {
+    id: "FACTION_RUSVIET",
+    name: "Rusviet Union",
+    colorHex: "#8B0000",       // Deep Crimson
+    accentHex: "#FF4500",      // Flame Orange
+    contrastText: "#FFFFFF",
+    heraldrySymbol: "gear-sickle",
+    materialRoughness: 0.35,
+    materialMetalness: 0.40,
+  },
+  CRIMEA: {
+    id: "FACTION_CRIMEA",
+    name: "Crimean Khanate",
+    colorHex: "#D4AF37",       // Steppe Gold
+    accentHex: "#FFF8DC",      // Cream Silk
+    contrastText: "#1A1A1A",
+    heraldrySymbol: "crescent-sun",
+    materialRoughness: 0.50,
+    materialMetalness: 0.30,
+  },
+  SAXONY: {
+    id: "FACTION_SAXONY",
+    name: "Saxony Empire",
+    colorHex: "#2F353B",       // Iron Charcoal
+    accentHex: "#708090",      // Slate Grey
+    contrastText: "#F0F0F0",
+    heraldrySymbol: "iron-cross-shield",
+    materialRoughness: 0.30,
+    materialMetalness: 0.60,
+  },
+  POLANIA: {
+    id: "FACTION_POLANIA",
+    name: "Republic of Polania",
+    colorHex: "#F5F5F5",       // Winter White / Silver
+    accentHex: "#DC143C",      // Crimson Ribbon
+    contrastText: "#111111",
+    heraldrySymbol: "crowned-falcon",
+    materialRoughness: 0.40,
+    materialMetalness: 0.20,
+  },
+} as const;
+```
+
+---
+
+## 5. Procedural Placeholder Specification
+
+Because Blender is not installed locally and official 3D CAD sculpts are unapproved (`license-needed`), the project utilizes high-fidelity procedural Three.js geometries for development and testing:
+
+1. **Character Miniatures**:
+   - Compound geometry: Cylinder pedestal + Capsule body + distinct faction silhouette headgear + low-poly animal companion prism.
+   - PBR finish: Enamel satin coat with faction primary color.
+2. **Mech Walkers**:
+   - 4 distinct procedural silhouettes per faction:
+     - Mech 1: Bipedal strider (cylindrical legs, box cockpit).
+     - Mech 2: Quadrupedal heavy platform.
+     - Mech 3: Tracked steam tank chassis.
+     - Mech 4: Tall tripod scout chassis.
+   - PBR finish: Brushed iron with weathered edges and faction secondary decal.
+3. **Workers**:
+   - Extruded classic meeple silhouette via `THREE.ShapeGeometry`.
+4. **Structures**:
+   - **Monument**: Tapered obelisk with stepped base.
+   - **Mill**: Hexagonal tower with procedural rotating 4-blade wind wheel.
+   - **Mine**: Pit crater with reinforced timber / iron elevator scaffold.
+   - **Armory**: Fortified bunker with twin cannons.
+5. **Terrain Hexes**:
+   - 6 Biome variants:
+     - **Farm**: Terraced golden wheat planes.
+     - **Forest**: Clustered low-poly pine cones.
+     - **Mountain**: Craggy faceted rock peaks.
+     - **Tundra**: Smooth ice-blue snow dunes.
+     - **Village**: Clustered timber cottage blocks.
+     - **Lake / River**: Semi-transparent blue water plane with subtle vertex wave displacement shader.
+
+---
+
+## 6. Manifest Schema (`packages/asset-manifest`)
+
+```typescript
+export type AssetKind = "model" | "texture" | "audio" | "font" | "icon";
+
+export interface AssetManifestEntry {
+  id: string;                      // Unique stable ID, e.g. "ASSET-MECH-NORDIC-01"
+  kind: AssetKind;
+  name: string;
+  sourceFile: string;              // Relative to /public
+  rightsStatus: RightsStatus;      // Must be 'approved', 'placeholder-only', or 'original-created'
+  fallbackId?: string;             // ID of fallback procedural asset
+  dimensions?: [number, number, number];
+  checksum?: string;
+  loadPriority: "critical" | "high" | "normal" | "lazy";
+  tags: string[];
+}
+```

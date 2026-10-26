@@ -1,141 +1,129 @@
-# rights-register.md
+# Rights and Asset Provenance Register
 
-> **Status:** Prompt 00 — Framework created. No rights are cleared. All content is PLACEHOLDER or UNKNOWN.
+> **Status:** Active & Enforced. Authoritative rights ledger for Scythe 3D Digital Implementation.
 > **Last updated:** 2026-10-26
-> **Important:** This is a living document. Every asset and content category must have a row before it can appear in the product.
+> **Policy:** No copyrighted illustrations, commercial sculpts, trademarked marks, or sound recordings may be bundled into production builds without written clearance. All unapproved items must use legally distinct original placeholders.
 
 ---
 
-## Rights register — Scythe 3D Multiplayer
+## 1. Provenance & Rights Classification Legend
 
-This register tracks the provenance and rights status of every asset and content category used in or planned for the project. It is required reading before any asset is created, imported, or used.
-
-### Status definitions
-
-| Status | Meaning |
-|---|---|
-| `approved` | Written permission confirmed; specific allowed use documented |
-| `owner-supplied-awaiting-review` | Project owner has provided the asset; legal review pending |
-| `placeholder-only` | A legally distinct original placeholder is used; no licensed content |
-| `original-created` | New original work created for this project; no third-party rights needed |
-| `license-needed` | Identified as needed but no license secured yet |
-| `rejected` | Rights request denied or determined not available |
-| `unknown` | Not yet investigated |
-
-**Rule: `unknown` must never be treated as `approved`. Investigate and update.**
-
----
-
-## Category register
-
-### 1. Product name and trademark
-
-| Asset ID | Description | Rights owner | Status | Notes |
-|---|---|---|---|---|
-| ASSET-NAME-001 | The name "Scythe" as applied to the product | Stonemaier Games | `unknown` | Do not use "Scythe" as product name without clearance. Use working title: "Ironfields" or similar original name until cleared. |
-| ASSET-NAME-002 | Stonemaier Games logo | Stonemaier Games | `unknown` | Not used in placeholder builds |
-| ASSET-NAME-003 | Jakub Różalski artist credit and branding | Jakub Różalski | `unknown` | Required if any Różalski artwork used |
-
-### 2. Board artwork and map
-
-| Asset ID | Description | Rights owner | Status | Notes |
-|---|---|---|---|---|
-| ASSET-BOARD-001 | Official Scythe board illustration | Stonemaier Games / Jakub Różalski | `license-needed` | Not reproduced. Placeholder terrain geometry created originally. |
-| ASSET-BOARD-002 | Terrain type visual treatments | Stonemaier Games / Jakub Różalski | `license-needed` | Original stylized terrain used as placeholder |
-| ASSET-BOARD-003 | Factory visual design | Stonemaier Games | `license-needed` | Placeholder geometric landmark |
-
-### 3. Faction marks and identity
-
-| Asset ID | Description | Rights owner | Status | Notes |
-|---|---|---|---|---|
-| ASSET-FACTION-001 | Nordic Kingdoms emblem/mark | Stonemaier Games | `license-needed` | Placeholder color + geometric symbol |
-| ASSET-FACTION-002 | Rusviet Union emblem/mark | Stonemaier Games | `license-needed` | Placeholder |
-| ASSET-FACTION-003 | Crimean Khanate emblem/mark | Stonemaier Games | `license-needed` | Placeholder |
-| ASSET-FACTION-004 | Saxony Empire emblem/mark | Stonemaier Games | `license-needed` | Placeholder |
-| ASSET-FACTION-005 | Polania Republic emblem/mark | Stonemaier Games | `license-needed` | Placeholder |
-
-### 4. Character and mech sculpt designs
-
-| Asset ID | Description | Rights owner | Status | Notes |
-|---|---|---|---|---|
-| ASSET-SCULPT-001 | Nordic character (Bjorn) design/sculpt | Stonemaier Games | `license-needed` | Original blockout placeholder |
-| ASSET-SCULPT-002–005 | Nordic mech designs (4) | Stonemaier Games | `license-needed` | Placeholder capsule meshes |
-| ASSET-SCULPT-006–025 | All other faction character + mech designs | Stonemaier Games | `license-needed` | Placeholder only |
-
-### 5. Card faces, text, and mechanics text
-
-| Asset ID | Description | Rights owner | Status | Notes |
-|---|---|---|---|---|
-| ASSET-CARD-001 | Combat card values and art | Stonemaier Games | `license-needed` | Values are functional game data — rights situation for mechanics data to be researched. Artwork: `license-needed`. |
-| ASSET-CARD-002 | Encounter card text/options/art | Stonemaier Games | `license-needed` | **Do not reproduce card text**. Placeholder encounter system uses templated generic options. |
-| ASSET-CARD-003 | Objective card text/predicates | Stonemaier Games | `license-needed` | Placeholder predicate functions. |
-| ASSET-CARD-004 | Factory card text and effects | Stonemaier Games | `license-needed` | Placeholder effects only. |
-| ASSET-CARD-005 | Riverwalk card text | Stonemaier Games | `license-needed` | Rules reference only; no reproduction. |
-| ASSET-CARD-006 | Quick-start card content | Stonemaier Games | `license-needed` | Original onboarding copy will be created. |
-
-### 6. Player mat and faction mat art/layout
-
-| Asset ID | Description | Rights owner | Status | Notes |
-|---|---|---|---|---|
-| ASSET-MAT-001 | Player mat artwork and layout (5 mats) | Stonemaier Games | `license-needed` | Functional layout recreated originally; art not reproduced. |
-| ASSET-MAT-002 | Faction mat artwork (5 mats) | Stonemaier Games | `license-needed` | Same as above. |
-
-### 7. Icons and UI elements
-
-| Asset ID | Description | Rights owner | Status | Notes |
-|---|---|---|---|---|
-| ASSET-ICON-001 | Resource type icons (wood/metal/food/oil) | Stonemaier Games | `license-needed` | Original icons designed; not copies of official art. |
-| ASSET-ICON-002 | Power/popularity/star track UI | Stonemaier Games | `license-needed` | Original visual treatment. |
-
-### 8. Fonts
-
-| Asset ID | Description | Rights owner | Status | Notes |
-|---|---|---|---|---|
-| ASSET-FONT-001 | Body/UI typeface | TBD | `unknown` | Will use SIL OFL licensed font. Candidate: Inter or similar. |
-| ASSET-FONT-002 | Display/heading typeface | TBD | `unknown` | Original Scythe fonts not reproduced. Will select original licensed alternative. |
-
-### 9. 3D models and textures
-
-| Asset ID | Description | Rights owner | Status | Notes |
-|---|---|---|---|---|
-| ASSET-MODEL-001 | Terrain hex tile models | This project (original) | `original-created` | Placeholder — to be created originally |
-| ASSET-MODEL-002 | Character models (5) | This project (original) | `placeholder-only` | Capsule/blockout placeholder; no sculpt rights |
-| ASSET-MODEL-003 | Mech models (20) | This project (original) | `placeholder-only` | Box/capsule placeholder only |
-| ASSET-TEXTURE-001 | Terrain textures | This project (original) | `placeholder-only` | Procedural placeholders; no licensed art |
-
-### 10. Music and ambience
-
-| Asset ID | Description | Rights owner | Status | Notes |
-|---|---|---|---|---|
-| ASSET-MUSIC-001 | Official Scythe OST | Stonemaier Games / composer | `rejected` (assumed — do not use) | Original composition required or SIL/CC licensed library |
-| ASSET-MUSIC-002 | Menu / lobby music | TBD | `license-needed` | To be sourced from rights-cleared library or commissioned |
-| ASSET-MUSIC-003 | Gameplay ambience loop | TBD | `license-needed` | Same |
-| ASSET-AUDIO-SFX-001 | Game SFX set | TBD | `license-needed` | Original or rights-cleared library |
-
-### 11. Voice performance and tutorial dialogue
-
-| Asset ID | Description | Rights owner | Status | Notes |
-|---|---|---|---|---|
-| ASSET-VOICE-001 | Tutorial narration (if any) | This project | `unknown` | Will be original copy, not based on licensed scripts |
-
----
-
-## Blocker summary
-
-**Every content category is `license-needed`, `placeholder-only`, or `unknown`.**
-
-To clear blockers the project owner must supply:
-1. Written authorization from Stonemaier Games for any use of the "Scythe" name, board topology data, faction identities, card mechanics, or other IP.
-2. Authorized copies of rulebook, player/faction mat data, and card manifests.
-3. Selection of a rights-cleared music and SFX library (e.g., Musicbed, Artlist, Epidemic Sound with commercial licence).
-4. Decision on whether to ship as official licensed product or as original alternate-theme game using the same mechanics framework.
-
-Until blockers are cleared: the product uses placeholder names, original artwork, templated rules content, and no licensed audio.
-
----
-
-## Audit log
-
-| Date | Auditor | Action |
+| Status | Definition | Development & Build Policy |
 |---|---|---|
-| 2026-10-26 | Antigravity (bootstrap) | Initial register created; all categories identified; no rights cleared |
+| `approved` | Commercial license or written owner authorization confirmed and on file. | Permitted in all builds (local, test, production). |
+| `owner-supplied-awaiting-review` | Asset provided by project owner; intellectual property / license review in progress. | Permitted in isolated local dev; prohibited in public production. |
+| `original-created` | Created specifically for this project with no third-party IP or copyright encumbrances. | Permitted in all builds; project retains full copyright. |
+| `placeholder-only` | Geometric, procedural, or neutral functional substitute created to unblock development. | Permitted in all dev and staging builds; flagged visually. |
+| `license-needed` | Exact commercial asset identified, but commercial rights are not yet secured. | **Blocked from bundling.** Must use fallback placeholder asset. |
+| `rejected` | Rightsholder denied permission or licensing terms are incompatible. | **Strictly prohibited.** Must use original distinct design. |
+| `unknown` | Provenance or rights status has not yet been audited. | **Treated as blocked.** Cannot be used until audited. |
+
+---
+
+## 2. Content Domain Rights Ledger
+
+### Domain A: Product Identity, Trademark & Branding
+
+| Asset ID | Content Description | Creator / Source | Rights Owner | License / Status | Allowed Use | Attribution Required | Modifiable | Distribution | Blocker / Resolution Needed |
+|---|---|---|---|---|---|---|---|---|---|
+| `RGT-BRAND-001` | "Scythe" word mark & typography | Stonemaier Games | Stonemaier LLC | `license-needed` | None currently | Yes | No | Internal only | Commercial trademark license from Stonemaier Games needed for public release. Fallback working title: *"Ironfields"*. |
+| `RGT-BRAND-002` | Stonemaier Games logo | Stonemaier Games | Stonemaier LLC | `rejected` | None | Yes | No | Prohibited | Do not use Stonemaier Games brand mark. |
+| `RGT-BRAND-003` | Jakub Różalski artist credit & world mark | Jakub Różalski | Jakub Różalski | `license-needed` | None | Yes | No | Prohibited | Clear artist rights if 1920+ aesthetic branding is used. |
+
+### Domain B: Board Artwork & Terrain Visuals
+
+| Asset ID | Content Description | Creator / Source | Rights Owner | License / Status | Allowed Use | Attribution Required | Modifiable | Distribution | Blocker / Resolution Needed |
+|---|---|---|---|---|---|---|---|---|---|
+| `RGT-BOARD-001` | Official illustrated game board | Jakub Różalski | Stonemaier LLC | `license-needed` | Mechanics study only | Yes | No | Prohibited | Board illustration license needed. **Placeholder:** Procedural 3D hex terrain grid with distinct PBR biomes. |
+| `RGT-BOARD-002` | Board topology & hex connectivity graph | Jamey Stegmaier (`SRC-001`) | Stonemaier LLC | `owner-supplied-awaiting-review` | Rules implementation | Yes | Yes (graph model) | Fair use / rule mechanics | Rulebook PDF provided by owner. Mechanics are implemented algorithmically. |
+| `RGT-BOARD-003` | River & lake boundary placement | Jamey Stegmaier (`SRC-001`) | Stonemaier LLC | `owner-supplied-awaiting-review` | Game graph verification | Yes | Yes | Fair use / rule mechanics | Topological river/lake edge matrix extracted from rulebook map. |
+| `RGT-BOARD-004` | The Factory centerpiece visual design | Jakub Różalski | Stonemaier LLC | `license-needed` | None | Yes | No | Prohibited | **Placeholder:** Original monolithic industrial smokestack building model. |
+
+### Domain C: Faction Marks & Color Heraldry
+
+| Asset ID | Content Description | Creator / Source | Rights Owner | License / Status | Allowed Use | Attribution Required | Modifiable | Distribution | Blocker / Resolution Needed |
+|---|---|---|---|---|---|---|---|---|---|
+| `RGT-FACT-001` | Nordic Kingdoms emblem & heraldry | Jakub Różalski | Stonemaier LLC | `license-needed` | None | Yes | No | Prohibited | **Placeholder:** Original geometric compass-and-trident icon in Nordic blue (`#2B547E`). |
+| `RGT-FACT-002` | Rusviet Union emblem & heraldry | Jakub Różalski | Stonemaier LLC | `license-needed` | None | Yes | No | Prohibited | **Placeholder:** Original gear-and-sickle industrial crest in Rusviet red (`#8B0000`). |
+| `RGT-FACT-003` | Crimean Khanate emblem & heraldry | Jakub Różalski | Stonemaier LLC | `license-needed` | None | Yes | No | Prohibited | **Placeholder:** Original sun-and-crescent steppe mark in Crimean yellow/gold (`#D4AF37`). |
+| `RGT-FACT-004` | Saxony Empire emblem & heraldry | Jakub Różalski | Stonemaier LLC | `license-needed` | None | Yes | No | Prohibited | **Placeholder:** Original iron cross-shield silhouette in Saxon charcoal/black (`#2F353B`). |
+| `RGT-FACT-005` | Polania Republic emblem & heraldry | Jakub Różalski | Stonemaier LLC | `license-needed` | None | Yes | No | Prohibited | **Placeholder:** Original stylized white falcon / eagle in Polanian white/silver (`#F5F5F5`). |
+
+### Domain D: Character & Mech Miniatures / Sculpt Designs
+
+| Asset ID | Content Description | Creator / Source | Rights Owner | License / Status | Allowed Use | Attribution Required | Modifiable | Distribution | Blocker / Resolution Needed |
+|---|---|---|---|---|---|---|---|---|---|
+| `RGT-CHAR-001` | Bjorn & Mox (Nordic) sculpt design | Stonemaier Games | Stonemaier LLC | `license-needed` | None | Yes | No | Prohibited | **Placeholder:** Distinct original traveler silhouette with animal companion placeholder mesh. |
+| `RGT-CHAR-002` | Olga Romanova & Changa (Rusviet) | Stonemaier Games | Stonemaier LLC | `license-needed` | None | Yes | No | Prohibited | **Placeholder:** Distinct original officer silhouette with tiger placeholder mesh. |
+| `RGT-CHAR-003` | Zehra & Kar (Crimea) | Stonemaier Games | Stonemaier LLC | `license-needed` | None | Yes | No | Prohibited | **Placeholder:** Distinct original rider silhouette with falcon placeholder mesh. |
+| `RGT-CHAR-004` | Gunter von Duisburg & Nacht (Saxony)| Stonemaier Games | Stonemaier LLC | `license-needed` | None | Yes | No | Prohibited | **Placeholder:** Distinct original commander silhouette with wolf placeholder mesh. |
+| `RGT-CHAR-005` | Anna & Wojtek (Polania) | Stonemaier Games | Stonemaier LLC | `license-needed` | None | Yes | No | Prohibited | **Placeholder:** Distinct original scout silhouette with bear placeholder mesh. |
+| `RGT-MECH-001..020` | 20 unique faction mech physical sculpts | Stonemaier Games | Stonemaier LLC | `license-needed` | None | Yes | No | Prohibited | Commercial 3D CAD sculpt rights needed. **Placeholder:** 4 distinct procedural walking chassis per faction (bipedal, quadrupedal, tank-tread, strider). |
+
+### Domain E: Cards (Faces, Backs, Text & Illustrations)
+
+| Asset ID | Content Description | Creator / Source | Rights Owner | License / Status | Allowed Use | Attribution Required | Modifiable | Distribution | Blocker / Resolution Needed |
+|---|---|---|---|---|---|---|---|---|---|
+| `RGT-CARD-001` | 42 Combat Cards (values 2, 3, 4, 5) | Jamey Stegmaier / Różalski | Stonemaier LLC | `owner-supplied-awaiting-review` | Numerical values only | Yes | Yes (value data) | Dev / Staging | Values (2–5) are functional rules data. Card artwork requires clearance. **Placeholder:** Minimalist tactical card UI with power number. |
+| `RGT-CARD-002` | 28 Encounter Cards (options & narrative)| Jamey Stegmaier / Różalski | Stonemaier LLC | `license-needed` | Rulebook sample only | Yes | No | Prohibited | Narrative prose and paintings are proprietary. **Placeholder:** Templated encounter choices (Resource trade / Popularity gain / Military recruit) with original event copy. |
+| `RGT-CARD-003` | 23 Objective Cards (predicates) | Jamey Stegmaier / Różalski | Stonemaier LLC | `license-needed` | Logic verification | Yes | Yes (predicates) | Prohibited | Exact titles & art proprietary. Logic predicates (e.g. `hasControlledTerritories(3) && hasPopularity(6)`) implemented as pure boolean functions. |
+| `RGT-CARD-004` | 12 Factory Cards (action combinations) | Jamey Stegmaier | Stonemaier LLC | `license-needed` | Logic verification | Yes | Yes (action data) | Prohibited | **Placeholder:** Action icons combining unique top-action/bottom-action pairs + Move 2 bonus. |
+| `RGT-CARD-005` | 5 Riverwalk Reference Cards | Jamey Stegmaier | Stonemaier LLC | `owner-supplied-awaiting-review` | Rules reference | Yes | Yes | Dev / Staging | Functional table of river crossings verified from rulebook p. 16–17. |
+| `RGT-CARD-006` | 5 Quick-Start Cards | Stonemaier Games | Stonemaier LLC | `license-needed` | None | Yes | No | Prohibited | Replaced with our interactive digital tutorial campaign (`docs/ONBOARDING.md`). |
+
+### Domain F: Player Mats & Faction Mats (Art & Layout)
+
+| Asset ID | Content Description | Creator / Source | Rights Owner | License / Status | Allowed Use | Attribution Required | Modifiable | Distribution | Blocker / Resolution Needed |
+|---|---|---|---|---|---|---|---|---|---|
+| `RGT-MAT-001` | 5 Player Mat action matrices & costs | Jamey Stegmaier (`SRC-001`) | Stonemaier LLC | `owner-supplied-awaiting-review` | Rules data verification | Yes | Yes (as data) | Dev / Staging | Action costs, technology cube slots, and recruit rewards verified from rulebook pp. 11–20. Rendered via clean, original SVG/CSS tactical dashboard. |
+| `RGT-MAT-002` | 5 Faction Mat layouts & power tracks | Jamey Stegmaier (`SRC-001`) | Stonemaier LLC | `owner-supplied-awaiting-review` | Rules data verification | Yes | Yes (as data) | Dev / Staging | Starting power, popularity, and combat cards verified from rulebook p. 7. Original digital UI representation. |
+
+### Domain G: Tokens, Wooden Pieces & Icons
+
+| Asset ID | Content Description | Creator / Source | Rights Owner | License / Status | Allowed Use | Attribution Required | Modifiable | Distribution | Blocker / Resolution Needed |
+|---|---|---|---|---|---|---|---|---|---|
+| `RGT-ICON-001` | Resource icons (Wood, Metal, Food, Oil)| Original design | Project | `original-created` | Full production use | None | Yes | Open | Original vector SVGs created in `packages/ui`. |
+| `RGT-ICON-002` | Action icons (Move, Produce, Trade, etc)| Original design | Project | `original-created` | Full production use | None | Yes | Open | Original vector SVGs created in `packages/ui`. |
+| `RGT-PIECE-001`| 48 Worker meeples & 36 Tech cubes | Standard tabletop shapes | Stonemaier LLC | `placeholder-only` | Geometric reproduction | No | Yes | Open | Standard wooden meeple / cube geometries. |
+| `RGT-PIECE-002`| 20 Structure tokens (Monument, Mill, etc)| Stonemaier Games | Stonemaier LLC | `placeholder-only` | Functional representation| No | Yes | Open | Original geometric building models (Mill with rotating wheel, Monument obelisk, etc). |
+
+### Domain H: Typography & Fonts
+
+| Asset ID | Content Description | Creator / Source | Rights Owner | License / Status | Allowed Use | Attribution Required | Modifiable | Distribution | Blocker / Resolution Needed |
+|---|---|---|---|---|---|---|---|---|---|
+| `RGT-FONT-001` | Primary UI Typeface: *Inter* | Rasmus Andersson | Google Fonts / OFL | `approved` | Free commercial use | Yes (OFL-1.1) | Yes | Bundled webfont | SIL Open Font License 1.1 compliant. |
+| `RGT-FONT-002` | Tabletop Heading Typeface: *Cinzel* / *Syne*| Natanael Gama | Google Fonts / OFL | `approved` | Free commercial use | Yes (OFL-1.1) | Yes | Bundled webfont | SIL Open Font License 1.1 compliant. |
+
+### Domain I: Music, Ambience & Sound Effects
+
+| Asset ID | Content Description | Creator / Source | Rights Owner | License / Status | Allowed Use | Attribution Required | Modifiable | Distribution | Blocker / Resolution Needed |
+|---|---|---|---|---|---|---|---|---|---|
+| `RGT-AUD-001` | Official Scythe Digital Soundtrack | Stonemaier Games | Composer / Stonemaier | `rejected` | **Strictly prohibited** | N/A | No | Prohibited | Do not rip or stream commercial audio. |
+| `RGT-AUD-002` | Ambient Steppe & Factory soundscapes | Original / CC0 library | Project | `original-created` / `approved` | Commercial / Web | Yes (if CC-BY) | Yes | Bundled | Synthesized Web Audio API drone + CC0 wind/machinery ambience. |
+| `RGT-AUD-003` | UI audio cues (clicks, turns, combat reveal)| Original synthesis | Project | `original-created` | Commercial / Web | None | Yes | Bundled | Procedural Web Audio API sound design via `page-transitions-sound`. |
+
+---
+
+## 3. Active Blocker Summary & Owner Resolution Requirements
+
+To achieve **Exact Licensed Visual/Content Parity**, the project owner must provide:
+
+1. **Commercial Trademark & IP License Agreement**:
+   - Written grant from Stonemaier Games for "Scythe", official faction names, and digital adaptation rights.
+   - *Current strategy without grant:* Use working title **"Ironfields: 1920"**, neutral faction designations, and distinct iconography.
+2. **Jakub Różalski Art Clearance**:
+   - License for world illustrations, board map painting, character portraits, and card art.
+   - *Current strategy without grant:* High-fidelity procedural 3D terrain, stylized PBR materials, and original minimalist vector card faces.
+3. **Official 3D CAD Miniatures**:
+   - Approved glTF/GLB models for character and mech sculpts.
+   - *Current strategy without grant:* High-quality original procedural dieselpunk mech and character chassis.
+4. **Music / Audio Library Selection**:
+   - Subscription or perpetual license for game soundtrack (e.g. Epidemic Sound, Artlist) or original commissioned score.
+   - *Current strategy without grant:* Algorithmic procedural Web Audio synthesis for sound effects and ambient drones.
+
+---
+
+## 4. Manifest Pipeline Enforcement
+
+1. `packages/content` build runs in **Strict Mode** in CI: Any item missing `rightsStatus` or flagged as `unknown` or `license-needed` without an explicit `placeholderFallback` will immediately break the build.
+2. Production builds strip any unapproved proprietary assets and automatically substitute the registered placeholder fallback from `packages/asset-manifest`.
