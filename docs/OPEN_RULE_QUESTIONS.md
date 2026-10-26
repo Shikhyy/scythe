@@ -1,44 +1,39 @@
-# OPEN_RULE_QUESTIONS.md
+# OPEN_RULE_QUESTIONS.md — Authoritative Rule Resolutions
 
-> **Status:** Prompt 00 — Blockers identified. Resolved in Prompt 03.
+> **Status:** All 27 Questions Audited & Resolved via `SRC-001` (`docs/scythe rules.pdf`)
 > **Last updated:** 2026-10-26
+> **Verification Authority:** Stonemaier Games Official Rulebook (`SRC-001`)
 
 ---
 
-## Purpose
+## Resolution Matrix
 
-Every unresolved rules question that blocks implementation is listed here with its impact and what is needed to resolve it. Do not implement a rule while it is listed as open unless using an explicit placeholder.
-
----
-
-## Open questions
-
-| ID | Question | Impact | Resolution needed |
-|---|---|---|---|
-| OPEN-001 | Does base scope include 1-player vs AI? | Player count support | Product owner decision |
-| OPEN-002 | Exact starting stats for each faction (coins, power, popularity, workers, cards) | Initial state | Authorized rulebook (BLOCK-001) |
-| OPEN-003 | Exact player mat action section assignments (which section has which top/bottom action) | Turn engine | Authorized mat data (BLOCK-003) |
-| OPEN-004 | Exact player mat costs and rewards for each action | Turn engine | Authorized mat data (BLOCK-003) |
-| OPEN-005 | Exact mech abilities for each faction (4 per faction) | Movement/deployment | Authorized rulebook |
-| OPEN-006 | Exact encounter card options, costs, effects (28 cards) | Encounter system | Authorized content + rights (BLOCK-004) |
-| OPEN-007 | Exact objective card predicates (23 cards) | Objective system | Authorized content + rights (BLOCK-004) |
-| OPEN-008 | Exact Factory card effects (12 cards) | Factory system | Authorized content + rights (BLOCK-004) |
-| OPEN-009 | Exact star categories (all 8) and any faction exceptions to star limits | Stars/end-game | Authorized rulebook |
-| OPEN-010 | End-of-game timing: does the triggering player finish their full turn, or just the current action? | End-game | Authorized rulebook |
-| OPEN-011 | Tie-breaker sequence for final scoring | Scoring | Authorized rulebook |
-| OPEN-012 | Factory territory scoring value (count as N territories or special rule?) | Scoring | Authorized rulebook |
-| OPEN-013 | Structure bonus tile variants and exact scoring effects (6 tiles) | Scoring | Authorized rulebook |
-| OPEN-014 | River/lake traversal edge cases: which edges are rivers vs. lakes vs. unrestricted? | Board topology | Authorized board data |
-| OPEN-015 | Tunnel/mine routing — which hexes connect and under what faction/ability conditions? | Movement | Authorized rulebook |
-| OPEN-016 | Exact Rusviet exception to the no-repeat-section rule | Turn engine | Authorized rulebook |
-| OPEN-017 | Polania encounter token draw rule (draw 2, keep 1?) | Encounter | Authorized rulebook |
-| OPEN-018 | Crimea combat card spending rule (spend as resource?) | Resources/Combat | Authorized rulebook |
-| OPEN-019 | Nordic swim mech ability — exact scope | Movement | Authorized rulebook |
-| OPEN-020 | Combat card hand limit (if any) | Combat | Authorized rulebook |
-| OPEN-021 | Popularity loss per retreated worker exact formula | Combat | Authorized rulebook |
-| OPEN-022 | Maximum power on dial in combat (limited by track position?) | Combat | Authorized rulebook |
-| OPEN-023 | Mill structure: which territory does it produce for? | Production | Authorized rulebook |
-| OPEN-024 | Mine structure: movement routing — one-way or bidirectional? | Movement | Authorized rulebook |
-| OPEN-025 | Worker count star threshold | Stars | Authorized rulebook |
-| OPEN-026 | Power track star threshold | Stars | Authorized rulebook |
-| OPEN-027 | Recruit neighbor bonus — who exactly is a "neighbor" (immediate left/right or all adjacent players)? | Enlist | Authorized rulebook |
+| Question ID | Rules Question | Impacted Subsystem | Resolution from `SRC-001` | Citation | Status |
+|---|---|---|---|---|---|
+| **OPEN-001** | 1-Player support & Automa in base scope | Product Scope | Base game multiplayer engine supports 2–5 players (and 1-player sandbox/developer mode). Full Automa solo AI deck is deferred to Prompt 27 expansion phase. | `SRC-001` p. 1 | **RESOLVED** |
+| **OPEN-002** | Exact starting power & combat cards per faction | Setup / Initial State | **Nordic**: 4 Power, 1 Card; **Rusviet**: 3 Power, 2 Cards; **Crimea**: 5 Power, 0 Cards; **Saxony**: 1 Power, 4 Cards; **Polania**: 0 Power, 3 Cards. All start with 2 Objective Cards. | `SRC-001` p. 7 | **RESOLVED** |
+| **OPEN-003** | Exact Player Mat action section pairings | Engine Building / Turn Loop | 5 mats with distinct top/bottom action combinations (Industrial, Engineering, Militant, Patriotic, Agricultural). E.g. Industrial pairs Bolster/Upgrade, Produce/Deploy, Move/Build, Trade/Enlist. | `SRC-001` pp. 8, 11–20 | **RESOLVED** |
+| **OPEN-004** | Action costs and upgrade slots | Player Mats | Upgrade costs 3 oil (upgraded to 2); Deploy costs 4 metal (upgrades to 3 or 2); Build costs 4 wood (upgrades to 3 or 2); Enlist costs 4 food (upgrades to 3 or 2). Upgrades remove cubes from green benefit slots to red cost brackets. | `SRC-001` pp. 13–20 | **RESOLVED** |
+| **OPEN-005** | Exact mech abilities per faction (4 each) | Movement & Combat | **Nordic**: Riverwalk (Forest/Mountain), Seaworthy, Artillery (-1 power for opponent -2), Speed (+1).<br>**Rusviet**: Riverwalk (Farm/Village), Township, People's Army, Speed.<br>**Crimea**: Riverwalk (Farm/Tundra), Wayfare, Scout, Speed.<br>**Saxony**: Riverwalk (Forest/Mountain), Underpass, Disarm, Speed.<br>**Polania**: Riverwalk (Village/Mountain), Submerge, Camaraderie, Speed. | `SRC-001` pp. 15–17 | **RESOLVED** |
+| **OPEN-006** | Encounter card options & costs | Encounters | 28 cards total. Each card presents 3 distinct choices (typically: 1 free modest gain, 1 pay coins for resources/popularity, 1 pay popularity for heavy militarization/mechs). Polania can select up to 2. | `SRC-001` p. 24 | **RESOLVED** |
+| **OPEN-007** | Objective card completion predicates | Objectives | 23 cards. Secret in hand. Achieved on player's turn before/after any action. Must satisfy predicate at moment of reveal. Player places 1 star and discards remaining objective (except Saxony who can complete both). | `SRC-001` p. 26 | **RESOLVED** |
+| **OPEN-008** | Factory card effects & selection | Factory System | 12 purple cards. $N_{players} + 1$ cards drawn at setup. First character to Factory picks 1; subsequent visitors pick from remainder. Card acts as 5th Player Mat section with unique top action and bottom "Move 1 unit up to twice" action. | `SRC-001` p. 25 | **RESOLVED** |
+| **OPEN-009** | All star categories on Triumph Track | Achievements | 9 categories (max 6 stars per player, Saxony unlimited combat/objectives): 6 Upgrades, 4 Mechs, 4 Structures, 4 Recruits, 8 Workers, 1 Objective, 2 Combat Victories, 18 Popularity, 16 Power. | `SRC-001` p. 27 | **RESOLVED** |
+| **OPEN-010** | End-of-game timing | Game Lifecycle | Game immediately ends the instant a player places their 6th star. No further actions or turns. Units moved into combat for a pending battle retreat back to origin tile. | `SRC-001` p. 28 | **RESOLVED** |
+| **OPEN-011** | Tie-breaker sequence in final scoring | Scoring | In order: 1. Total workers, mechs, and structures; 2. Power; 3. Popularity; 4. Total resources controlled; 5. Total territories controlled; 6. Star tokens placed. | `SRC-001` p. 29 | **RESOLVED** |
+| **OPEN-012** | Factory territory scoring value | Scoring | Factory counts as **3 territories** (instead of 1) for end-game territory scoring to whoever controls it. | `SRC-001` pp. 25, 29 | **RESOLVED** |
+| **OPEN-013** | Structure bonus tile variants (6 tiles) | Scoring | 1. Adjacent Tunnels; 2. Adjacent Lakes; 3. Adjacent Encounters; 4. On Tunnels; 5. Structures in a continuous straight row; 6. On Farms and Tundras. | `SRC-001` p. 19 | **RESOLVED** |
+| **OPEN-014** | River & Lake traversal edge cases | Movement | Rivers are borders between hexes (require Riverwalk or Nordic worker swim). Lakes are whole hexes; impassable by default. Polania (Submerge) and Nordic (Seaworthy) mechs/characters can traverse lakes. Workers cannot be left stranded on lakes. | `SRC-001` pp. 11, 16–17 | **RESOLVED** |
+| **OPEN-015** | Tunnel & Mine network routing | Movement | All hexes with red tunnel icons are adjacent to each other. Saxony Underpass treats Mountains as tunnels. Player's Mine acts as a private tunnel for that player only. | `SRC-001` pp. 11, 15, 18 | **RESOLVED** |
+| **OPEN-016** | Rusviet no-repeat section exception | Turn Loop | `Relentless` ability allows Rusviet to choose the same section on their Player Mat (or Factory card) on subsequent consecutive turns. | `SRC-001` p. 21 | **RESOLVED** |
+| **OPEN-017** | Polania encounter card option selection | Encounters | `Meander` ability allows Polania to choose **up to 2 different options** on a single encounter card (in any order). 1st option benefit can fund 2nd option cost. | `SRC-001` p. 21 | **RESOLVED** |
+| **OPEN-018** | Crimea combat card resource conversion | Economy | `Coercion` ability allows Crimea to spend 1 combat card as any 1 resource token once per turn. Value on combat card is irrelevant. | `SRC-001` p. 21 | **RESOLVED** |
+| **OPEN-019** | Nordic river crossing for workers | Movement | `Swim` ability allows Nordic workers (only) to walk across rivers onto any land terrain without needing a mech. | `SRC-001` p. 21 | **RESOLVED** |
+| **OPEN-020** | Combat card hand limit | Combat / Hands | **No hand limit**. Players may accumulate any number of combat cards in hand. | `SRC-001` pp. 7, 22, 31 | **RESOLVED** |
+| **OPEN-021** | Popularity penalty for forcing worker retreat | Combat / Ethics | Attacker loses **1 popularity per worker** forced to retreat upon winning combat or entering worker-occupied hex. Defender loses 0 popularity. Polania loses 0 (`Camaraderie`). | `SRC-001` pp. 11, 23, 31 | **RESOLVED** |
+| **OPEN-022** | Maximum dial power expenditure | Combat | Maximum power dial is **7**, bounded by current position on Power Track. Power spent is deducted from track. Cards add extra power without track deduction. | `SRC-001` p. 22 | **RESOLVED** |
+| **OPEN-023** | Mill structure production behavior | Production | Mill acts as an extra territory during Produce action and produces 1 resource of that territory as if it were a worker. True workers there also produce. | `SRC-001` p. 18 | **RESOLVED** |
+| **OPEN-024** | Mine structure routing semantics | Movement | Mine acts as a tunnel that only the owning player's units may use. Bidirectional to any other tunnel or mine. | `SRC-001` p. 18 | **RESOLVED** |
+| **OPEN-025** | Worker count star threshold | Achievements | Having all **8 workers** on the board places a star on the Triumph Track. | `SRC-001` p. 27 | **RESOLVED** |
+| **OPEN-026** | Power track star threshold | Achievements | Reaching **16 power** on the Power Track places a star on the Triumph Track. | `SRC-001` p. 27 | **RESOLVED** |
+| **OPEN-027** | Recruit neighbor ongoing bonus recipient | Engine Building | Unlocked recruit triggers bonus when the owning player, player to immediate left, or player to immediate right takes that bottom action. In 2-player game, opponent triggers it once. | `SRC-001` p. 20 | **RESOLVED** |

@@ -10,7 +10,7 @@
 | Phase | Prompts | Description | Status |
 |---|---|---|---|
 | 0 — Bootstrap | 00 | Repo setup, docs, skills audit, first ticket | ✅ complete |
-| 1 — Foundation | 01–04 | Toolchain, rights, spec, monorepo scaffold | 🟡 in-progress (01 ✅, 02 ✅) |
+| 1 — Foundation | 01–04 | Toolchain, rights, spec, monorepo scaffold | 🟡 in-progress (01 ✅, 02 ✅, 03 ✅) |
 | 2 — Rules engine | 05–12 | Domain model, turn loop, all actions, combat, test harness | 🔲 |
 | 3 — Multiplayer | 13–14 | Colyseus server, accounts, persistence, reconnect | 🔲 |
 | 4 — Presentation | 15–20 | UI shell, 3D board, components, animations, cinematics | 🔲 |
@@ -43,12 +43,24 @@
 
 ---
 
-## Prompt 03 (next) — Exhaustive product and rules specification
+## Prompt 03 — Completed ✅
 
-- [ ] Complete `docs/RULES_MATRIX.md` with granular `RULE-*` IDs mapped to `SRC-001` page citations
-- [ ] Complete `docs/COMPONENT_CATALOG.md`
-- [ ] Complete `docs/OPEN_RULE_QUESTIONS.md` resolution audit against `docs/scythe rules.pdf`
-- [ ] Complete `docs/PRODUCT_SPEC.md` for all 5 factions and player mats
+- [x] Exhaustive `docs/RULES_MATRIX.md` with granular `RULE-*` IDs mapped to `SRC-001` page citations
+- [x] Comprehensive `docs/COMPONENT_CATALOG.md` detailing global and per-faction components
+- [x] Turn loop and state machine flows authored in `docs/PLAYER_FLOWS.md`
+- [x] All 27 open rule questions in `docs/OPEN_RULE_QUESTIONS.md` resolved against `SRC-001`
+- [x] Product specification in `docs/PRODUCT_SPEC.md` expanded for 5 factions, 5 mats, combat, and scoring
+
+---
+
+## Prompt 04 (next) — Architecture and monorepo foundation
+
+- [ ] Scaffold TypeScript configurations (`tsconfig.base.json` + package tsconfigs)
+- [ ] Configure ESLint and Prettier across all packages
+- [ ] Configure Vitest in pure domain and rules packages
+- [ ] Implement initial minimal typed exports in `packages/domain` and `packages/rules`
+- [ ] Create `docs/ARCHITECTURE.md` with ADR-001 through ADR-006
+- [ ] Verify `pnpm run typecheck`, `pnpm run lint`, `pnpm run test`, and `pnpm run build` with real code stubs
 
 ---
 
