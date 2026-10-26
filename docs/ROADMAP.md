@@ -7,17 +7,17 @@
 
 ## Phase summary (based on prompt pack)
 
-| Phase            | Prompts | Description                                                | Status                                   |
-| ---------------- | ------- | ---------------------------------------------------------- | ---------------------------------------- |
-| 0 — Bootstrap    | 00      | Repo setup, docs, skills audit, first ticket               | ✅ complete                              |
-| 1 — Foundation   | 01–04   | Toolchain, rights, spec, monorepo scaffold                 | ✅ complete (01 ✅, 02 ✅, 03 ✅, 04 ✅) |
-| 2 — Rules engine | 05–12   | Domain model, turn loop, all actions, combat, test harness | 🟡 in-progress (05 ✅, Prompt 06 next)   |
-| 3 — Multiplayer  | 13–14   | Colyseus server, accounts, persistence, reconnect          | 🔲                                       |
-| 4 — Presentation | 15–20   | UI shell, 3D board, components, animations, cinematics     | 🔲                                       |
-| 5 — Audio + UX   | 21–22   | Audio system, onboarding tutorial                          | 🔲                                       |
-| 6 — Polish + QA  | 23–24   | Accessibility, performance, E2E testing                    | 🔲                                       |
-| 7 — Release      | 25–26   | Deployment, CI/CD, final audit                             | 🔲                                       |
-| 8 — Expansions   | 27      | Solo, spectator, replay, expansions                        | 🔲                                       |
+| Phase            | Prompts | Description                                                | Status                                        |
+| ---------------- | ------- | ---------------------------------------------------------- | --------------------------------------------- |
+| 0 — Bootstrap    | 00      | Repo setup, docs, skills audit, first ticket               | ✅ complete                                   |
+| 1 — Foundation   | 01–04   | Toolchain, rights, spec, monorepo scaffold                 | ✅ complete (01 ✅, 02 ✅, 03 ✅, 04 ✅)      |
+| 2 — Rules engine | 05–12   | Domain model, turn loop, all actions, combat, test harness | 🟡 in-progress (05 ✅, 06 ✅, Prompt 07 next) |
+| 3 — Multiplayer  | 13–14   | Colyseus server, accounts, persistence, reconnect          | 🔲                                            |
+| 4 — Presentation | 15–20   | UI shell, 3D board, components, animations, cinematics     | 🔲                                            |
+| 5 — Audio + UX   | 21–22   | Audio system, onboarding tutorial                          | 🔲                                            |
+| 6 — Polish + QA  | 23–24   | Accessibility, performance, E2E testing                    | 🔲                                            |
+| 7 — Release      | 25–26   | Deployment, CI/CD, final audit                             | 🔲                                            |
+| 8 — Expansions   | 27      | Solo, spectator, replay, expansions                        | 🔲                                            |
 
 ---
 
@@ -79,12 +79,24 @@
 
 ---
 
-## Prompt 06 (next) — Setup, board graph, terrain, and initial state
+## Prompt 06 — Completed ✅
 
-- [ ] Author canonical board data file with 44+ base hexes, coordinates, river edges, tunnels, encounter spaces, and faction home bases
-- [ ] Implement deterministic setup procedure for 1–5 player matches with faction/mat assignments
-- [ ] Author board graph topology tests (reciprocal adjacency, impassable rivers without mech abilities)
-- [ ] Author setup snapshot fixtures and piece accounting tests (80 resources, 42 combat cards, etc.)
+- [x] Author canonical board data file (`packages/content/src/board.ts`) with 44+ base hexes, axial coordinates, bidirectional graph topology, river crossings, 6 tunnels, 11 encounter tokens, Factory at $(0, 0)$, and 5 faction home bases
+- [x] Implement deterministic setup procedure (`packages/content/src/setup.ts`) for 1–5 player matches with faction/mat assignments, seedable PRNG (`mulberry32`), starting pieces, cards, and starting player calculation by lowest mat number (`SRC-001` p. 8)
+- [x] Author board graph topology tests (`board.test.ts`, 8 tests) verifying reciprocal adjacency, river crossing metadata, and tunnel connectivity
+- [x] Author setup tests (`setup.test.ts`, 5 tests) and piece accounting tests (`accounting.test.ts`, 2 tests) verifying 80 resources, 42 combat cards, 23 objective cards, starting power/popularity/coins per faction
+- [x] 87 unit tests passing across 12 test suites with zero failures
+
+---
+
+## Prompt 07 (next) — Turn loop and top-row actions
+
+- [ ] Implement turn engine lifecycle: active seat cycling, prior section tracking, Rusviet Relentless exception, action omission
+- [ ] Implement Move action: unit movement limits, worker & resource transport, river crossing validations
+- [ ] Implement Produce action: territory selection, worker supply track costs, resource placement, village worker spawning, Mill production
+- [ ] Implement Trade action: 1 coin for 2 resources or 1 popularity
+- [ ] Implement Bolster action: 1 coin for 2 power or 1 combat card (power track cap at 16)
+- [ ] Unit tests for all action precondition validations, resource costs, state immutability, and domain event emissions
 
 ---
 
