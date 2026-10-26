@@ -13,6 +13,7 @@ import type {
 } from "./enums.js";
 import type { HexId, MatchId, PlayerId, SeatId, UnitId, CardId } from "./identifiers.js";
 import type { HexCoord } from "./coords.js";
+import type { StructureBonusTileId } from "./cards.js";
 
 // ---------------------------------------------------------------------------
 // Resource bundles
@@ -87,6 +88,10 @@ export interface SeatState {
   claimedRecruitBonuses?: ("POWER" | "COIN" | "POPULARITY" | "COMBAT_CARD")[] | undefined;
   // Total upgrades completed (0 to 6)
   upgradesCount?: number | undefined;
+  // Factory card claimed (if any)
+  factoryCardId?: CardId | null | undefined;
+  // Objective card IDs that have been completed and revealed
+  completedObjectiveCardIds?: CardId[] | undefined;
 }
 
 // ---------------------------------------------------------------------------
@@ -115,6 +120,11 @@ export interface PendingEncounterState {
   readonly encounterCardId: CardId;
 }
 
+export interface PendingFactoryChoiceState {
+  readonly seatId: SeatId;
+  readonly availableFactoryCardIds: readonly CardId[];
+}
+
 // ---------------------------------------------------------------------------
 // Match
 // ---------------------------------------------------------------------------
@@ -134,7 +144,13 @@ export interface MatchState {
   // Pending interrupts
   pendingCombat?: PendingCombatState | null | undefined;
   pendingEncounter?: PendingEncounterState | null | undefined;
+  pendingFactoryChoice?: PendingFactoryChoiceState | null | undefined;
   // Decks
   combatDeck?: CardId[] | undefined;
   combatDiscard?: CardId[] | undefined;
+  objectiveDeck?: CardId[] | undefined;
+  encounterDeck?: CardId[] | undefined;
+  encounterDiscard?: CardId[] | undefined;
+  factoryDeck?: CardId[] | undefined;
+  structureBonusTile?: StructureBonusTileId | undefined;
 }

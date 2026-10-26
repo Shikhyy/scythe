@@ -10,13 +10,19 @@ import {
   PlayerMatId,
   UnitType,
   ConnectionState,
-  makeCardId,
   makeMatchId,
   makePlayerId,
   makeSeatId,
   makeUnitId,
 } from "@scythe/domain";
 import { FACTION_STARTING_STATS } from "./factions.js";
+import {
+  ALL_COMBAT_CARDS,
+  ALL_OBJECTIVE_CARDS,
+  ALL_ENCOUNTER_CARDS,
+  ALL_FACTORY_CARDS,
+  ALL_STRUCTURE_BONUS_TILES,
+} from "./cards/index.js";
 import {
   CANONICAL_BOARD_HEXES,
   getHomeBaseHex,
@@ -137,22 +143,27 @@ export function setupDeterministicMatch(config: MatchSetupConfig): MatchState {
     : shuffleArray([...ALL_PLAYER_MATS], prng).slice(0, config.playerCount);
 
   // 3. Generate combat cards deck (42 cards total: 16x2, 12x3, 8x4, 6x5)
-  const combatDeck: string[] = [];
-  let cardIdx = 1;
-  for (let i = 0; i < 16; i++) combatDeck.push(`cc-val2-${cardIdx++}`);
-  for (let i = 0; i < 12; i++) combatDeck.push(`cc-val3-${cardIdx++}`);
-  for (let i = 0; i < 8; i++) combatDeck.push(`cc-val4-${cardIdx++}`);
-  for (let i = 0; i < 6; i++) combatDeck.push(`cc-val5-${cardIdx++}`);
-  shuffleArray(combatDeck, prng);
+  const combatDeck = shuffleArray([...ALL_COMBAT_CARDS.map((c) => c.id)], prng);
 
   // 4. Generate objective cards deck (23 cards)
-  const objectiveDeck: string[] = [];
-  for (let i = 1; i <= 23; i++) {
-    objectiveDeck.push(`obj-card-${i}`);
-  }
-  shuffleArray(objectiveDeck, prng);
+  const objectiveDeck = shuffleArray([...ALL_OBJECTIVE_CARDS.map((o) => o.id)], prng);
 
-  // 5. Initialize board hex states
+  // 5. Generate encounter cards deck (28 cards)
+  const encounterDeck = shuffleArray([...ALL_ENCOUNTER_CARDS.map((e) => e.id)], prng);
+
+  // 6. Generate Factory cards pool (N_players + 1)
+  const factoryDeck = shuffleArray([...ALL_FACTORY_CARDS.map((f) => f.id)], prng).slice(
+    0,
+    config.playerCount + 1,
+  );
+
+  // 7. Select 1 Structure Bonus Tile
+  const structureBonusTile = shuffleArray(
+    [...ALL_STRUCTURE_BONUS_TILES.map((t) => t.tileId)],
+    prng,
+  )[0]!;
+
+  // 8. Initialize board hex states
   const hexes = new Map<HexId, HexState>();
   for (const h of CANONICAL_BOARD_HEXES) {
     hexes.set(h.id, {
@@ -167,7 +178,7 @@ export function setupDeterministicMatch(config: MatchSetupConfig): MatchState {
     });
   }
 
-  // 6. Setup seats and pieces
+  // 9. Setup seats and pieces
   const units = new Map<UnitId, UnitState>();
   const initialSeats: SeatState[] = [];
 
@@ -181,14 +192,14 @@ export function setupDeterministicMatch(config: MatchSetupConfig): MatchState {
     const matStats = PLAYER_MAT_SPECS[matId];
 
     // Deal starting combat cards
-    const startingCombatCards: string[] = [];
+    const startingCombatCards = [];
     for (let c = 0; c < factionStats.startingCombatCards; c++) {
       const drawn = combatDeck.pop();
       if (drawn) startingCombatCards.push(drawn);
     }
 
     // Deal 2 objective cards
-    const startingObjectives: string[] = [];
+    const startingObjectives = [];
     for (let o = 0; o < 2; o++) {
       const drawn = objectiveDeck.pop();
       if (drawn) startingObjectives.push(drawn);
@@ -231,8 +242,10 @@ export function setupDeterministicMatch(config: MatchSetupConfig): MatchState {
       power: factionStats.startingPower,
       popularity: matStats.startingPopularity,
       stars: [],
-      combatCardIds: startingCombatCards.map(makeCardId),
-      objectiveCardIds: startingObjectives.map(makeCardId),
+      combatCardIds: startingCombatCards,
+      objectiveCardIds: startingObjectives,
+      factoryCardId: null,
+      completedObjectiveCardIds: [],
       unitIds: [charUnitId, ...workerIds],
     });
   }
@@ -269,5 +282,12 @@ export function setupDeterministicMatch(config: MatchSetupConfig): MatchState {
     seats: orderedSeats,
     hexes,
     units,
+    combatDeck,
+    combatDiscard: [],
+    objectiveDeck,
+    encounterDeck,
+    encounterDiscard: [],
+    factoryDeck,
+    structureBonusTile,
   };
 }

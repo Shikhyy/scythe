@@ -86,6 +86,7 @@ export enum StarCondition {
   AllUpgrades = "ALL_UPGRADES",
   AllWorkers = "ALL_WORKERS",
   FirstObjective = "FIRST_OBJECTIVE",
+  SecondObjective = "SECOND_OBJECTIVE",
   CombatVictory1 = "COMBAT_VICTORY_1",
   CombatVictory2 = "COMBAT_VICTORY_2",
   MaxPopularity = "MAX_POPULARITY",

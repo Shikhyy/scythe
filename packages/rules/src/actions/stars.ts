@@ -1,4 +1,10 @@
-import { type SeatState, type StarCondition, type StarPlacedEvent } from "@scythe/domain";
+import {
+  type SeatState,
+  type StarCondition,
+  type StarPlacedEvent,
+  Faction,
+  StarCondition as StarCondEnum,
+} from "@scythe/domain";
 import type { DeterministicContext } from "../engine.js";
 
 /**
@@ -11,13 +17,31 @@ export function awardStarIfEligible(
   condition: StarCondition,
   context: DeterministicContext,
 ): { updatedSeat: SeatState; event: StarPlacedEvent | null } {
-  // Check if player already has this star condition
-  if (seat.stars.includes(condition)) {
+  // Max 6 stars in Scythe
+  if (seat.stars.length >= 6) {
     return { updatedSeat: seat, event: null };
   }
 
-  // Max 6 stars in Scythe
-  if (seat.stars.length >= 6) {
+  // Saxony Dominate ability: no limit on combat stars, up to 2 objective stars
+  const isSaxony = seat.faction === Faction.Saxony;
+  const isSaxonyMultiple =
+    isSaxony &&
+    (condition === StarCondEnum.CombatVictory1 ||
+      condition === StarCondEnum.CombatVictory2 ||
+      condition === StarCondEnum.FirstObjective ||
+      condition === StarCondEnum.SecondObjective);
+
+  if (!isSaxonyMultiple && seat.stars.includes(condition)) {
+    return { updatedSeat: seat, event: null };
+  }
+
+  // Saxony max 2 objective stars (only 2 objective cards dealt)
+  if (
+    (condition === StarCondEnum.FirstObjective || condition === StarCondEnum.SecondObjective) &&
+    seat.stars.filter(
+      (s) => s === StarCondEnum.FirstObjective || s === StarCondEnum.SecondObjective,
+    ).length >= 2
+  ) {
     return { updatedSeat: seat, event: null };
   }
 

@@ -7,17 +7,17 @@
 
 ## Phase summary (based on prompt pack)
 
-| Phase            | Prompts | Description                                                | Status                                               |
-| ---------------- | ------- | ---------------------------------------------------------- | ---------------------------------------------------- |
-| 0 — Bootstrap    | 00      | Repo setup, docs, skills audit, first ticket               | ✅ complete                                          |
-| 1 — Foundation   | 01–04   | Toolchain, rights, spec, monorepo scaffold                 | ✅ complete (01 ✅, 02 ✅, 03 ✅, 04 ✅)             |
-| 2 — Rules engine | 05–12   | Domain model, turn loop, all actions, combat, test harness | 🟡 in-progress (05 ✅, 06 ✅, 07 ✅, Prompt 08 next) |
-| 3 — Multiplayer  | 13–14   | Colyseus server, accounts, persistence, reconnect          | 🔲                                                   |
-| 4 — Presentation | 15–20   | UI shell, 3D board, components, animations, cinematics     | 🔲                                                   |
-| 5 — Audio + UX   | 21–22   | Audio system, onboarding tutorial                          | 🔲                                                   |
-| 6 — Polish + QA  | 23–24   | Accessibility, performance, E2E testing                    | 🔲                                                   |
-| 7 — Release      | 25–26   | Deployment, CI/CD, final audit                             | 🔲                                                   |
-| 8 — Expansions   | 27      | Solo, spectator, replay, expansions                        | 🔲                                                   |
+| Phase            | Prompts | Description                                                | Status                                    |
+| ---------------- | ------- | ---------------------------------------------------------- | ----------------------------------------- |
+| 0 — Bootstrap    | 00      | Repo setup, docs, skills audit, first ticket               | ✅ complete                               |
+| 1 — Foundation   | 01–04   | Toolchain, rights, spec, monorepo scaffold                 | ✅ complete (01 ✅, 02 ✅, 03 ✅, 04 ✅)  |
+| 2 — Rules engine | 05–12   | Domain model, turn loop, all actions, combat, test harness | 🟡 in-progress (05–10 ✅, Prompt 11 next) |
+| 3 — Multiplayer  | 13–14   | Colyseus server, accounts, persistence, reconnect          | 🔲                                        |
+| 4 — Presentation | 15–20   | UI shell, 3D board, components, animations, cinematics     | 🔲                                        |
+| 5 — Audio + UX   | 21–22   | Audio system, onboarding tutorial                          | 🔲                                        |
+| 6 — Polish + QA  | 23–24   | Accessibility, performance, E2E testing                    | 🔲                                        |
+| 7 — Release      | 25–26   | Deployment, CI/CD, final audit                             | 🔲                                        |
+| 8 — Expansions   | 27      | Solo, spectator, replay, expansions                        | 🔲                                        |
 
 ---
 
@@ -130,13 +130,30 @@
 
 ---
 
-## Prompt 10 (next) — Cards, encounters, objectives, Factory, and content registry
+## Prompt 10 — Completed ✅
 
-- [ ] Complete typed card data schemas: Combat cards (values 2–5), Objective cards, Encounter cards, Factory cards
-- [ ] Implement encounter card draw, 3-option payment/benefit evaluation, and Polania Meander exception (pick 2 options)
-- [ ] Implement objective card evaluation and completion reveal mechanics
-- [ ] Implement Factory card claim upon first entry, 5th action section addition to player mat
-- [ ] Shuffled reproducible draw decks and discard handling with server-side secrecy
+- [x] Complete typed card data schemas: Combat cards (42 cards, values 2–5), Objective cards (23 cards), Encounter cards (28 cards with structured options), Factory cards (12 cards), Structure bonus tiles (6 tiles)
+- [x] Implement encounter card draw, 3-option payment/benefit evaluation (`packages/rules/src/actions/encounter.ts`), and Polania Meander exception (pick 2 options)
+- [x] Implement objective card evaluation and completion reveal mechanics (`packages/rules/src/actions/objective.ts`) with Saxony Dominate exception (up to 2 objective stars)
+- [x] Implement Factory card claim upon first entry (`packages/rules/src/actions/factory.ts`), 5th action section addition to player mat
+- [x] Shuffled reproducible draw decks (`packages/rules/src/deck.ts`), discard handling with automatic combat deck reshuffle
+- [x] Content build report and schema validation (`packages/content/src/registry.ts`)
+- [x] 183 unit tests passing across 36 test suites in the monorepo with 100% green exit code
+
+---
+
+## Prompt 11 (next) — Combat, stars, end-game, and scoring
+
+- [ ] Immutable server-side combat instance upon combat initiation
+- [ ] Secret power dial (0–7, bounded by current power) and combat card tucking (up to participating units, Rusviet People's Army +1)
+- [ ] Simultaneous reveal, attacker wins ties, power/card expenditure
+- [ ] Pre-combat abilities: Crimea Scout, Nordic Artillery, Saxony Disarm
+- [ ] Forced retreats to home base, loser consolation combat card if >= 1 power spent
+- [ ] Winner territory control, resource capture, worker retreat popularity penalty (Polania Camaraderie exception)
+- [ ] Combat stars (max 2, Saxony Dominate unlimited)
+- [ ] Game-end trigger on 6th star (halt immediately, Saxony exceptions)
+- [ ] End-game scoring: popularity tiers (Tier 1/2/3), Factory x3 multiplier, structure bonus tile coins, tie-breakers
+- [ ] Traceable, explainable score breakdown function
 
 ---
 

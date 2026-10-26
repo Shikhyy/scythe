@@ -95,12 +95,12 @@
 
 ## 8. Encounters, Objectives, & Factory (`RULE-CONT-*`)
 
-| Rule ID         | Statement                     | Source          | Preconditions & Timing           | State Transitions / Effects                                                                        | Visibility           | Test ID         | Package | Status      |
-| --------------- | ----------------------------- | --------------- | -------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------- | --------------- | ------- | ----------- |
-| `RULE-CONT-001` | Character Encounter Trigger   | `SRC-001` p. 24 | Character lands on encounter hex | Movement ends; discard token; draw card; pick 1 option (Polania up to 2); pay costs; gain benefits | Public               | `TEST-CONT-001` | `rules` | not-started |
-| `RULE-CONT-002` | Factory Card Claim            | `SRC-001` p. 25 | Character on Factory 1st time    | Pick 1 card from pool ($N_{players}+1 - \text{prior}$); becomes 5th action section                 | Public (card choice) | `TEST-CONT-002` | `rules` | not-started |
-| `RULE-CONT-003` | Factory Action Execution      | `SRC-001` p. 25 | Factory section selected         | Unique top action + bottom "Move 1 unit up to twice" action; no structure/recruit bonuses          | Public               | `TEST-CONT-003` | `rules` | not-started |
-| `RULE-CONT-004` | Objective Completion & Reveal | `SRC-001` p. 26 | Turn of owning player            | Reveal satisfied objective; place 1 star; discard remaining objective (Saxony may complete both)   | Secret $\to$ Public  | `TEST-CONT-004` | `rules` | not-started |
+| Rule ID         | Statement                     | Source          | Preconditions & Timing           | State Transitions / Effects                                                                        | Visibility           | Test ID         | Package | Status |
+| --------------- | ----------------------------- | --------------- | -------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------- | --------------- | ------- | ------ |
+| `RULE-CONT-001` | Character Encounter Trigger   | `SRC-001` p. 24 | Character lands on encounter hex | Movement ends; discard token; draw card; pick 1 option (Polania up to 2); pay costs; gain benefits | Public               | `TEST-CONT-001` | `rules` | tested |
+| `RULE-CONT-002` | Factory Card Claim            | `SRC-001` p. 25 | Character on Factory 1st time    | Pick 1 card from pool ($N_{players}+1 - \text{prior}$); becomes 5th action section                 | Public (card choice) | `TEST-CONT-002` | `rules` | tested |
+| `RULE-CONT-003` | Factory Action Execution      | `SRC-001` p. 25 | Factory section selected         | Unique top action + bottom "Move 1 unit up to twice" action; no structure/recruit bonuses          | Public               | `TEST-CONT-003` | `rules` | tested |
+| `RULE-CONT-004` | Objective Completion & Reveal | `SRC-001` p. 26 | Turn of owning player            | Reveal satisfied objective; place 1 star; discard remaining objective (Saxony may complete both)   | Secret $\to$ Public  | `TEST-CONT-004` | `rules` | tested |
 
 ---
 
@@ -129,7 +129,7 @@
 | `RULE-SPEC-007` | Nordic: Swim           | `SRC-001` p. 21 | Workers (only) may move across rivers onto any land terrain                | Public          | `TEST-SPEC-007` | `rules` | not-started |
 | `RULE-SPEC-008` | Nordic: Seaworthy      | `SRC-001` p. 16 | Character/mechs move to/from lakes and retreat onto adjacent lakes         | Public          | `TEST-SPEC-008` | `rules` | not-started |
 | `RULE-SPEC-009` | Nordic: Artillery      | `SRC-001` p. 16 | Before combat, pay 1 power to force opponent to lose 2 power               | Public          | `TEST-SPEC-009` | `rules` | not-started |
-| `RULE-SPEC-010` | Polania: Meander       | `SRC-001` p. 21 | Pick up to 2 options per encounter card (in any order)                     | Public          | `TEST-SPEC-010` | `rules` | not-started |
+| `RULE-SPEC-010` | Polania: Meander       | `SRC-001` p. 21 | Pick up to 2 options per encounter card (in any order)                     | Public          | `TEST-SPEC-010` | `rules` | tested      |
 | `RULE-SPEC-011` | Polania: Submerge      | `SRC-001` p. 17 | Character/mechs move to/from lakes and from any lake to another lake       | Public          | `TEST-SPEC-011` | `rules` | not-started |
 | `RULE-SPEC-012` | Polania: Camaraderie   | `SRC-001` p. 17 | Do not lose popularity when forcing opponent's workers to retreat          | Public          | `TEST-SPEC-012` | `rules` | not-started |
 | `RULE-SPEC-013` | Saxony: Dominate       | `SRC-001` p. 21 | No limit to stars from completing objectives or winning combat             | Public          | `TEST-SPEC-013` | `rules` | not-started |

@@ -14,6 +14,9 @@ import { validateUpgrade, applyUpgrade } from "./actions/upgrade.js";
 import { validateDeploy, applyDeploy } from "./actions/deploy.js";
 import { validateBuild, applyBuild } from "./actions/build.js";
 import { validateEnlist, applyEnlist } from "./actions/enlist.js";
+import { validateChooseEncounterOption, applyChooseEncounterOption } from "./actions/encounter.js";
+import { validateClaimObjective, applyClaimObjective } from "./actions/objective.js";
+import { validateChooseFactoryCard, applyChooseFactoryCard } from "./actions/factory.js";
 
 /** Injectable deterministic execution context for rules reducer */
 export interface DeterministicContext {
@@ -43,7 +46,14 @@ export function validateCommand(state: MatchState, command: GameCommand): Domain
   }
 
   // 2. Verify match phase
-  if (state.phase !== MatchPhase.Active) {
+  if (command.type === "CHOOSE_ENCOUNTER_OPTION") {
+    if (state.phase !== MatchPhase.PendingEncounter && !state.pendingEncounter) {
+      return domainError(
+        "PHASE_MISMATCH",
+        `Command CHOOSE_ENCOUNTER_OPTION rejected: no encounter pending.`,
+      );
+    }
+  } else if (state.phase !== MatchPhase.Active) {
     return domainError(
       "PHASE_MISMATCH",
       `Command ${command.type} rejected: match phase is ${state.phase}, expected ACTIVE.`,
@@ -51,7 +61,14 @@ export function validateCommand(state: MatchState, command: GameCommand): Domain
   }
 
   // 3. Verify turn ownership
-  if (state.activeSeatId !== command.actorSeatId) {
+  if (command.type === "CHOOSE_ENCOUNTER_OPTION") {
+    if (state.pendingEncounter && state.pendingEncounter.seatId !== command.actorSeatId) {
+      return domainError(
+        "NOT_YOUR_TURN",
+        `Seat ${command.actorSeatId} cannot act; pending encounter belongs to ${state.pendingEncounter.seatId}.`,
+      );
+    }
+  } else if (state.activeSeatId !== command.actorSeatId) {
     return domainError(
       "NOT_YOUR_TURN",
       `Seat ${command.actorSeatId} cannot act; active seat is ${state.activeSeatId}.`,
@@ -80,6 +97,12 @@ export function validateCommand(state: MatchState, command: GameCommand): Domain
       return validateBuild(state, command);
     case "ENLIST":
       return validateEnlist(state, command);
+    case "CHOOSE_ENCOUNTER_OPTION":
+      return validateChooseEncounterOption(state, command);
+    case "CLAIM_OBJECTIVE":
+      return validateClaimObjective(state, command);
+    case "CHOOSE_FACTORY_CARD":
+      return validateChooseFactoryCard(state, command);
     default:
       return null;
   }
@@ -115,6 +138,12 @@ export function applyCommand(
       return applyBuild(state, command, context);
     case "ENLIST":
       return applyEnlist(state, command, context);
+    case "CHOOSE_ENCOUNTER_OPTION":
+      return applyChooseEncounterOption(state, command, context);
+    case "CLAIM_OBJECTIVE":
+      return applyClaimObjective(state, command, context);
+    case "CHOOSE_FACTORY_CARD":
+      return applyChooseFactoryCard(state, command, context);
     default: {
       const nextState: MatchState = {
         ...state,

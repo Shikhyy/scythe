@@ -101,10 +101,24 @@ export interface SubmitCombatSelectionCommand extends BaseCommand {
   readonly combatCardIds: readonly CardId[];
 }
 
-/** 11. Choose Encounter Option (1, 2, or 3) */
+/** 11. Choose Encounter Option (1, 2, or 3, or up to 2 options for Polania Meander) */
 export interface ChooseEncounterOptionCommand extends BaseCommand {
   readonly type: "CHOOSE_ENCOUNTER_OPTION";
-  readonly optionIndex: 1 | 2 | 3;
+  readonly optionIndex?: 1 | 2 | 3 | undefined;
+  readonly optionIndices?: readonly (1 | 2 | 3)[] | undefined;
+}
+
+/** Helper to extract chosen encounter option indices */
+export function getChosenEncounterOptionIndices(
+  cmd: ChooseEncounterOptionCommand,
+): readonly (1 | 2 | 3)[] {
+  if (cmd.optionIndices && cmd.optionIndices.length > 0) {
+    return cmd.optionIndices;
+  }
+  if (cmd.optionIndex !== undefined) {
+    return [cmd.optionIndex];
+  }
+  return [];
 }
 
 /** 12. Choose Factory Card */

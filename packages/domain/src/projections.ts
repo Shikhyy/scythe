@@ -16,6 +16,7 @@ export interface PublicSeatState {
   readonly combatCardCount: number;
   readonly objectiveCardCount: number;
   readonly unitIds: readonly UnitId[];
+  readonly factoryCardId?: CardId | null | undefined;
 }
 
 /** Publicly broadcast match state */
@@ -60,6 +61,7 @@ export function projectPublicSeat(seat: SeatState): PublicSeatState {
     combatCardCount: seat.combatCardIds.length,
     objectiveCardCount: seat.objectiveCardIds.length,
     unitIds: [...seat.unitIds],
+    factoryCardId: seat.factoryCardId ?? null,
   };
 }
 

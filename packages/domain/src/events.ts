@@ -60,7 +60,7 @@ export interface ResourcesChangedEvent extends BaseEvent {
   readonly type: "RESOURCES_CHANGED";
   readonly hexId: HexId;
   readonly resourceDeltas: ResourceBundle;
-  readonly reason: "PRODUCE" | "TRADE" | "SPENT" | "TRANSFERRED";
+  readonly reason: "PRODUCE" | "TRADE" | "SPENT" | "TRANSFERRED" | "ENCOUNTER";
 }
 
 /** 6. Tracks changed */
@@ -172,10 +172,17 @@ export interface EncounterResolvedEvent extends BaseEvent {
   readonly seatId: SeatId;
   readonly hexId: HexId;
   readonly encounterCardId: CardId;
-  readonly chosenOptionIndex: 1 | 2 | 3;
+  readonly chosenOptionIndices: readonly (1 | 2 | 3)[];
 }
 
-/** 15. Objective completed */
+/** 15. Factory card chosen */
+export interface FactoryCardChosenEvent extends BaseEvent {
+  readonly type: "FACTORY_CARD_CHOSEN";
+  readonly seatId: SeatId;
+  readonly factoryCardId: CardId;
+}
+
+/** 16. Objective completed */
 export interface ObjectiveCompletedEvent extends BaseEvent {
   readonly type: "OBJECTIVE_COMPLETED";
   readonly seatId: SeatId;
@@ -229,6 +236,7 @@ export type DomainEvent =
   | CombatResolvedEvent
   | EncounterTriggeredEvent
   | EncounterResolvedEvent
+  | FactoryCardChosenEvent
   | ObjectiveCompletedEvent
   | StarPlacedEvent
   | WorkerProducedEvent
@@ -254,6 +262,7 @@ const VALID_EVENT_TYPES = new Set([
   "COMBAT_RESOLVED",
   "ENCOUNTER_TRIGGERED",
   "ENCOUNTER_RESOLVED",
+  "FACTORY_CARD_CHOSEN",
   "OBJECTIVE_COMPLETED",
   "STAR_PLACED",
   "TURN_ENDED",
