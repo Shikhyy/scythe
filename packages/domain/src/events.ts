@@ -35,6 +35,7 @@ export interface UnitMovementRecord {
   readonly unitId: UnitId;
   readonly fromHexId: HexId;
   readonly toHexId: HexId;
+  readonly intermediateHexId?: HexId | undefined;
   readonly carriedWorkerIds: readonly UnitId[];
   readonly carriedResources: ResourceBundle;
 }

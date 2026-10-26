@@ -11,31 +11,27 @@ import {
   type UnitState,
   type UnitId,
   type ResourceBundle,
+  type PendingCombatState,
+  type PendingEncounterState,
   Faction,
-  StructureType,
+  MatchPhase,
   TerrainType,
   TopAction,
   UnitType,
   domainError,
+  makeCardId,
 } from "@scythe/domain";
 import type { CommandApplyResult, DeterministicContext } from "../engine.js";
-
-/** Riverwalk destination terrain legality per faction */
-const RIVERWALK_DESTINATIONS: Record<Faction, readonly TerrainType[]> = {
-  [Faction.Crimea]: [TerrainType.Farm, TerrainType.Tundra],
-  [Faction.Saxony]: [TerrainType.Forest, TerrainType.Mountain],
-  [Faction.Polania]: [TerrainType.Village, TerrainType.Mountain],
-  [Faction.Nordic]: [TerrainType.Forest, TerrainType.Mountain],
-  [Faction.Rusviet]: [TerrainType.Farm, TerrainType.Village],
-};
+import { canStepBetween } from "../movement/adjacency.js";
 
 /**
- * Validate Move Action:
- * - Either Gain $1 OR move up to 2 different units.
+ * Validate Move Action (RULE-TOP-001, RULE-TOP-002, RULE-MOVE-001–006):
+ * - Either Gain $1 OR move up to 2 different units (up to 3 if upgraded).
  * - Units must belong to actor.
- * - Cannot move the same unit multiple times.
- * - Adjacency (direct, tunnel, or friendly mine).
- * - River crossings (Riverwalk or Nordic Swim).
+ * - Cannot move the same unit multiple times in the same turn.
+ * - Adjacency, rivers, lakes, tunnels, and faction/mech abilities verified via canStepBetween.
+ * - Speed ability allows 2 steps (with intermediateWaypoint) for Character/Mechs.
+ * - Stop conditions: intermediate hex cannot contain enemy combat units, enemy workers, or encounter token.
  * - Only mechs can carry workers.
  */
 export function validateMoveUnits(state: MatchState, cmd: MoveUnitsCommand): DomainError | null {
@@ -107,70 +103,6 @@ export function validateMoveUnits(state: MatchState, cmd: MoveUnitsCommand): Dom
       return domainError("ILLEGAL_TERRITORY", `Source or target hex does not exist.`);
     }
 
-    // Opponent home base check
-    if (targetHex.terrain === TerrainType.HomeBase) {
-      const isOpponentHomeBase = state.seats.some(
-        (s) => s.seatId !== cmd.actorSeatId && s.faction === targetHex.homeBaseFaction,
-      );
-      if (isOpponentHomeBase) {
-        return domainError("ILLEGAL_MOVE", `Cannot move into opponent's home base.`);
-      }
-    }
-
-    // Lake check
-    if (targetHex.terrain === TerrainType.Lake) {
-      return domainError("ILLEGAL_MOVE", `Cannot move onto lakes without special lake ability.`);
-    }
-
-    // Check connectivity (adjacency, tunnel, or mine)
-    const isDirectNeighbour = sourceHex.neighbours.includes(m.targetHexId);
-    const isTunnelHop =
-      sourceHex.terrain === TerrainType.Tunnel && targetHex.terrain === TerrainType.Tunnel;
-
-    const hasFriendlyMineOnSource =
-      sourceHex.structure?.ownerId === seat.seatId &&
-      sourceHex.structure.type === StructureType.Mine;
-    const hasFriendlyMineOnTarget =
-      targetHex.structure?.ownerId === seat.seatId &&
-      targetHex.structure.type === StructureType.Mine;
-
-    const isMineTunnel =
-      (hasFriendlyMineOnSource && targetHex.terrain === TerrainType.Tunnel) ||
-      (hasFriendlyMineOnTarget && sourceHex.terrain === TerrainType.Tunnel) ||
-      (hasFriendlyMineOnSource && hasFriendlyMineOnTarget);
-
-    if (!isDirectNeighbour && !isTunnelHop && !isMineTunnel) {
-      return domainError(
-        "ILLEGAL_MOVE",
-        `Hex ${m.targetHexId} is not adjacent to or tunnel-connected from ${m.sourceHexId}.`,
-      );
-    }
-
-    // Check river crossing
-    if (isDirectNeighbour) {
-      // Check if source hex blockedEdges or targetHex blockedEdges marks a river between them
-      // (or if board marks isRiver)
-      const edgeIndex = sourceHex.neighbours.indexOf(m.targetHexId);
-      const isRiver = sourceHex.blockedEdges.includes(edgeIndex);
-
-      if (isRiver) {
-        // Must have Riverwalk or Nordic Swim
-        const isWorker = unit.unitType === UnitType.Worker;
-        const isNordicSwim = isWorker && seat.faction === Faction.Nordic;
-
-        const permittedRiverDestinations = RIVERWALK_DESTINATIONS[seat.faction];
-        const isLegalRiverwalk =
-          !isWorker && permittedRiverDestinations.includes(targetHex.terrain);
-
-        if (!isNordicSwim && !isLegalRiverwalk) {
-          return domainError(
-            "ILLEGAL_MOVE",
-            `Unit ${m.unitId} cannot cross river to ${targetHex.terrain} (${m.targetHexId}).`,
-          );
-        }
-      }
-    }
-
     // Worker carriage check: only Mechs can carry workers
     if (m.carriedWorkers.length > 0) {
       if (unit.unitType !== UnitType.Mech) {
@@ -194,6 +126,83 @@ export function validateMoveUnits(state: MatchState, cmd: MoveUnitsCommand): Dom
         }
       }
     }
+
+    // Path & Ability Validation
+    if (m.intermediateHexId) {
+      // 2-step move: requires Speed mech ability on Character or Mech
+      const hasSpeed = seat.unlockedMechAbilities?.some((a) => a.endsWith("-speed"));
+      const isMechOrChar = unit.unitType === UnitType.Character || unit.unitType === UnitType.Mech;
+
+      if (!hasSpeed || !isMechOrChar) {
+        return domainError(
+          "ILLEGAL_MOVE",
+          `Unit ${m.unitId} cannot move 2 hexes without the Speed mech ability.`,
+        );
+      }
+
+      const intermediateHex = state.hexes.get(m.intermediateHexId);
+      if (!intermediateHex) {
+        return domainError(
+          "ILLEGAL_TERRITORY",
+          `Intermediate hex ${m.intermediateHexId} does not exist.`,
+        );
+      }
+
+      // Step 1: source -> intermediate
+      const step1 = canStepBetween(sourceHex, intermediateHex, unit, seat, state);
+      if (!step1.allowed) {
+        return domainError("ILLEGAL_MOVE", step1.reason ?? "Illegal intermediate movement step.");
+      }
+
+      // Intermediate Hex Stop Conditions (SRC-001 pp. 11, 22, 24):
+      // 1. Enemy combat units present -> MUST STOP FOR COMBAT
+      const enemyCombatOnInter = Array.from(state.units.values()).some(
+        (u) =>
+          u.locationId === m.intermediateHexId &&
+          u.owner !== cmd.actorSeatId &&
+          (u.unitType === UnitType.Character || u.unitType === UnitType.Mech),
+      );
+      if (enemyCombatOnInter) {
+        return domainError(
+          "MOVEMENT_TERMINATION_REQUIRED",
+          "Cannot move past territory containing enemy combat units; movement must stop for combat.",
+        );
+      }
+
+      // 2. Enemy workers present -> MUST STOP ON FORCED RETREAT
+      const enemyWorkersOnInter = Array.from(state.units.values()).some(
+        (u) =>
+          u.locationId === m.intermediateHexId &&
+          u.owner !== cmd.actorSeatId &&
+          u.unitType === UnitType.Worker,
+      );
+      if (enemyWorkersOnInter) {
+        return domainError(
+          "MOVEMENT_TERMINATION_REQUIRED",
+          "Cannot move past territory containing enemy workers; movement terminates on forced worker retreat.",
+        );
+      }
+
+      // 3. Character and encounter token -> MUST STOP FOR ENCOUNTER
+      if (unit.unitType === UnitType.Character && intermediateHex.hasEncounterToken) {
+        return domainError(
+          "MOVEMENT_TERMINATION_REQUIRED",
+          "Character cannot move past territory with encounter token; movement terminates to trigger encounter.",
+        );
+      }
+
+      // Step 2: intermediate -> target
+      const step2 = canStepBetween(intermediateHex, targetHex, unit, seat, state);
+      if (!step2.allowed) {
+        return domainError("ILLEGAL_MOVE", step2.reason ?? "Illegal final movement step.");
+      }
+    } else {
+      // 1-step move: source -> target
+      const step = canStepBetween(sourceHex, targetHex, unit, seat, state);
+      if (!step.allowed) {
+        return domainError("ILLEGAL_MOVE", step.reason ?? "Illegal movement step.");
+      }
+    }
   }
 
   return null;
@@ -201,7 +210,11 @@ export function validateMoveUnits(state: MatchState, cmd: MoveUnitsCommand): Dom
 
 /**
  * Apply Move Action:
- * Handles Gain $1 OR executes movements, resource transfers, carried workers, and forced enemy worker retreats.
+ * - Executes movements (single step or 2-step with Speed)
+ * - Transports workers and resources
+ * - Enforces enemy worker retreats and popularity loss (Polania Camaraderie 0 penalty)
+ * - Automatically triggers combat if character/mech enters enemy combat unit territory
+ * - Automatically triggers encounters if character enters encounter territory
  */
 export function applyMoveUnits(
   state: MatchState,
@@ -324,12 +337,12 @@ export function applyMoveUnits(
       unitId: m.unitId,
       fromHexId: m.sourceHexId,
       toHexId: m.targetHexId,
+      intermediateHexId: m.intermediateHexId,
       carriedWorkerIds: [...m.carriedWorkers],
       carriedResources: carriedRes,
     });
 
-    // Check forced enemy worker retreat:
-    // If Character or Mech moves into territory with enemy workers (and NO enemy mechs/character)
+    // Forced enemy worker retreat check at destination (SRC-001 pp. 11, 23)
     if (unit.unitType === UnitType.Character || unit.unitType === UnitType.Mech) {
       const enemyCombatUnitsOnHex = Array.from(nextUnits.values()).filter(
         (u) =>
@@ -338,6 +351,7 @@ export function applyMoveUnits(
           (u.unitType === UnitType.Character || u.unitType === UnitType.Mech),
       );
 
+      // Only retreat workers immediately if no enemy mechs/character present on hex
       if (enemyCombatUnitsOnHex.length === 0) {
         const enemyWorkersOnHex = Array.from(nextUnits.values()).filter(
           (u) =>
@@ -348,7 +362,6 @@ export function applyMoveUnits(
 
         for (const ew of enemyWorkersOnHex) {
           const enemySeat = state.seats.find((s) => s.seatId === ew.owner)!;
-          // Find enemy home base hex
           const enemyHomeHex = Array.from(nextHexes.values()).find(
             (h) => h.terrain === TerrainType.HomeBase && h.homeBaseFaction === enemySeat.faction,
           );
@@ -373,7 +386,7 @@ export function applyMoveUnits(
     }
   }
 
-  // Record UNITS_MOVED event
+  // 3. Emit UNITS_MOVED event
   events.push({
     id: context.generateEventId(),
     timestamp: context.now,
@@ -397,6 +410,82 @@ export function applyMoveUnits(
     });
   }
 
+  // 4. Check Combat Initiation (SRC-001 p. 22)
+  let pendingCombat: PendingCombatState | null = null;
+  for (const hex of nextHexes.values()) {
+    const friendlyCombatUnits = Array.from(nextUnits.values()).filter(
+      (u) =>
+        u.locationId === hex.id &&
+        u.owner === seat.seatId &&
+        (u.unitType === UnitType.Character || u.unitType === UnitType.Mech),
+    );
+    const enemyCombatUnits = Array.from(nextUnits.values()).filter(
+      (u) =>
+        u.locationId === hex.id &&
+        u.owner !== seat.seatId &&
+        (u.unitType === UnitType.Character || u.unitType === UnitType.Mech),
+    );
+
+    if (friendlyCombatUnits.length > 0 && enemyCombatUnits.length > 0) {
+      const enemyOwnerId = enemyCombatUnits[0]!.owner;
+      pendingCombat = {
+        combatHexId: hex.id,
+        attackerSeatId: seat.seatId,
+        defenderSeatId: enemyOwnerId,
+      };
+
+      events.push({
+        id: context.generateEventId(),
+        timestamp: context.now,
+        type: "COMBAT_INITIATED",
+        combatHexId: hex.id,
+        attackerSeatId: seat.seatId,
+        defenderSeatId: enemyOwnerId,
+      });
+      break; // Resolve one combat at a time
+    }
+  }
+
+  // 5. Check Encounter Trigger (SRC-001 p. 24)
+  let pendingEncounter: PendingEncounterState | null = null;
+  const characterUnit = Array.from(nextUnits.values()).find(
+    (u) => u.owner === seat.seatId && u.unitType === UnitType.Character,
+  );
+
+  // Encounter only triggers if no combat is pending on this hex
+  if (characterUnit && pendingCombat == null) {
+    const charHex = nextHexes.get(characterUnit.locationId);
+    if (charHex && charHex.hasEncounterToken) {
+      nextHexes.set(charHex.id, {
+        ...charHex,
+        hasEncounterToken: false,
+      });
+
+      const encCardId = makeCardId(`enc-${context.generateEventId()}`);
+      pendingEncounter = {
+        hexId: charHex.id,
+        seatId: seat.seatId,
+        encounterCardId: encCardId,
+      };
+
+      events.push({
+        id: context.generateEventId(),
+        timestamp: context.now,
+        type: "ENCOUNTER_TRIGGERED",
+        seatId: seat.seatId,
+        hexId: charHex.id,
+        encounterCardId: encCardId,
+      });
+    }
+  }
+
+  let nextPhase = state.phase;
+  if (pendingCombat != null) {
+    nextPhase = MatchPhase.PendingCombat;
+  } else if (pendingEncounter != null) {
+    nextPhase = MatchPhase.PendingEncounter;
+  }
+
   const updatedSeats = state.seats.map((s) => {
     if (s.seatId === seat.seatId) {
       return {
@@ -411,9 +500,12 @@ export function applyMoveUnits(
   const nextState: MatchState = {
     ...state,
     stateVersion: state.stateVersion + 1,
+    phase: nextPhase,
     seats: updatedSeats,
     hexes: nextHexes,
     units: nextUnits,
+    pendingCombat,
+    pendingEncounter,
     activeTurn: {
       seatId: seat.seatId,
       turnNumber: state.turnNumber,

@@ -69,14 +69,14 @@
 
 ## 6. Movement, Terrain, & Control (`RULE-MOVE-*`)
 
-| Rule ID         | Statement                           | Source               | Preconditions & Timing       | State Transitions / Effects                                                                             | Visibility | Test ID         | Package | Status      |
-| --------------- | ----------------------------------- | -------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------- | ---------- | --------------- | ------- | ----------- |
-| `RULE-MOVE-001` | River Boundary Impassability        | `SRC-001` p. 11      | Moving across river          | Units cannot cross rivers unless authorized by Riverwalk, Nordic Swim, or special mech ability          | Public     | `TEST-MOVE-001` | `rules` | not-started |
-| `RULE-MOVE-002` | Lake Impassability                  | `SRC-001` p. 11      | Moving onto lake             | Lakes are impassable unless authorized by Polania Submerge or Nordic Seaworthy                          | Public     | `TEST-MOVE-002` | `rules` | not-started |
-| `RULE-MOVE-003` | Tunnel Network Adjacency            | `SRC-001` p. 11      | Unit on tunnel hex           | All territories with red tunnel icons are adjacent to each other for Move actions                       | Public     | `TEST-MOVE-003` | `rules` | not-started |
-| `RULE-MOVE-004` | Worker Retreat & Popularity Penalty | `SRC-001` pp. 11, 23 | Unit enters enemy worker hex | Enemy workers retreat to home base; attacker loses 1 popularity per retreating worker (Polania loses 0) | Public     | `TEST-MOVE-004` | `rules` | not-started |
-| `RULE-MOVE-005` | Territory Control Definitions       | `SRC-001` p. 4, 31   | State evaluation             | Controlled by player with character/mech/worker, OR player with structure (if no enemy units present)   | Public     | `TEST-MOVE-005` | `rules` | not-started |
-| `RULE-MOVE-006` | Resource Ownership & Spending       | `SRC-001` p. 31      | Payment validation           | Player may spend resources from any territory they currently control                                    | Public     | `TEST-MOVE-006` | `rules` | not-started |
+| Rule ID         | Statement                           | Source               | Preconditions & Timing       | State Transitions / Effects                                                                             | Visibility | Test ID         | Package | Status |
+| --------------- | ----------------------------------- | -------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------- | ---------- | --------------- | ------- | ------ |
+| `RULE-MOVE-001` | River Boundary Impassability        | `SRC-001` p. 11      | Moving across river          | Units cannot cross rivers unless authorized by Riverwalk, Nordic Swim, or special mech ability          | Public     | `TEST-MOVE-001` | `rules` | tested |
+| `RULE-MOVE-002` | Lake Impassability                  | `SRC-001` p. 11      | Moving onto lake             | Lakes are impassable unless authorized by Polania Submerge or Nordic Seaworthy                          | Public     | `TEST-MOVE-002` | `rules` | tested |
+| `RULE-MOVE-003` | Tunnel Network Adjacency            | `SRC-001` p. 11      | Unit on tunnel hex           | All territories with red tunnel icons are adjacent to each other for Move actions                       | Public     | `TEST-MOVE-003` | `rules` | tested |
+| `RULE-MOVE-004` | Worker Retreat & Popularity Penalty | `SRC-001` pp. 11, 23 | Unit enters enemy worker hex | Enemy workers retreat to home base; attacker loses 1 popularity per retreating worker (Polania loses 0) | Public     | `TEST-MOVE-004` | `rules` | tested |
+| `RULE-MOVE-005` | Territory Control Definitions       | `SRC-001` p. 4, 31   | State evaluation             | Controlled by player with character/mech/worker, OR player with structure (if no enemy units present)   | Public     | `TEST-MOVE-005` | `rules` | tested |
+| `RULE-MOVE-006` | Resource Ownership & Spending       | `SRC-001` p. 31      | Payment validation           | Player may spend resources from any territory they currently control                                    | Public     | `TEST-MOVE-006` | `rules` | tested |
 
 ---
 

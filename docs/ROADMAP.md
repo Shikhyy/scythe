@@ -113,13 +113,30 @@
 
 ---
 
-## Prompt 09 (next) — Movement, control, and mech abilities
+## Prompt 09 — Completed ✅
 
-- [ ] Complete full movement action graph validation with character/mech speed +1 upgrade
-- [ ] Implement faction-specific riverwalk constraints (Nordic, Rusviet, Crimea, Saxony, Polania)
-- [ ] Implement advanced movement abilities: Polania Submerge, Nordic Seaworthy, Crimea Wayfare, Saxony Underpass, Rusviet Township
-- [ ] Implement mine and tunnel routing invariants
-- [ ] Invariant tests for all movement combinations, retreat handling, and combat encounter flags
+- [x] Authoritative Faction and Mech Ability Registry (`packages/rules/src/abilities/registry.ts`): all 25 base abilities (5 core + 20 mech) with triggers, categories, sources, and rule IDs
+- [x] Pure movement graph adjacency engine (`packages/rules/src/movement/adjacency.ts`):
+  - River crossings: blocked by default; Nordic Swim allows worker river crossings; Riverwalk enforces faction-specific destination terrain (Nordic Forest/Mountain, Rusviet Farm/Village, Crimea Farm/Tundra, Saxony Forest/Mountain, Polania Village/Mountain)
+  - Lakes: blocked by default; Nordic Seaworthy and Polania Submerge allow character and mechs to move to/from adjacent lakes; Polania Submerge allows lake-to-lake traversal across the entire board
+  - Tunnels & Mines: reciprocal tunnel-to-tunnel movement and friendly Mine routing (Mine <-> Tunnel, Mine <-> Mine)
+  - Rusviet Township: enables direct movement between any controlled village and the Factory (or between controlled villages)
+  - Saxony Underpass: enables movement between any controlled mountain and any tunnel or friendly Mine
+  - Crimea Wayfare: enables movement from any territory to own base or inactive faction bases
+  - Active opponent base absolute impassability
+- [x] Multi-step movement with Speed mech ability (`packages/rules/src/movement/speed.test.ts`): character and mechs can move 2 hexes via intermediate waypoint; workers alone restricted to 1 hex; intermediate stop conditions strictly enforced (enemy combat units stop for combat, enemy workers stop for forced retreat, encounter tokens stop for encounters)
+- [x] Combat initiation & Encounter triggers (`packages/rules/src/movement/combat_encounter.test.ts`): entering enemy character/mech territory triggers `COMBAT_INITIATED` and transitions to `MatchPhase.PendingCombat`; entering encounter territory triggers `ENCOUNTER_TRIGGERED`, clears token from board, and transitions to `MatchPhase.PendingEncounter`
+- [x] 149 unit tests passing across all 23 test suites in the monorepo with 100% green exit code
+
+---
+
+## Prompt 10 (next) — Cards, encounters, objectives, Factory, and content registry
+
+- [ ] Complete typed card data schemas: Combat cards (values 2–5), Objective cards, Encounter cards, Factory cards
+- [ ] Implement encounter card draw, 3-option payment/benefit evaluation, and Polania Meander exception (pick 2 options)
+- [ ] Implement objective card evaluation and completion reveal mechanics
+- [ ] Implement Factory card claim upon first entry, 5th action section addition to player mat
+- [ ] Shuffled reproducible draw decks and discard handling with server-side secrecy
 
 ---
 

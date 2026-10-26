@@ -14,7 +14,8 @@ export type DomainErrorCode =
   | "PHASE_MISMATCH"
   | "SEAT_NOT_FOUND"
   | "ALREADY_USED_SECTION"
-  | "MAX_STARS_REACHED";
+  | "MAX_STARS_REACHED"
+  | "MOVEMENT_TERMINATION_REQUIRED";
 
 export interface DomainError {
   readonly code: DomainErrorCode;

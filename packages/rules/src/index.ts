@@ -12,3 +12,6 @@ export * from "./actions/upgrade.js";
 export * from "./actions/deploy.js";
 export * from "./actions/build.js";
 export * from "./actions/enlist.js";
+export * from "./abilities/types.js";
+export * from "./abilities/registry.js";
+export * from "./movement/adjacency.js";

@@ -101,6 +101,21 @@ export interface ActiveTurnState {
 }
 
 // ---------------------------------------------------------------------------
+// Pending Interrupts (Combat & Encounters)
+// ---------------------------------------------------------------------------
+export interface PendingCombatState {
+  readonly combatHexId: HexId;
+  readonly attackerSeatId: SeatId;
+  readonly defenderSeatId: SeatId;
+}
+
+export interface PendingEncounterState {
+  readonly hexId: HexId;
+  readonly seatId: SeatId;
+  readonly encounterCardId: CardId;
+}
+
+// ---------------------------------------------------------------------------
 // Match
 // ---------------------------------------------------------------------------
 export interface MatchState {
@@ -116,6 +131,9 @@ export interface MatchState {
   units: Map<UnitId, UnitState>;
   // Active turn tracking
   activeTurn?: ActiveTurnState | null | undefined;
+  // Pending interrupts
+  pendingCombat?: PendingCombatState | null | undefined;
+  pendingEncounter?: PendingEncounterState | null | undefined;
   // Decks
   combatDeck?: CardId[] | undefined;
   combatDiscard?: CardId[] | undefined;
