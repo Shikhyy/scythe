@@ -10,7 +10,7 @@
 | Phase | Prompts | Description | Status |
 |---|---|---|---|
 | 0 — Bootstrap | 00 | Repo setup, docs, skills audit, first ticket | ✅ complete |
-| 1 — Foundation | 01–04 | Toolchain, rights, spec, monorepo scaffold | 🔲 next |
+| 1 — Foundation | 01–04 | Toolchain, rights, spec, monorepo scaffold | 🟡 in-progress (01 ✅) |
 | 2 — Rules engine | 05–12 | Domain model, turn loop, all actions, combat, test harness | 🔲 |
 | 3 — Multiplayer | 13–14 | Colyseus server, accounts, persistence, reconnect | 🔲 |
 | 4 — Presentation | 15–20 | UI shell, 3D board, components, animations, cinematics | 🔲 |
@@ -21,14 +21,25 @@
 
 ---
 
-## Prompt 01 (next) — Exit gate
+## Prompt 01 — Completed ✅
 
-- [ ] Repository fully mapped with apps/packages/docs structure
-- [ ] All runtime versions documented
-- [ ] Skill matrix with verified available skills
-- [ ] Git workflow, `.gitignore`, `.env.example`
-- [ ] `AGENTS.md` commands verified (no invented commands)
-- [ ] Diagnostic commands run and results reported
+- [x] Repository fully mapped with apps/packages/docs structure
+- [x] All runtime versions documented (Node 24.10.0, pnpm 9.15.9, Docker 29.2.0, ffmpeg, pdftotext, Python 3.14)
+- [x] Skill matrix updated with verified available skills (including superpowers plugin)
+- [x] Git workflow, clean `.gitignore`, `.env.example`
+- [x] `AGENTS.md` commands verified against real repo (`pnpm run typecheck`, `lint`, `test`, `build`)
+- [x] Diagnostic commands run and results reported
+
+---
+
+## Prompt 02 (next) — Source-of-truth, rights, and asset provenance
+
+- [ ] Audit `docs/scythe rules.pdf` with `pdftotext` / `pypdf`
+- [ ] Complete `docs/SOURCE_REGISTER.md` with official rulebook extraction
+- [ ] Complete `docs/licensing/rights-register.md`
+- [ ] Set up `packages/content/` schema drafts
+- [ ] Set up `packages/asset-manifest/` schema drafts
+- [ ] Document exact blockers and placeholder strategy for all art/audio/copy assets
 
 ---
 
