@@ -1,0 +1,17 @@
+{
+  "name": "scythe-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Browser-first, turn-based, 3D multiplayer digital implementation of Scythe",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "typecheck": "pnpm -r --if-present run typecheck",
+    "lint": "pnpm -r --if-present run lint",
+    "test": "pnpm -r --if-present run test",
+    "test:match": "pnpm -r --if-present run test:match",
+    "build": "pnpm -r --if-present run build"
+  }
+}
