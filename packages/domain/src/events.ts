@@ -60,7 +60,7 @@ export interface ResourcesChangedEvent extends BaseEvent {
   readonly type: "RESOURCES_CHANGED";
   readonly hexId: HexId;
   readonly resourceDeltas: ResourceBundle;
-  readonly reason: "PRODUCE" | "TRADE" | "SPENT" | "TRANSFERRED" | "ENCOUNTER";
+  readonly reason: "PRODUCE" | "TRADE" | "SPENT" | "TRANSFERRED" | "ENCOUNTER" | "COMBAT";
 }
 
 /** 6. Tracks changed */
@@ -143,6 +143,24 @@ export interface CombatInitiatedEvent extends BaseEvent {
   readonly defenderSeatId: SeatId;
 }
 
+/** 12b. Combat selection submitted (private details omitted) */
+export interface CombatSelectionSubmittedEvent extends BaseEvent {
+  readonly type: "COMBAT_SELECTION_SUBMITTED";
+  readonly combatHexId: HexId;
+  readonly seatId: SeatId;
+}
+
+/** 12c. Pre-combat ability triggered */
+export interface PreCombatAbilityTriggeredEvent extends BaseEvent {
+  readonly type: "PRE_COMBAT_ABILITY_TRIGGERED";
+  readonly combatHexId: HexId;
+  readonly abilityId: string;
+  readonly actorSeatId: SeatId;
+  readonly targetSeatId: SeatId;
+  readonly powerCost?: number | undefined;
+  readonly powerLost?: number | undefined;
+}
+
 /** 13. Combat resolved */
 export interface CombatResolvedEvent extends BaseEvent {
   readonly type: "COMBAT_RESOLVED";
@@ -157,6 +175,10 @@ export interface CombatResolvedEvent extends BaseEvent {
   readonly loserSeatId: SeatId;
   readonly attackerPowerSpent: number;
   readonly defenderPowerSpent: number;
+  readonly tieOccurred?: boolean | undefined;
+  readonly loserDrewConsolationCard?: boolean | undefined;
+  readonly attackerPopularityLost?: number | undefined;
+  readonly starAwardedToWinner?: boolean | undefined;
 }
 
 /** 14. Encounter triggered & resolved */
@@ -233,6 +255,8 @@ export type DomainEvent =
   | UpgradeCompletedEvent
   | RecruitEnlistedEvent
   | CombatInitiatedEvent
+  | CombatSelectionSubmittedEvent
+  | PreCombatAbilityTriggeredEvent
   | CombatResolvedEvent
   | EncounterTriggeredEvent
   | EncounterResolvedEvent
@@ -259,6 +283,8 @@ const VALID_EVENT_TYPES = new Set([
   "UPGRADE_COMPLETED",
   "RECRUIT_ENLISTED",
   "COMBAT_INITIATED",
+  "COMBAT_SELECTION_SUBMITTED",
+  "PRE_COMBAT_ABILITY_TRIGGERED",
   "COMBAT_RESOLVED",
   "ENCOUNTER_TRIGGERED",
   "ENCOUNTER_RESOLVED",

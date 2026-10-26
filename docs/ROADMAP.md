@@ -11,7 +11,7 @@
 | ---------------- | ------- | ---------------------------------------------------------- | ----------------------------------------- |
 | 0 — Bootstrap    | 00      | Repo setup, docs, skills audit, first ticket               | ✅ complete                               |
 | 1 — Foundation   | 01–04   | Toolchain, rights, spec, monorepo scaffold                 | ✅ complete (01 ✅, 02 ✅, 03 ✅, 04 ✅)  |
-| 2 — Rules engine | 05–12   | Domain model, turn loop, all actions, combat, test harness | 🟡 in-progress (05–10 ✅, Prompt 11 next) |
+| 2 — Rules engine | 05–12   | Domain model, turn loop, all actions, combat, test harness | 🟡 in-progress (05–11 ✅, Prompt 12 next) |
 | 3 — Multiplayer  | 13–14   | Colyseus server, accounts, persistence, reconnect          | 🔲                                        |
 | 4 — Presentation | 15–20   | UI shell, 3D board, components, animations, cinematics     | 🔲                                        |
 | 5 — Audio + UX   | 21–22   | Audio system, onboarding tutorial                          | 🔲                                        |
@@ -142,18 +142,33 @@
 
 ---
 
-## Prompt 11 (next) — Combat, stars, end-game, and scoring
+## Prompt 11 — Completed ✅
 
-- [ ] Immutable server-side combat instance upon combat initiation
-- [ ] Secret power dial (0–7, bounded by current power) and combat card tucking (up to participating units, Rusviet People's Army +1)
-- [ ] Simultaneous reveal, attacker wins ties, power/card expenditure
-- [ ] Pre-combat abilities: Crimea Scout, Nordic Artillery, Saxony Disarm
-- [ ] Forced retreats to home base, loser consolation combat card if >= 1 power spent
-- [ ] Winner territory control, resource capture, worker retreat popularity penalty (Polania Camaraderie exception)
-- [ ] Combat stars (max 2, Saxony Dominate unlimited)
-- [ ] Game-end trigger on 6th star (halt immediately, Saxony exceptions)
-- [ ] End-game scoring: popularity tiers (Tier 1/2/3), Factory x3 multiplier, structure bonus tile coins, tie-breakers
-- [ ] Traceable, explainable score breakdown function
+- [x] Immutable server-side combat instance upon combat initiation with participant and unit snapshots
+- [x] Secret power dial (0–7, bounded by current power) and combat card allocation (up to eligible combat units, Rusviet People's Army worker bonus)
+- [x] Simultaneous reveal, attacker wins ties, power/card expenditure, secret projection masking
+- [x] Pre-combat abilities: Crimea Scout (steals 1 random combat card), Nordic Artillery (pay 1 power to deduct 2 power), Saxony Disarm (opponent loses 2 power on tunnel/mine)
+- [x] Forced retreats to home base (Nordic Seaworthy lake retreat), loser consolation card if >= 1 power dialed or revealed
+- [x] Winner territory control, resource retention, worker retreat popularity penalty (Polania Camaraderie exception)
+- [x] Combat stars placement (max 2 stars, Saxony Dominate unlimited combat stars)
+- [x] Game-end trigger on 6th star (halt immediately, MatchPhase.Ended, reject subsequent commands)
+- [x] End-game scoring: popularity tiers (Tier 1/2/3), Factory x3 multiplier, structure bonus tile coins, explainable score breakdown
+- [x] Complete tie-breaker resolution (1. units+structures, 2. power, 3. popularity, 4. resources, 5. territories, 6. stars, 7. shared victory)
+- [x] Abandoned/timeout combat resolution policy
+- [x] 219 unit tests passing across 39 test suites in the monorepo with 100% green exit code
+
+---
+
+## Prompt 12 (next) — Rules test harness and parity checklist
+
+- [ ] Table-driven rule tests keyed to `RULE-*` IDs and expected source references
+- [ ] Setup fixtures for every supported player count (1–5 players), all base factions, and player-mat variants
+- [ ] Invariant & property tests (resource conservation, unique stable IDs, action cost correctness, star limits, no spending uncontrolled resources, deterministic replay)
+- [ ] Scenario tests for common full turns (top action only, bottom action only, both actions, movement triggering encounter/combat/control change)
+- [ ] Full-game scripted tests reaching each star category and end-game scoring tier
+- [ ] Content manifest tests (component counts, duplicate IDs, missing assets, invalid effects)
+- [ ] Mutation/negative tests showing illegal client commands are rejected without changing state
+- [ ] Rules parity matrix showing pass/fail/blocked per rule, ability, content item, and scoring rule
 
 ---
 

@@ -23,6 +23,7 @@ import {
 } from "@scythe/domain";
 import type { CommandApplyResult, DeterministicContext } from "../engine.js";
 import { canStepBetween } from "../movement/adjacency.js";
+import { initializePendingCombat } from "./combat.js";
 
 /**
  * Validate Move Action (RULE-TOP-001, RULE-TOP-002, RULE-MOVE-001–006):
@@ -268,6 +269,7 @@ export function applyMoveUnits(
   const moves = cmd.moves ?? [];
   const nextUnits = new Map<UnitId, UnitState>(state.units);
   const nextHexes = new Map<HexId, HexState>(state.hexes);
+  const currentSeats = state.seats.map((s) => ({ ...s, combatCardIds: [...s.combatCardIds] }));
   const movementRecords: UnitMovementRecord[] = [];
   const retreatRecords: WorkerRetreatRecord[] = [];
   let totalPopularityLost = 0;
@@ -428,20 +430,23 @@ export function applyMoveUnits(
 
     if (friendlyCombatUnits.length > 0 && enemyCombatUnits.length > 0) {
       const enemyOwnerId = enemyCombatUnits[0]!.owner;
-      pendingCombat = {
-        combatHexId: hex.id,
-        attackerSeatId: seat.seatId,
-        defenderSeatId: enemyOwnerId,
-      };
-
-      events.push({
-        id: context.generateEventId(),
-        timestamp: context.now,
-        type: "COMBAT_INITIATED",
-        combatHexId: hex.id,
-        attackerSeatId: seat.seatId,
-        defenderSeatId: enemyOwnerId,
-      });
+      const combatInit = initializePendingCombat(
+        { ...state, seats: currentSeats, hexes: nextHexes, units: nextUnits },
+        hex.id,
+        seat.seatId,
+        enemyOwnerId,
+        context,
+      );
+      pendingCombat = combatInit.nextState.pendingCombat ?? null;
+      events.push(...combatInit.events);
+      for (let i = 0; i < currentSeats.length; i++) {
+        const updated = combatInit.nextState.seats.find(
+          (s) => s.seatId === currentSeats[i]!.seatId,
+        );
+        if (updated) {
+          currentSeats[i] = updated;
+        }
+      }
       break; // Resolve one combat at a time
     }
   }
@@ -486,7 +491,7 @@ export function applyMoveUnits(
     nextPhase = MatchPhase.PendingEncounter;
   }
 
-  const updatedSeats = state.seats.map((s) => {
+  const updatedSeats = currentSeats.map((s) => {
     if (s.seatId === seat.seatId) {
       return {
         ...s,

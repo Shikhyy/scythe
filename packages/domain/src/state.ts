@@ -37,6 +37,8 @@ export interface HexState {
   resources: ResourceBundle;
   /** Structure present (at most one per territory) */
   structure: { type: StructureType; ownerId: SeatId } | null;
+  /** Whether this territory contains a tunnel icon */
+  hasTunnel?: boolean;
   /** Faction whose home base this is, if terrain is HomeBase */
   homeBaseFaction?: Faction;
 }
@@ -108,10 +110,23 @@ export interface ActiveTurnState {
 // ---------------------------------------------------------------------------
 // Pending Interrupts (Combat & Encounters)
 // ---------------------------------------------------------------------------
+export interface CombatSubmission {
+  readonly seatId: SeatId;
+  readonly powerDial: number;
+  readonly combatCardIds: readonly CardId[];
+  readonly useArtillery?: boolean | undefined;
+  readonly lakeRetreatHexId?: HexId | undefined;
+}
+
 export interface PendingCombatState {
   readonly combatHexId: HexId;
   readonly attackerSeatId: SeatId;
   readonly defenderSeatId: SeatId;
+  readonly attackerUnitIds: readonly UnitId[];
+  readonly defenderUnitIds: readonly UnitId[];
+  attackerSubmission?: CombatSubmission | null | undefined;
+  defenderSubmission?: CombatSubmission | null | undefined;
+  preCombatResolved?: boolean | undefined;
 }
 
 export interface PendingEncounterState {

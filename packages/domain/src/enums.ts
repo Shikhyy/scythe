@@ -89,6 +89,10 @@ export enum StarCondition {
   SecondObjective = "SECOND_OBJECTIVE",
   CombatVictory1 = "COMBAT_VICTORY_1",
   CombatVictory2 = "COMBAT_VICTORY_2",
+  CombatVictory3 = "COMBAT_VICTORY_3",
+  CombatVictory4 = "COMBAT_VICTORY_4",
+  CombatVictory5 = "COMBAT_VICTORY_5",
+  CombatVictory6 = "COMBAT_VICTORY_6",
   MaxPopularity = "MAX_POPULARITY",
   MaxPower = "MAX_POWER",
 }

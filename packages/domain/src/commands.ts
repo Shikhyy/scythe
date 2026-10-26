@@ -98,7 +98,9 @@ export interface EnlistCommand extends BaseCommand {
 export interface SubmitCombatSelectionCommand extends BaseCommand {
   readonly type: "SUBMIT_COMBAT_SELECTION";
   readonly powerDial: number;
-  readonly combatCardIds: readonly CardId[];
+  readonly combatCardIds?: readonly CardId[] | undefined;
+  readonly useArtillery?: boolean | undefined;
+  readonly lakeRetreatHexId?: HexId | undefined;
 }
 
 /** 11. Choose Encounter Option (1, 2, or 3, or up to 2 options for Polania Meander) */

@@ -15,6 +15,7 @@ export * from "./actions/enlist.js";
 export * from "./actions/encounter.js";
 export * from "./actions/objective.js";
 export * from "./actions/factory.js";
+export * from "./actions/combat.js";
 export * from "./deck.js";
 export * from "./abilities/types.js";
 export * from "./abilities/registry.js";

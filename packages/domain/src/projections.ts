@@ -19,6 +19,17 @@ export interface PublicSeatState {
   readonly factoryCardId?: CardId | null | undefined;
 }
 
+/** Public projection of pending combat without secret submissions */
+export interface PublicPendingCombatState {
+  readonly combatHexId: HexId;
+  readonly attackerSeatId: SeatId;
+  readonly defenderSeatId: SeatId;
+  readonly attackerUnitIds: readonly UnitId[];
+  readonly defenderUnitIds: readonly UnitId[];
+  readonly attackerHasSubmitted: boolean;
+  readonly defenderHasSubmitted: boolean;
+}
+
 /** Publicly broadcast match state */
 export interface PublicMatchState {
   readonly matchId: MatchId;
@@ -31,6 +42,7 @@ export interface PublicMatchState {
   readonly seats: readonly PublicSeatState[];
   readonly hexes: ReadonlyMap<HexId, HexState>;
   readonly units: ReadonlyMap<UnitId, UnitState>;
+  readonly pendingCombat?: PublicPendingCombatState | null | undefined;
 }
 
 /** Private hand data for a specific viewer seat */
@@ -78,6 +90,17 @@ export function projectPublicState(state: MatchState): PublicMatchState {
     seats: state.seats.map(projectPublicSeat),
     hexes: state.hexes,
     units: state.units,
+    pendingCombat: state.pendingCombat
+      ? {
+          combatHexId: state.pendingCombat.combatHexId,
+          attackerSeatId: state.pendingCombat.attackerSeatId,
+          defenderSeatId: state.pendingCombat.defenderSeatId,
+          attackerUnitIds: [...state.pendingCombat.attackerUnitIds],
+          defenderUnitIds: [...state.pendingCombat.defenderUnitIds],
+          attackerHasSubmitted: state.pendingCombat.attackerSubmission != null,
+          defenderHasSubmitted: state.pendingCombat.defenderSubmission != null,
+        }
+      : null,
   };
 }
 

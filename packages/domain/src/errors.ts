@@ -23,7 +23,14 @@ export type DomainErrorCode =
   | "OBJECTIVE_ALREADY_CLAIMED"
   | "FACTORY_CARD_NOT_FOUND"
   | "FACTORY_CARD_ALREADY_CLAIMED"
-  | "NOT_ON_FACTORY";
+  | "NOT_ON_FACTORY"
+  | "NOT_IN_COMBAT"
+  | "NOT_A_COMBAT_PARTICIPANT"
+  | "COMBAT_ALREADY_SUBMITTED"
+  | "INVALID_POWER_DIAL"
+  | "EXCESS_COMBAT_CARDS"
+  | "COMBAT_CARD_NOT_IN_HAND"
+  | "GAME_ALREADY_ENDED";
 
 export interface DomainError {
   readonly code: DomainErrorCode;

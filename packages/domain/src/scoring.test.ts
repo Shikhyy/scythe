@@ -3,6 +3,7 @@ import {
   calculatePopularityTier,
   calculateTerritoryControl,
   calculateFinalScore,
+  resolveMatchRankings,
 } from "./scoring.js";
 import {
   Faction,
@@ -327,5 +328,233 @@ describe("calculateFinalScore", () => {
     expect(breakdown.structureBonusCoins).toBe(4);
     expect(breakdown.coinsHeld).toBe(5);
     expect(breakdown.totalCoins).toBe(34);
+  });
+
+  it("Factory territory counts as 3 territories for scoring (RULE-SCORE-003)", () => {
+    const seat = createMockSeat("seat-F", Faction.Polania, 0, 5, 8); // Pop 8 = Tier 2 ($3/territory)
+    const factoryHex = makeHexId("hex-factory");
+    const hexes = new Map<any, HexState>([
+      [
+        factoryHex,
+        {
+          id: factoryHex,
+          coord: { q: 0, r: 0 },
+          terrain: TerrainType.Factory,
+          neighbours: [],
+          blockedEdges: [],
+          hasEncounterToken: false,
+          resources: {},
+          structure: null,
+        },
+      ],
+    ]);
+    const units = new Map<any, UnitState>([
+      [
+        makeUnitId("u-fact"),
+        {
+          id: makeUnitId("u-fact"),
+          owner: seat.seatId,
+          unitType: UnitType.Character,
+          locationId: factoryHex,
+        },
+      ],
+    ]);
+
+    const state: MatchState = {
+      matchId: makeMatchId("m-fact"),
+      rulesVersion: "1.0.0",
+      contentVersion: "1.0.0",
+      stateVersion: 1,
+      turnNumber: 5,
+      phase: MatchPhase.Ended,
+      activeSeatId: seat.seatId,
+      seats: [seat],
+      hexes,
+      units,
+    };
+
+    const breakdown = calculateFinalScore(state, seat.seatId);
+    expect(breakdown.controlledTerritoryCount).toBe(3);
+    expect(breakdown.territoryCoins).toBe(9); // 3 territories * $3 (Tier 2)
+  });
+});
+
+describe("resolveMatchRankings (RULE-SCORE-005)", () => {
+  it("ranks players by totalCoins when not tied", () => {
+    const seat1 = createMockSeat("s1", Faction.Nordic, 20, 5, 5); // Tier 1: 0 stars, 0 terr, 20 coins
+    const seat2 = createMockSeat("s2", Faction.Rusviet, 30, 5, 5); // Tier 1: 30 coins
+
+    const state: MatchState = {
+      matchId: makeMatchId("m-rank"),
+      rulesVersion: "1.0.0",
+      contentVersion: "1.0.0",
+      stateVersion: 1,
+      turnNumber: 10,
+      phase: MatchPhase.Ended,
+      activeSeatId: seat1.seatId,
+      seats: [seat1, seat2],
+      hexes: new Map(),
+      units: new Map(),
+    };
+
+    const results = resolveMatchRankings(state);
+    expect(results.winningSeatIds).toEqual([seat2.seatId]);
+    expect(results.rankings[0]?.seatId).toBe(seat2.seatId);
+    expect(results.rankings[0]?.rank).toBe(1);
+    expect(results.rankings[0]?.isWinner).toBe(true);
+    expect(results.rankings[1]?.seatId).toBe(seat1.seatId);
+    expect(results.rankings[1]?.rank).toBe(2);
+    expect(results.rankings[1]?.isWinner).toBe(false);
+  });
+
+  it("breaks ties with tie-breaker 1: workers, mechs, and structures", () => {
+    const seat1 = createMockSeat("s1", Faction.Nordic, 20, 5, 5);
+    const seat2 = createMockSeat("s2", Faction.Rusviet, 20, 5, 5);
+
+    const hex1 = makeHexId("h1");
+    const hex2 = makeHexId("h2");
+    const hexes = new Map<any, HexState>([
+      [
+        hex1,
+        {
+          id: hex1,
+          coord: { q: 0, r: 0 },
+          terrain: TerrainType.HomeBase,
+          neighbours: [],
+          blockedEdges: [],
+          hasEncounterToken: false,
+          resources: {},
+          structure: null,
+        },
+      ],
+      [
+        hex2,
+        {
+          id: hex2,
+          coord: { q: 1, r: 0 },
+          terrain: TerrainType.HomeBase,
+          neighbours: [],
+          blockedEdges: [],
+          hasEncounterToken: false,
+          resources: {},
+          structure: null,
+        },
+      ],
+    ]);
+
+    // seat1 has 3 units, seat2 has 2 units
+    const units = new Map<any, UnitState>([
+      [
+        makeUnitId("u1"),
+        { id: makeUnitId("u1"), owner: seat1.seatId, unitType: UnitType.Worker, locationId: hex1 },
+      ],
+      [
+        makeUnitId("u2"),
+        { id: makeUnitId("u2"), owner: seat1.seatId, unitType: UnitType.Mech, locationId: hex1 },
+      ],
+      [
+        makeUnitId("u3"),
+        {
+          id: makeUnitId("u3"),
+          owner: seat1.seatId,
+          unitType: UnitType.Character,
+          locationId: hex1,
+        },
+      ],
+      [
+        makeUnitId("u4"),
+        { id: makeUnitId("u4"), owner: seat2.seatId, unitType: UnitType.Worker, locationId: hex2 },
+      ],
+      [
+        makeUnitId("u5"),
+        { id: makeUnitId("u5"), owner: seat2.seatId, unitType: UnitType.Mech, locationId: hex2 },
+      ],
+    ]);
+
+    const state: MatchState = {
+      matchId: makeMatchId("m-tie1"),
+      rulesVersion: "1.0.0",
+      contentVersion: "1.0.0",
+      stateVersion: 1,
+      turnNumber: 10,
+      phase: MatchPhase.Ended,
+      activeSeatId: seat1.seatId,
+      seats: [seat1, seat2],
+      hexes,
+      units,
+    };
+
+    const results = resolveMatchRankings(state);
+    expect(results.winningSeatIds).toEqual([seat1.seatId]);
+    expect(results.rankings[0]?.seatId).toBe(seat1.seatId);
+    expect(results.rankings[0]?.tieBreakers.totalUnitsAndStructures).toBe(3);
+    expect(results.rankings[1]?.tieBreakers.totalUnitsAndStructures).toBe(2);
+  });
+
+  it("breaks ties with tie-breaker 2: power", () => {
+    const seat1 = createMockSeat("s1", Faction.Nordic, 20, 8, 5); // 8 power
+    const seat2 = createMockSeat("s2", Faction.Rusviet, 20, 4, 5); // 4 power
+
+    const state: MatchState = {
+      matchId: makeMatchId("m-tie2"),
+      rulesVersion: "1.0.0",
+      contentVersion: "1.0.0",
+      stateVersion: 1,
+      turnNumber: 10,
+      phase: MatchPhase.Ended,
+      activeSeatId: seat1.seatId,
+      seats: [seat1, seat2],
+      hexes: new Map(),
+      units: new Map(),
+    };
+
+    const results = resolveMatchRankings(state);
+    expect(results.winningSeatIds).toEqual([seat1.seatId]);
+  });
+
+  it("breaks ties with tie-breaker 3: popularity", () => {
+    const seat1 = createMockSeat("s1", Faction.Nordic, 20, 5, 10); // 10 pop
+    const seat2 = createMockSeat("s2", Faction.Rusviet, 20, 5, 8); // 8 pop
+
+    const state: MatchState = {
+      matchId: makeMatchId("m-tie3"),
+      rulesVersion: "1.0.0",
+      contentVersion: "1.0.0",
+      stateVersion: 1,
+      turnNumber: 10,
+      phase: MatchPhase.Ended,
+      activeSeatId: seat1.seatId,
+      seats: [seat1, seat2],
+      hexes: new Map(),
+      units: new Map(),
+    };
+
+    const results = resolveMatchRankings(state);
+    expect(results.winningSeatIds).toEqual([seat1.seatId]);
+  });
+
+  it("detects shared victory when all 6 tie-breakers are identical", () => {
+    const seat1 = createMockSeat("s1", Faction.Nordic, 20, 5, 5);
+    const seat2 = createMockSeat("s2", Faction.Rusviet, 20, 5, 5);
+
+    const state: MatchState = {
+      matchId: makeMatchId("m-tie-all"),
+      rulesVersion: "1.0.0",
+      contentVersion: "1.0.0",
+      stateVersion: 1,
+      turnNumber: 10,
+      phase: MatchPhase.Ended,
+      activeSeatId: seat1.seatId,
+      seats: [seat1, seat2],
+      hexes: new Map(),
+      units: new Map(),
+    };
+
+    const results = resolveMatchRankings(state);
+    expect(results.winningSeatIds).toHaveLength(2);
+    expect(results.rankings[0]?.rank).toBe(1);
+    expect(results.rankings[1]?.rank).toBe(1);
+    expect(results.rankings[0]?.isWinner).toBe(true);
+    expect(results.rankings[1]?.isWinner).toBe(true);
   });
 });
