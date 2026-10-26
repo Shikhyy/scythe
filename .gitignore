@@ -1,5 +1,10 @@
 ## OS
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 
 ## Node
@@ -37,10 +42,18 @@ test-results/
 *.swp
 *.swo
 
-## Temp
+## Temp & scratch
 .cache/
 tmp/
 scratch/
+brain/
+
+## Dev docs, tickets, and copyrighted reference materials
+docs/tickets/
+dev-docs/
+reference/
+*.pdf
 
 ## pnpm
 .pnpm-store/
+
