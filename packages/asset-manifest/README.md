@@ -29,17 +29,17 @@ export type AssetCategory = "model" | "texture" | "audio" | "font" | "icon";
 export type AssetLoadPriority = "critical" | "high" | "normal" | "lazy";
 
 export interface BaseAssetMetadata {
-  id: string;                         // Stable identifier, e.g. "ASSET-MECH-RUSVIET-01"
+  id: string; // Stable identifier, e.g. "ASSET-MECH-RUSVIET-01"
   category: AssetCategory;
   name: string;
-  sourcePath: string;                 // Path relative to public root
+  sourcePath: string; // Path relative to public root
   rightsStatus: RightsStatus;
   creator: string;
   sourceUrl?: string;
   license?: string;
   checksum?: string;
   loadPriority: AssetLoadPriority;
-  fallbackId?: string;                // Guaranteed fallback ID (procedural primitive)
+  fallbackId?: string; // Guaranteed fallback ID (procedural primitive)
   tags: string[];
 }
 
@@ -47,10 +47,10 @@ export interface ModelAssetMetadata extends BaseAssetMetadata {
   category: "model";
   format: "glb" | "gltf";
   dimensions: [number, number, number]; // [width, height, depth] in meters
-  pivot: [number, number, number];      // [x, y, z] origin offset
-  lodLevels?: string[];                 // Array of secondary lower-detail paths
-  animationClips?: string[];            // Names of exported animation tracks
-  materialSlots: string[];              // Expected PBR material slots
+  pivot: [number, number, number]; // [x, y, z] origin offset
+  lodLevels?: string[]; // Array of secondary lower-detail paths
+  animationClips?: string[]; // Names of exported animation tracks
+  materialSlots: string[]; // Expected PBR material slots
 }
 
 export interface AudioAssetMetadata extends BaseAssetMetadata {
@@ -60,7 +60,7 @@ export interface AudioAssetMetadata extends BaseAssetMetadata {
   durationSeconds: number;
   loop: boolean;
   sampleRate: number;
-  triggerEventId?: string;             // Domain event that triggers this sound
+  triggerEventId?: string; // Domain event that triggers this sound
 }
 ```
 

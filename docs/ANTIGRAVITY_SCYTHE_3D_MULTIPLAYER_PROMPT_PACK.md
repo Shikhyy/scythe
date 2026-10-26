@@ -1,6 +1,6 @@
 # Antigravity Build Prompt Pack: Full-Fidelity 3D Multiplayer Strategy Board Game
 
-> **Purpose:** This is an executable prompt sequence for building a production-minded, browser-first, turn-based, 3D multiplayer adaptation of *Scythe*. It is designed for Google Antigravity IDE/App/CLI and the skills inventory supplied by the project owner.
+> **Purpose:** This is an executable prompt sequence for building a production-minded, browser-first, turn-based, 3D multiplayer adaptation of _Scythe_. It is designed for Google Antigravity IDE/App/CLI and the skills inventory supplied by the project owner.
 >
 > **Use:** Paste **Prompt 00 first**, in the project workspace in Antigravity. Then execute the prompts in numerical order, one at a time, checking the exit gate before continuing. Do not paste the entire file into one request and ask the agent to generate everything in one pass; that encourages incomplete rules, fake assets, placeholder multiplayer, and unverified claims.
 >
@@ -1255,33 +1255,33 @@ For each module, document dependency, rights requirement, gameplay/content IDs, 
 
 Use this as an initial inventory based on the official base-game product listing. Validate all quantities and scope against the exact edition and authorized rulebook/files selected for the project before marking any row verified. Quantities are product inventory, not a claim that every token must be separately rendered at maximum 3D detail.
 
-| Component category | Official listing quantity | Implementation requirement |
-|---|---:|---|
-| Main game board | 1 | Fixed topology dataset plus 3D board scene; separate rules geometry from art. |
-| Player mats | 5 | Data-driven mat layout, action rows, costs/rewards, upgrade/recruit spaces; licensed exact visuals only with rights. |
-| Faction mats | 5 | Starting components, faction identity, abilities, available/deployed piece state. |
-| Wooden resource tokens | 80 | Four resource types; exact distribution verified from authorized reference. |
-| Coin tokens | 80 | Physical display token/stack plus canonical numeric balance. |
-| Multiplier tokens | 12 | Token model/icon and valid use as defined by reference. |
-| Encounter tokens | 12 | Map position, availability, removal/trigger state and visual representation. |
-| Structure-bonus tiles | 6 | One active scenario tile plus tile catalog/data as rules require. |
-| Combat cards | 42 | Validated deck, card IDs/effects, private hands, discard/draw, approved art/content. |
-| Objective cards | 23 | Secret assignment, completion predicates, owner-only view, reveal and star timing. |
-| Encounter cards | 28 | Choice options/cost/effects, hidden deck order, approved content. |
-| Factory cards | 12 | Selection pool, extra action section, correct visibility and timing. |
-| Power dials | 2 | Simultaneous combat choice UI and valid power limits; not necessarily 3D. |
-| Riverwalk cards | 5 | Setup/reference UI where applicable; verify exact purpose from selected rule edition. |
-| Quick-start cards | 5 | Optional in-app quick reference/onboarding content with rights status. |
-| Action tokens | 5 | One per player, controls current section selection and rendered mat marker. |
-| Popularity tokens | 5 | Track marker and numeric state per player. |
-| Power tokens | 5 | Track marker and numeric state per player. |
-| Star tokens | 36 | Achievement category, owner and placement tracking; game-end trigger at correct point. |
-| Structure tokens | 20 | Four structure types per faction/owner as authorized content determines. |
-| Recruit tokens | 20 | Recruit identities, slot placement, immediate rewards and ongoing bonuses. |
-| Mech miniatures | 20 | Four per base faction; distinct IDs/ability mapping, movement/transport/combat. |
-| Character miniatures | 5 | One per base faction; movement, encounters, combat and Factory selection. |
-| Workers | 48 | Worker ownership/location, production and retreat; instanced rendering where possible. |
-| Technology cubes | 36 | Upgrade state on player mat and reduced cost/uncovered benefit computation. |
+| Component category     | Official listing quantity | Implementation requirement                                                                                           |
+| ---------------------- | ------------------------: | -------------------------------------------------------------------------------------------------------------------- |
+| Main game board        |                         1 | Fixed topology dataset plus 3D board scene; separate rules geometry from art.                                        |
+| Player mats            |                         5 | Data-driven mat layout, action rows, costs/rewards, upgrade/recruit spaces; licensed exact visuals only with rights. |
+| Faction mats           |                         5 | Starting components, faction identity, abilities, available/deployed piece state.                                    |
+| Wooden resource tokens |                        80 | Four resource types; exact distribution verified from authorized reference.                                          |
+| Coin tokens            |                        80 | Physical display token/stack plus canonical numeric balance.                                                         |
+| Multiplier tokens      |                        12 | Token model/icon and valid use as defined by reference.                                                              |
+| Encounter tokens       |                        12 | Map position, availability, removal/trigger state and visual representation.                                         |
+| Structure-bonus tiles  |                         6 | One active scenario tile plus tile catalog/data as rules require.                                                    |
+| Combat cards           |                        42 | Validated deck, card IDs/effects, private hands, discard/draw, approved art/content.                                 |
+| Objective cards        |                        23 | Secret assignment, completion predicates, owner-only view, reveal and star timing.                                   |
+| Encounter cards        |                        28 | Choice options/cost/effects, hidden deck order, approved content.                                                    |
+| Factory cards          |                        12 | Selection pool, extra action section, correct visibility and timing.                                                 |
+| Power dials            |                         2 | Simultaneous combat choice UI and valid power limits; not necessarily 3D.                                            |
+| Riverwalk cards        |                         5 | Setup/reference UI where applicable; verify exact purpose from selected rule edition.                                |
+| Quick-start cards      |                         5 | Optional in-app quick reference/onboarding content with rights status.                                               |
+| Action tokens          |                         5 | One per player, controls current section selection and rendered mat marker.                                          |
+| Popularity tokens      |                         5 | Track marker and numeric state per player.                                                                           |
+| Power tokens           |                         5 | Track marker and numeric state per player.                                                                           |
+| Star tokens            |                        36 | Achievement category, owner and placement tracking; game-end trigger at correct point.                               |
+| Structure tokens       |                        20 | Four structure types per faction/owner as authorized content determines.                                             |
+| Recruit tokens         |                        20 | Recruit identities, slot placement, immediate rewards and ongoing bonuses.                                           |
+| Mech miniatures        |                        20 | Four per base faction; distinct IDs/ability mapping, movement/transport/combat.                                      |
+| Character miniatures   |                         5 | One per base faction; movement, encounters, combat and Factory selection.                                            |
+| Workers                |                        48 | Worker ownership/location, production and retreat; instanced rendering where possible.                               |
+| Technology cubes       |                        36 | Upgrade state on player mat and reduced cost/uncovered benefit computation.                                          |
 
 ## Additional logical objects that must be modelled even if not separately listed as physical inventory
 
@@ -1340,30 +1340,30 @@ export interface ComponentManifestEntry {
 
 This checklist is the acceptance-test version of the cinematic specification. It is not permission to use the original commercial game's artwork or soundtrack.
 
-| ID | Sequence | Trigger | Required behavior | Skip/reduced-motion equivalent |
-|---|---|---|---|---|
-| CIN-BOOT | App boot | App launch | Real loading state, world/menu resolve, retry path | Static menu and progress/error status |
-| CIN-MENU-IDLE | Menu idle world | Menu visible | Subtle environment, no input obstruction | Static background |
-| CIN-ROOM | Lobby transition | Create/join room | Seats, invite/ready status reveal | Immediate stable lobby UI |
-| CIN-FACTION | Faction intro | Hover/select faction | Model/seat focus and verified ability summary | Static preview/info panel |
-| CIN-OPEN | Match opening | Match successfully starts | Establishing view then playable board | One short fade to board |
-| CIN-TURN | Turn start | Server says turn changes | Active player/action indicator | Immediate marker update |
-| CIN-MOVE | Unit movement | Confirmed unit-move event | Route, move, settle, ownership cue | Snap to authoritative position |
-| CIN-PRODUCE | Production | Confirmed production event | Resource/worker generation | Count update only |
-| CIN-TRADE | Trade | Confirmed trade event | Resource/popularity feedback | Static result banner |
-| CIN-BOLSTER | Bolster | Confirmed bolster event | Power/card feedback | Static result update |
-| CIN-UPGRADE | Upgrade | Confirmed cube movement | Cube movement and new costs/rewards | Mat state jumps to final state |
-| CIN-DEPLOY | Mech deploy | Confirmed deployment | Mat-to-board visual, unlock ability | Piece appears in final position |
-| CIN-BUILD | Build | Confirmed structure placement | Placement/construction | Structure appears immediately |
-| CIN-ENLIST | Enlist | Confirmed enlistment | Recruit placement + reward/bonus distinction | Static mat update |
-| CIN-ENCOUNTER | Encounter | Character encounter triggered | Open options, costs, chosen result | Immediate choice panel |
-| CIN-FACTORY | Factory claim | Confirmed Factory selection | Reveal card and extra action affordance | Card/action section shown statically |
-| CIN-COMBAT | Combat | Valid combat instance | Hidden simultaneous choice, authorized reveal, result/retreat | Static choice/result panels |
-| CIN-STAR | Star placed | Confirmed achievement | Star placement, category explanation | Static marker/label update |
-| CIN-MILESTONE | Major milestone | Approved milestone event | Brief optional highlight | Non-animated notification |
-| CIN-END | Game end | Server end event | Final board and verified score breakdown | Direct results screen |
-| CIN-REMATCH | Rematch/menu | Player chooses next step | Clear transition with state confirmation | Direct navigation |
-| CIN-TUTORIAL | Guided lesson | Tutorial step starts | Highlight relevant UI/object, one learning goal | Static tooltip/step card |
+| ID            | Sequence         | Trigger                       | Required behavior                                             | Skip/reduced-motion equivalent        |
+| ------------- | ---------------- | ----------------------------- | ------------------------------------------------------------- | ------------------------------------- |
+| CIN-BOOT      | App boot         | App launch                    | Real loading state, world/menu resolve, retry path            | Static menu and progress/error status |
+| CIN-MENU-IDLE | Menu idle world  | Menu visible                  | Subtle environment, no input obstruction                      | Static background                     |
+| CIN-ROOM      | Lobby transition | Create/join room              | Seats, invite/ready status reveal                             | Immediate stable lobby UI             |
+| CIN-FACTION   | Faction intro    | Hover/select faction          | Model/seat focus and verified ability summary                 | Static preview/info panel             |
+| CIN-OPEN      | Match opening    | Match successfully starts     | Establishing view then playable board                         | One short fade to board               |
+| CIN-TURN      | Turn start       | Server says turn changes      | Active player/action indicator                                | Immediate marker update               |
+| CIN-MOVE      | Unit movement    | Confirmed unit-move event     | Route, move, settle, ownership cue                            | Snap to authoritative position        |
+| CIN-PRODUCE   | Production       | Confirmed production event    | Resource/worker generation                                    | Count update only                     |
+| CIN-TRADE     | Trade            | Confirmed trade event         | Resource/popularity feedback                                  | Static result banner                  |
+| CIN-BOLSTER   | Bolster          | Confirmed bolster event       | Power/card feedback                                           | Static result update                  |
+| CIN-UPGRADE   | Upgrade          | Confirmed cube movement       | Cube movement and new costs/rewards                           | Mat state jumps to final state        |
+| CIN-DEPLOY    | Mech deploy      | Confirmed deployment          | Mat-to-board visual, unlock ability                           | Piece appears in final position       |
+| CIN-BUILD     | Build            | Confirmed structure placement | Placement/construction                                        | Structure appears immediately         |
+| CIN-ENLIST    | Enlist           | Confirmed enlistment          | Recruit placement + reward/bonus distinction                  | Static mat update                     |
+| CIN-ENCOUNTER | Encounter        | Character encounter triggered | Open options, costs, chosen result                            | Immediate choice panel                |
+| CIN-FACTORY   | Factory claim    | Confirmed Factory selection   | Reveal card and extra action affordance                       | Card/action section shown statically  |
+| CIN-COMBAT    | Combat           | Valid combat instance         | Hidden simultaneous choice, authorized reveal, result/retreat | Static choice/result panels           |
+| CIN-STAR      | Star placed      | Confirmed achievement         | Star placement, category explanation                          | Static marker/label update            |
+| CIN-MILESTONE | Major milestone  | Approved milestone event      | Brief optional highlight                                      | Non-animated notification             |
+| CIN-END       | Game end         | Server end event              | Final board and verified score breakdown                      | Direct results screen                 |
+| CIN-REMATCH   | Rematch/menu     | Player chooses next step      | Clear transition with state confirmation                      | Direct navigation                     |
+| CIN-TUTORIAL  | Guided lesson    | Tutorial step starts          | Highlight relevant UI/object, one learning goal               | Static tooltip/step card              |
 
 ## Cinematic QA checklist
 

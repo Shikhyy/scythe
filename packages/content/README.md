@@ -47,25 +47,25 @@ packages/content/
 
 ```typescript
 export interface FactionConfig {
-  id: string;                         // e.g. "FACTION_RUSVIET"
-  name: string;                       // e.g. "Rusviet Union"
-  primaryColorHex: string;            // "#8B0000"
-  startingHomeHexId: string;          // Axial coordinate ID, e.g. "HEX_12_04"
-  startingPower: number;              // Verified from SRC-001 p. 7
-  startingCombatCardsCount: number;   // Verified from SRC-001 p. 7
+  id: string; // e.g. "FACTION_RUSVIET"
+  name: string; // e.g. "Rusviet Union"
+  primaryColorHex: string; // "#8B0000"
+  startingHomeHexId: string; // Axial coordinate ID, e.g. "HEX_12_04"
+  startingPower: number; // Verified from SRC-001 p. 7
+  startingCombatCardsCount: number; // Verified from SRC-001 p. 7
   specialAbility: {
-    id: string;                       // e.g. "ABILITY_RELENTLESS"
+    id: string; // e.g. "ABILITY_RELENTLESS"
     name: string;
     description: string;
-    ruleId: string;                   // Links to RULE-071
+    ruleId: string; // Links to RULE-071
   };
   mechAbilities: Array<{
-    id: string;                       // e.g. "MECH_ABILITY_SPEED"
+    id: string; // e.g. "MECH_ABILITY_SPEED"
     name: string;
     description: string;
     ruleId: string;
   }>;
-  sourceCitation: string;             // "SRC-001 p. 3, 7, 21"
+  sourceCitation: string; // "SRC-001 p. 3, 7, 21"
   rightsStatus: "owner-supplied-awaiting-review" | "placeholder-only" | "approved";
 }
 ```
@@ -74,27 +74,27 @@ export interface FactionConfig {
 
 ```typescript
 export interface PlayerMatConfig {
-  id: string;                         // e.g. "MAT_INDUSTRIAL"
-  name: string;                       // "Industrial"
-  number: number;                     // 1..5 for start player determination (lowest goes first)
-  startingPopularity: number;         // Verified from SRC-001 p. 7
-  startingCoins: number;              // Verified from SRC-001 p. 7
+  id: string; // e.g. "MAT_INDUSTRIAL"
+  name: string; // "Industrial"
+  number: number; // 1..5 for start player determination (lowest goes first)
+  startingPopularity: number; // Verified from SRC-001 p. 7
+  startingCoins: number; // Verified from SRC-001 p. 7
   sections: Array<{
-    id: string;                       // "SECTION_MOVE_UPGRADE", "SECTION_PRODUCE_DEPLOY", etc.
+    id: string; // "SECTION_MOVE_UPGRADE", "SECTION_PRODUCE_DEPLOY", etc.
     topAction: {
       type: "MOVE" | "PRODUCE" | "TRADE" | "BOLSTER";
       baseCost: ResourcePayment;
       baseReward: ActionReward;
-      coinBonus: number;              // Coins gained upon execution
+      coinBonus: number; // Coins gained upon execution
     };
     bottomAction: {
       type: "UPGRADE" | "DEPLOY" | "BUILD" | "ENLIST";
-      baseCost: ResourcePayment;      // Upgradeable via technology cubes
+      baseCost: ResourcePayment; // Upgradeable via technology cubes
       baseReward: ActionReward;
       coinReward: number;
     };
   }>;
-  sourceCitation: string;             // "SRC-001 pp. 7, 11-20"
+  sourceCitation: string; // "SRC-001 pp. 7, 11-20"
   rightsStatus: "owner-supplied-awaiting-review" | "placeholder-only" | "approved";
 }
 ```

@@ -9,9 +9,22 @@
   },
   "scripts": {
     "typecheck": "pnpm -r --if-present run typecheck",
-    "lint": "pnpm -r --if-present run lint",
+    "lint": "eslint .",
     "test": "pnpm -r --if-present run test",
     "test:match": "pnpm -r --if-present run test:match",
-    "build": "pnpm -r --if-present run build"
+    "build": "pnpm -r --if-present run build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@eslint/js": "9.15.0",
+    "@typescript-eslint/eslint-plugin": "8.15.0",
+    "@typescript-eslint/parser": "8.15.0",
+    "@vitest/coverage-v8": "2.1.5",
+    "eslint": "9.15.0",
+    "prettier": "3.4.1",
+    "typescript": "5.7.2",
+    "typescript-eslint": "8.15.0",
+    "vitest": "2.1.5"
   }
 }

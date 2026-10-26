@@ -8,6 +8,7 @@
 ## Goals
 
 A first-time player completes the tutorial and can play a real multiplayer match without reading an external manual. The tutorial must:
+
 - Teach through doing, not reading walls of text
 - Use the same rules engine and server as a normal match
 - Be skippable at any point with a clear "skip tutorial" affordance
@@ -40,18 +41,18 @@ Each lesson can be independently skipped. Completing LESSON-9 marks the tutorial
 
 ## Lesson summaries (details in Prompt 22)
 
-| ID | Title | Learning goal | Method | Status |
-|---|---|---|---|---|
-| LESSON-0 | Look Around | Camera, hexes, terrain, units, selection | Guided pan/zoom, hover inspection | not-started |
-| LESSON-1 | The Turn System | Action token, 4 sections, no-repeat rule | Highlight section, select, read costs | not-started |
-| LESSON-2 | Resources and Production | Resource types, Produce/Trade actions, token placement | Run a real Produce action | not-started |
-| LESSON-3 | Move and Explore | Unit movement, rivers, encounters, territory control | Move a unit on real board | not-started |
-| LESSON-4 | Build Your Engine | Upgrade, Deploy, Build, Enlist | One guided example of each | not-started |
-| LESSON-5 | Power, Popularity, and Cards | Power dial, popularity track, private cards | Bolster action + card inspect | not-started |
-| LESSON-6 | Encounter and Factory | Encounter trigger, choose option, Factory card | Character to encounter token | not-started |
-| LESSON-7 | Combat Practice | Simultaneous secret commit, reveal, resolve | Scripted 2-unit tutorial combat | not-started |
-| LESSON-8 | Stars and Scoring | Star categories, 6th star end, scoring tiers | Walk through score breakdown | not-started |
-| LESSON-9 | Real Match Checklist | Complete a sequence in a test match | Server-confirmed actions | not-started |
+| ID       | Title                        | Learning goal                                          | Method                                | Status      |
+| -------- | ---------------------------- | ------------------------------------------------------ | ------------------------------------- | ----------- |
+| LESSON-0 | Look Around                  | Camera, hexes, terrain, units, selection               | Guided pan/zoom, hover inspection     | not-started |
+| LESSON-1 | The Turn System              | Action token, 4 sections, no-repeat rule               | Highlight section, select, read costs | not-started |
+| LESSON-2 | Resources and Production     | Resource types, Produce/Trade actions, token placement | Run a real Produce action             | not-started |
+| LESSON-3 | Move and Explore             | Unit movement, rivers, encounters, territory control   | Move a unit on real board             | not-started |
+| LESSON-4 | Build Your Engine            | Upgrade, Deploy, Build, Enlist                         | One guided example of each            | not-started |
+| LESSON-5 | Power, Popularity, and Cards | Power dial, popularity track, private cards            | Bolster action + card inspect         | not-started |
+| LESSON-6 | Encounter and Factory        | Encounter trigger, choose option, Factory card         | Character to encounter token          | not-started |
+| LESSON-7 | Combat Practice              | Simultaneous secret commit, reveal, resolve            | Scripted 2-unit tutorial combat       | not-started |
+| LESSON-8 | Stars and Scoring            | Star categories, 6th star end, scoring tiers           | Walk through score breakdown          | not-started |
+| LESSON-9 | Real Match Checklist         | Complete a sequence in a test match                    | Server-confirmed actions              | not-started |
 
 ---
 

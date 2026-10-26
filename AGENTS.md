@@ -7,16 +7,16 @@
 
 ## Project identity
 
-| Field | Value |
-|---|---|
-| Project | Browser-first, turn-based, 3D multiplayer digital implementation of *Scythe* |
-| Scope | Base game, 1–5 players, online multiplayer with private rooms |
-| Remote repository | `https://github.com/Shikhyy/scythe.git` |
-| Phase guide | `docs/ANTIGRAVITY_SCYTHE_3D_MULTIPLAYER_PROMPT_PACK.md` (canonical) |
-| Current phase | **Prompt 03 complete → Prompt 04 next** |
-| Rights status | **No licensed Scythe assets are cleared yet.** Placeholders only. Rulebook supplied for mechanics verification. |
-| Repository root | `/Users/shikhar/scythe` |
-| Git branch strategy | `main` for stable milestones; conventional commits (`feat:`, `fix:`, `chore:`, `test:`, `docs:`, `refactor:`) |
+| Field               | Value                                                                                                           |
+| ------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Project             | Browser-first, turn-based, 3D multiplayer digital implementation of _Scythe_                                    |
+| Scope               | Base game, 1–5 players, online multiplayer with private rooms                                                   |
+| Remote repository   | `https://github.com/Shikhyy/scythe.git`                                                                         |
+| Phase guide         | `docs/ANTIGRAVITY_SCYTHE_3D_MULTIPLAYER_PROMPT_PACK.md` (canonical)                                             |
+| Current phase       | **Prompt 04 complete → Prompt 05 next**                                                                         |
+| Rights status       | **No licensed Scythe assets are cleared yet.** Placeholders only. Rulebook supplied for mechanics verification. |
+| Repository root     | `/Users/shikhar/scythe`                                                                                         |
+| Git branch strategy | `main` for stable milestones; conventional commits (`feat:`, `fix:`, `chore:`, `test:`, `docs:`, `refactor:`)   |
 
 ---
 
@@ -71,20 +71,20 @@ scythe/
 
 ## Toolchain report (verified 2026-10-26)
 
-| Tool | Version | Path / Source | Status / Notes |
-|---|---|---|---|
-| Node.js | 24.10.0 | `/Users/shikhar/.nvm/versions/node/v24.10.0/bin/node` | Supported (meets >= 20.0.0 engine) |
-| pnpm | 9.15.9 | `/Users/shikhar/.nvm/versions/node/v24.10.0/bin/pnpm` | **Authoritative package manager** |
-| npm | 11.6.1 | `/Users/shikhar/.nvm/versions/node/v24.10.0/bin/npm` | Available for npx tools if needed |
-| git | 2.50.1 | `/usr/bin/git` | Apple Git; remote `origin` set to github.com/Shikhyy/scythe.git |
-| tsc | not global | use `pnpm exec tsc` | Configured via package devDependencies |
-| Docker | 29.2.0 | `/usr/local/bin/docker` | Running; used via `docker compose up -d` for PostgreSQL |
-| PostgreSQL | container | Docker image `postgres:16-alpine` | Containerized service on port 5432 |
-| ffmpeg | 8.0 | `/opt/homebrew/bin/ffmpeg` | Audio/video processing, format conversions |
-| pdftotext | 25.08.0 | `/opt/homebrew/bin/pdftotext` | Text extraction from official rules PDF |
-| Python | 3.14.0 | `/opt/homebrew/bin/python3` | Available with `pypdf` for parsing rules content |
-| Blender | not found | — | Not installed locally; use Three.js procedural or pre-exported GLBs |
-| Bun | not found | — | Prohibited in this repo; use pnpm |
+| Tool       | Version    | Path / Source                                         | Status / Notes                                                      |
+| ---------- | ---------- | ----------------------------------------------------- | ------------------------------------------------------------------- |
+| Node.js    | 24.10.0    | `/Users/shikhar/.nvm/versions/node/v24.10.0/bin/node` | Supported (meets >= 20.0.0 engine)                                  |
+| pnpm       | 9.15.9     | `/Users/shikhar/.nvm/versions/node/v24.10.0/bin/pnpm` | **Authoritative package manager**                                   |
+| npm        | 11.6.1     | `/Users/shikhar/.nvm/versions/node/v24.10.0/bin/npm`  | Available for npx tools if needed                                   |
+| git        | 2.50.1     | `/usr/bin/git`                                        | Apple Git; remote `origin` set to github.com/Shikhyy/scythe.git     |
+| tsc        | not global | use `pnpm exec tsc`                                   | Configured via package devDependencies                              |
+| Docker     | 29.2.0     | `/usr/local/bin/docker`                               | Running; used via `docker compose up -d` for PostgreSQL             |
+| PostgreSQL | container  | Docker image `postgres:16-alpine`                     | Containerized service on port 5432                                  |
+| ffmpeg     | 8.0        | `/opt/homebrew/bin/ffmpeg`                            | Audio/video processing, format conversions                          |
+| pdftotext  | 25.08.0    | `/opt/homebrew/bin/pdftotext`                         | Text extraction from official rules PDF                             |
+| Python     | 3.14.0     | `/opt/homebrew/bin/python3`                           | Available with `pypdf` for parsing rules content                    |
+| Blender    | not found  | —                                                     | Not installed locally; use Three.js procedural or pre-exported GLBs |
+| Bun        | not found  | —                                                     | Prohibited in this repo; use pnpm                                   |
 
 ---
 
@@ -144,38 +144,39 @@ pnpm --filter rules <script>
 
 Discovered across `~/.gemini/config/skills/` and `~/.gemini/config/plugins/`:
 
-| Skill | Source | Target Phase |
-|---|---|---|
-| `test-driven-development` | superpowers plugin | Prompts 05–12 (Rules Engine TDD) |
-| `systematic-debugging` | superpowers plugin | Prompts 07–14, 24 (Debugging, Fault Injection) |
-| `verification-before-completion` | superpowers plugin | All phase exit gates & Prompt 26 |
-| `writing-plans` | superpowers plugin | Implementation planning before complex slices |
-| `executing-plans` | superpowers plugin | Structured step execution |
-| `dispatching-parallel-agents` | superpowers plugin | Read-only parallel exploration & reviews |
-| `subagent-driven-development` | superpowers plugin | Subagent delegation for isolated tasks |
-| `threejs-webgl` | global config | Prompts 16, 17, 19, 23 (3D board, models, shaders) |
-| `react-three-fiber` | global config | Prompts 16, 17 (R3F Canvas, model loading, lighting) |
-| `gsap-scrolltrigger` | global config | Prompts 19, 20 (Camera choreographies, cinematic timelines) |
-| `backend-architect` | global config | Prompts 04, 13, 14 (Colyseus server, state sync, persistence) |
-| `secure-auth-and-backend` | global config | Prompts 14, 25 (Session security, OWASP hardening) |
-| `ui-ux-pro-max` | global config / plugin | Prompts 15, 18, 22 (Tactile UI, action panels, onboarding) |
-| `impeccable` | global config | Prompts 15, 18, 23 (Design critique, visual polish) |
-| `anti-slop-guardrails` | global config | Prompts 15, 16, 20 (Anti-slop UI standards) |
-| `awwwards-creative-dev` | global config | Prompt 20 (Awwwards-quality cinematics & transitions) |
-| `3dviz-pro-max` | global config | Prompts 16, 17 (Procedural geometry, PBR materials) |
-| `taste-skill` | global config | Prompt 15 (Art direction & aesthetic restraint) |
-| `web3d-integration-patterns` | global config | Prompts 16, 19 (R3F + GSAP + DOM coordination) |
-| `web-physics-motion` | global config | Prompt 19 (Resource token physics & deployment FX) |
-| `glsl-shaders-fx` | global config | Prompt 16 (Terrain shaders, river/lake water FX) |
-| `database-optimizer` | global config | Prompt 14 (PostgreSQL schema, indexing, pooling) |
-| `api-designer` | global config | Prompt 13 (Protocol schema design, RPC contracts) |
-| `page-transitions-sound` | global config | Prompt 21 (Web Audio synthesis, layered soundscapes) |
-| `modern-web-guidance` | plugin | Prompts 15, 18 (HTML/CSS standards, accessibility) |
+| Skill                            | Source                 | Target Phase                                                  |
+| -------------------------------- | ---------------------- | ------------------------------------------------------------- |
+| `test-driven-development`        | superpowers plugin     | Prompts 05–12 (Rules Engine TDD)                              |
+| `systematic-debugging`           | superpowers plugin     | Prompts 07–14, 24 (Debugging, Fault Injection)                |
+| `verification-before-completion` | superpowers plugin     | All phase exit gates & Prompt 26                              |
+| `writing-plans`                  | superpowers plugin     | Implementation planning before complex slices                 |
+| `executing-plans`                | superpowers plugin     | Structured step execution                                     |
+| `dispatching-parallel-agents`    | superpowers plugin     | Read-only parallel exploration & reviews                      |
+| `subagent-driven-development`    | superpowers plugin     | Subagent delegation for isolated tasks                        |
+| `threejs-webgl`                  | global config          | Prompts 16, 17, 19, 23 (3D board, models, shaders)            |
+| `react-three-fiber`              | global config          | Prompts 16, 17 (R3F Canvas, model loading, lighting)          |
+| `gsap-scrolltrigger`             | global config          | Prompts 19, 20 (Camera choreographies, cinematic timelines)   |
+| `backend-architect`              | global config          | Prompts 04, 13, 14 (Colyseus server, state sync, persistence) |
+| `secure-auth-and-backend`        | global config          | Prompts 14, 25 (Session security, OWASP hardening)            |
+| `ui-ux-pro-max`                  | global config / plugin | Prompts 15, 18, 22 (Tactile UI, action panels, onboarding)    |
+| `impeccable`                     | global config          | Prompts 15, 18, 23 (Design critique, visual polish)           |
+| `anti-slop-guardrails`           | global config          | Prompts 15, 16, 20 (Anti-slop UI standards)                   |
+| `awwwards-creative-dev`          | global config          | Prompt 20 (Awwwards-quality cinematics & transitions)         |
+| `3dviz-pro-max`                  | global config          | Prompts 16, 17 (Procedural geometry, PBR materials)           |
+| `taste-skill`                    | global config          | Prompt 15 (Art direction & aesthetic restraint)               |
+| `web3d-integration-patterns`     | global config          | Prompts 16, 19 (R3F + GSAP + DOM coordination)                |
+| `web-physics-motion`             | global config          | Prompt 19 (Resource token physics & deployment FX)            |
+| `glsl-shaders-fx`                | global config          | Prompt 16 (Terrain shaders, river/lake water FX)              |
+| `database-optimizer`             | global config          | Prompt 14 (PostgreSQL schema, indexing, pooling)              |
+| `api-designer`                   | global config          | Prompt 13 (Protocol schema design, RPC contracts)             |
+| `page-transitions-sound`         | global config          | Prompt 21 (Web Audio synthesis, layered soundscapes)          |
+| `modern-web-guidance`            | plugin                 | Prompts 15, 18 (HTML/CSS standards, accessibility)            |
 
 ### Skill gaps & recommendations
-- **Colyseus**: No standalone Antigravity skill installed. *Recommendation*: Use `backend-architect` + official Colyseus documentation (`https://docs.colyseus.io/`).
-- **Playwright multi-client**: No standalone skill. *Recommendation*: Use `test-driven-development` + official Playwright documentation.
-- **Blender/glTF**: Blender is not installed on this machine. *Recommendation*: Use procedural geometries via Three.js primitives for development placeholders; export GLBs externally if needed.
+
+- **Colyseus**: No standalone Antigravity skill installed. _Recommendation_: Use `backend-architect` + official Colyseus documentation (`https://docs.colyseus.io/`).
+- **Playwright multi-client**: No standalone skill. _Recommendation_: Use `test-driven-development` + official Playwright documentation.
+- **Blender/glTF**: Blender is not installed on this machine. _Recommendation_: Use procedural geometries via Three.js primitives for development placeholders; export GLBs externally if needed.
 
 ---
 
@@ -190,15 +191,15 @@ Discovered across `~/.gemini/config/skills/` and `~/.gemini/config/plugins/`:
 
 ## Prompt sequence status
 
-| Prompt | Title | Status |
-|---|---|---|
-| 00 | Master reference + repo/docs bootstrap | ✅ complete |
-| 01 | Repository, skills, toolchain, working rules | ✅ complete |
-| 02 | Source-of-truth, rights, asset provenance | ✅ complete |
-| 03 | Exhaustive product and rules specification | ✅ complete |
-| 04 | Architecture and monorepo foundation | 🔲 next |
-| 05–12 | Domain model through rules test harness | 🔲 |
-| 13–14 | Multiplayer server, accounts, persistence | 🔲 |
-| 15–23 | UI, 3D, animation, audio, onboarding, a11y | 🔲 |
-| 24–26 | E2E testing, deployment, final audit | 🔲 |
-| 27 | Optional expansions/solo/spectator | 🔲 |
+| Prompt | Title                                        | Status      |
+| ------ | -------------------------------------------- | ----------- |
+| 00     | Master reference + repo/docs bootstrap       | ✅ complete |
+| 01     | Repository, skills, toolchain, working rules | ✅ complete |
+| 02     | Source-of-truth, rights, asset provenance    | ✅ complete |
+| 03     | Exhaustive product and rules specification   | ✅ complete |
+| 04     | Architecture and monorepo foundation         | ✅ complete |
+| 05–12  | Domain model through rules test harness      | 🔲 next     |
+| 13–14  | Multiplayer server, accounts, persistence    | 🔲          |
+| 15–23  | UI, 3D, animation, audio, onboarding, a11y   | 🔲          |
+| 24–26  | E2E testing, deployment, final audit         | 🔲          |
+| 27     | Optional expansions/solo/spectator           | 🔲          |

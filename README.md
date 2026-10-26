@@ -1,6 +1,6 @@
 # Scythe 3D Multiplayer
 
-> Browser-first, turn-based, 3D multiplayer digital implementation of *Scythe* (base game, 1–5 players).
+> Browser-first, turn-based, 3D multiplayer digital implementation of _Scythe_ (base game, 1–5 players).
 
 ---
 

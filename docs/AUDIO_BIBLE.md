@@ -21,24 +21,24 @@ Master bus
 
 ## Audio cue registry (skeleton — Prompt 21 completes)
 
-| Cue ID | Category | Trigger event | Loop | Status | Rights |
-|---|---|---|---|---|---|
-| AUDIO-MUSIC-MENU | music | app boot / menu visible | yes | not-started | license-needed |
-| AUDIO-MUSIC-GAMEPLAY | music | match active | yes | not-started | license-needed |
-| AUDIO-MUSIC-COMBAT | music | combat instance created | yes | not-started | license-needed |
-| AUDIO-MUSIC-END | music | game end | no | not-started | license-needed |
-| AUDIO-AMB-WIND | ambience | board visible | yes | not-started | license-needed |
-| AUDIO-AMB-FACTORY | ambience | near Factory | yes | not-started | license-needed |
-| AUDIO-UI-CONFIRM | ui | any confirm action | no | not-started | license-needed |
-| AUDIO-UI-CANCEL | ui | cancel / close | no | not-started | license-needed |
-| AUDIO-UI-HOVER | ui | button hover | no | not-started | license-needed |
-| AUDIO-SFX-MOVE | sfx | unit.move event | no | not-started | license-needed |
-| AUDIO-SFX-PRODUCE | sfx | resource.produced event | no | not-started | license-needed |
-| AUDIO-SFX-DEPLOY | sfx | mech.deploy event | no | not-started | license-needed |
-| AUDIO-SFX-BUILD | sfx | structure.build event | no | not-started | license-needed |
-| AUDIO-SFX-COMBAT-REVEAL | sfx | combat.revealed event | no | not-started | license-needed |
-| AUDIO-SFX-STAR | sfx | star.placed event | no | not-started | license-needed |
-| AUDIO-SFX-GAME-END | sfx | game.ended event | no | not-started | license-needed |
+| Cue ID                  | Category | Trigger event           | Loop | Status      | Rights         |
+| ----------------------- | -------- | ----------------------- | ---- | ----------- | -------------- |
+| AUDIO-MUSIC-MENU        | music    | app boot / menu visible | yes  | not-started | license-needed |
+| AUDIO-MUSIC-GAMEPLAY    | music    | match active            | yes  | not-started | license-needed |
+| AUDIO-MUSIC-COMBAT      | music    | combat instance created | yes  | not-started | license-needed |
+| AUDIO-MUSIC-END         | music    | game end                | no   | not-started | license-needed |
+| AUDIO-AMB-WIND          | ambience | board visible           | yes  | not-started | license-needed |
+| AUDIO-AMB-FACTORY       | ambience | near Factory            | yes  | not-started | license-needed |
+| AUDIO-UI-CONFIRM        | ui       | any confirm action      | no   | not-started | license-needed |
+| AUDIO-UI-CANCEL         | ui       | cancel / close          | no   | not-started | license-needed |
+| AUDIO-UI-HOVER          | ui       | button hover            | no   | not-started | license-needed |
+| AUDIO-SFX-MOVE          | sfx      | unit.move event         | no   | not-started | license-needed |
+| AUDIO-SFX-PRODUCE       | sfx      | resource.produced event | no   | not-started | license-needed |
+| AUDIO-SFX-DEPLOY        | sfx      | mech.deploy event       | no   | not-started | license-needed |
+| AUDIO-SFX-BUILD         | sfx      | structure.build event   | no   | not-started | license-needed |
+| AUDIO-SFX-COMBAT-REVEAL | sfx      | combat.revealed event   | no   | not-started | license-needed |
+| AUDIO-SFX-STAR          | sfx      | star.placed event       | no   | not-started | license-needed |
+| AUDIO-SFX-GAME-END      | sfx      | game.ended event        | no   | not-started | license-needed |
 
 ---
 

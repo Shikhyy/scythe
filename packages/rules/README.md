@@ -3,6 +3,7 @@
 Pure deterministic game engine and state reducers for Scythe 3D.
 
 ## Responsibilities
+
 - Deterministic state transition function: `applyCommand(state, command, context): Result<GameState, RuleError>`
 - Action validators: `validateCommand(state, playerSeat, command): Result<void, RuleError>`
 - Turn loop, section selection restrictions, and faction-specific turn overrides
@@ -13,6 +14,7 @@ Pure deterministic game engine and state reducers for Scythe 3D.
 - Final score computation as a pure function
 
 ## Non-Negotiables
+
 - **Pure functions**: Deterministic transitions with zero side effects.
 - **Strict isolation**: No React, Three.js, DOM, or networking dependencies.
 - **TDD coverage**: All rules tested with Vitest against `RULE-*` IDs.
