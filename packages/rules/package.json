@@ -18,7 +18,8 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@scythe/domain": "workspace:*"
+    "@scythe/domain": "workspace:*",
+    "@scythe/content": "workspace:*"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "2.1.5",

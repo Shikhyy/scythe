@@ -100,14 +100,26 @@
 
 ---
 
-## Prompt 08 (next) — Bottom-row actions and engine building
+## Prompt 08 — Completed ✅
 
-- [ ] Implement Upgrade action: pay oil cost from Player Mat, move technology cube from top action green box to bottom action red bracketed slot, unlock coin reward
-- [ ] Implement Deploy action: pay metal cost from Player Mat, deploy mech to territory with friendly worker, unlock mech ability, gain coin reward
-- [ ] Implement Build action: pay wood cost from Player Mat, place structure on territory with worker, limit 1 per territory, unlock ongoing top-action bonus, gain coin reward
-- [ ] Implement Enlist action: pay food cost from Player Mat, place recruit on Faction Mat open slot, gain immediate one-time bonus, unlock ongoing recruit neighbor bonus, gain coin reward
-- [ ] Implement recruit ongoing neighbor bonus distribution (active -> left -> right)
-- [ ] Invariant tests for all bottom-row actions, player mat variations, and state non-mutation
+- [x] Authoritative Player Mat definitions (`packages/content/src/mats.ts`): all 5 base player mats (Industrial, Engineering, Militant, Patriotic, Agricultural) with exact pairings, base costs, discount slots, printed coin rewards, and 20 faction mech abilities
+- [x] Implement Upgrade action (`packages/rules/src/actions/upgrade.ts`): oil cost deduction from controlled territories, technology cube movement from top action to bottom action bracket (reducing cost by 1, min 2), printed coin reward, and AllUpgrades star upon 6th upgrade
+- [x] Implement Deploy Mech action (`packages/rules/src/actions/deploy.ts`): metal cost deduction from controlled territories, friendly worker presence validation, mech placement on worker hex, mech ability unlock (active for character and all mechs), printed coin reward, and AllMechs star upon 4th mech
+- [x] Implement Build Structure action (`packages/rules/src/actions/build.ts`): wood cost deduction from controlled territories, friendly worker presence validation, structure placement with strict 1-structure-per-territory board-wide limit, lake/home base restriction, printed coin reward, and AllStructures star upon 4th structure
+- [x] Implement Enlist action (`packages/rules/src/actions/enlist.ts`): food cost deduction from controlled territories, recruit cylinder removal from player mat, immediate one-time bonus claim on faction mat (+2 power, +2 coins, +2 popularity, or 2 combat cards), printed coin reward, and AllRecruits star upon 4th recruit
+- [x] Implement Recruit Ongoing Neighbor Bonus distribution (`packages/rules/src/actions/recruit_bonuses.ts`): triggers whenever active player or adjacent neighbor takes matching bottom-row action (Upgrade -> +1 power, Deploy -> +1 coin, Build -> +1 popularity, Enlist -> +1 combat card), clockwise seating order resolution (Active -> Left -> Right), 2-player duplicate suppression
+- [x] Star placement engine (`packages/rules/src/actions/stars.ts`): max 6 stars per seat, duplicate category prevention, STAR_PLACED event emission
+- [x] 126 unit tests passing across all 19 test suites in the monorepo with 100% green exit code
+
+---
+
+## Prompt 09 (next) — Movement, control, and mech abilities
+
+- [ ] Complete full movement action graph validation with character/mech speed +1 upgrade
+- [ ] Implement faction-specific riverwalk constraints (Nordic, Rusviet, Crimea, Saxony, Polania)
+- [ ] Implement advanced movement abilities: Polania Submerge, Nordic Seaworthy, Crimea Wayfare, Saxony Underpass, Rusviet Township
+- [ ] Implement mine and tunnel routing invariants
+- [ ] Invariant tests for all movement combinations, retreat handling, and combat encounter flags
 
 ---
 

@@ -72,13 +72,21 @@ export interface SeatState {
   // Units this player owns
   unitIds: UnitId[];
   // Turn tracking
-  lastSelectedSection?: TopAction | null;
+  lastSelectedSection?: TopAction | null | undefined;
   // Structures built by this seat
-  structures?: StructureType[];
+  structures?: StructureType[] | undefined;
   // Recruits unlocked by this seat
-  recruits?: BottomAction[];
+  recruits?: BottomAction[] | undefined;
   // Upgrades completed (e.g. top actions upgraded)
-  upgradedTopActions?: TopAction[];
+  upgradedTopActions?: TopAction[] | undefined;
+  // Bottom actions discounted via upgrades
+  upgradedBottomActions?: BottomAction[] | undefined;
+  // Mech abilities unlocked
+  unlockedMechAbilities?: string[] | undefined;
+  // Claimed one-time recruit bonuses on Faction Mat
+  claimedRecruitBonuses?: ("POWER" | "COIN" | "POPULARITY" | "COMBAT_CARD")[] | undefined;
+  // Total upgrades completed (0 to 6)
+  upgradesCount?: number | undefined;
 }
 
 // ---------------------------------------------------------------------------
@@ -107,8 +115,8 @@ export interface MatchState {
   hexes: Map<HexId, HexState>;
   units: Map<UnitId, UnitState>;
   // Active turn tracking
-  activeTurn?: ActiveTurnState | null;
+  activeTurn?: ActiveTurnState | null | undefined;
   // Decks
-  combatDeck?: CardId[];
-  combatDiscard?: CardId[];
+  combatDeck?: CardId[] | undefined;
+  combatDiscard?: CardId[] | undefined;
 }

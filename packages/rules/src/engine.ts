@@ -10,6 +10,10 @@ import { validateTrade, applyTrade } from "./actions/trade.js";
 import { validateBolster, applyBolster } from "./actions/bolster.js";
 import { validateProduce, applyProduce } from "./actions/produce.js";
 import { validateMoveUnits, applyMoveUnits } from "./actions/move.js";
+import { validateUpgrade, applyUpgrade } from "./actions/upgrade.js";
+import { validateDeploy, applyDeploy } from "./actions/deploy.js";
+import { validateBuild, applyBuild } from "./actions/build.js";
+import { validateEnlist, applyEnlist } from "./actions/enlist.js";
 
 /** Injectable deterministic execution context for rules reducer */
 export interface DeterministicContext {
@@ -68,6 +72,14 @@ export function validateCommand(state: MatchState, command: GameCommand): Domain
       return validateProduce(state, command);
     case "MOVE_UNITS":
       return validateMoveUnits(state, command);
+    case "UPGRADE":
+      return validateUpgrade(state, command);
+    case "DEPLOY_MECH":
+      return validateDeploy(state, command);
+    case "BUILD_STRUCTURE":
+      return validateBuild(state, command);
+    case "ENLIST":
+      return validateEnlist(state, command);
     default:
       return null;
   }
@@ -95,6 +107,14 @@ export function applyCommand(
       return applyProduce(state, command, context);
     case "MOVE_UNITS":
       return applyMoveUnits(state, command, context);
+    case "UPGRADE":
+      return applyUpgrade(state, command, context);
+    case "DEPLOY_MECH":
+      return applyDeploy(state, command, context);
+    case "BUILD_STRUCTURE":
+      return applyBuild(state, command, context);
+    case "ENLIST":
+      return applyEnlist(state, command, context);
     default: {
       const nextState: MatchState = {
         ...state,
