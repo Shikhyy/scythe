@@ -1,0 +1,46 @@
+## OS
+.DS_Store
+Thumbs.db
+
+## Node
+node_modules/
+.pnp
+.pnp.js
+
+## Build outputs
+dist/
+.next/
+out/
+build/
+*.tsbuildinfo
+
+## Env / secrets
+.env
+.env.local
+.env.*.local
+# .env.example is committed — no secrets in it
+
+## Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+## Test / coverage
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+## IDE
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+## Temp
+.cache/
+tmp/
+scratch/
+
+## pnpm
+.pnpm-store/
