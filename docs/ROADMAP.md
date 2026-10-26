@@ -7,17 +7,17 @@
 
 ## Phase summary (based on prompt pack)
 
-| Phase            | Prompts | Description                                                | Status                                        |
-| ---------------- | ------- | ---------------------------------------------------------- | --------------------------------------------- |
-| 0 — Bootstrap    | 00      | Repo setup, docs, skills audit, first ticket               | ✅ complete                                   |
-| 1 — Foundation   | 01–04   | Toolchain, rights, spec, monorepo scaffold                 | ✅ complete (01 ✅, 02 ✅, 03 ✅, 04 ✅)      |
-| 2 — Rules engine | 05–12   | Domain model, turn loop, all actions, combat, test harness | 🟡 in-progress (05 ✅, 06 ✅, Prompt 07 next) |
-| 3 — Multiplayer  | 13–14   | Colyseus server, accounts, persistence, reconnect          | 🔲                                            |
-| 4 — Presentation | 15–20   | UI shell, 3D board, components, animations, cinematics     | 🔲                                            |
-| 5 — Audio + UX   | 21–22   | Audio system, onboarding tutorial                          | 🔲                                            |
-| 6 — Polish + QA  | 23–24   | Accessibility, performance, E2E testing                    | 🔲                                            |
-| 7 — Release      | 25–26   | Deployment, CI/CD, final audit                             | 🔲                                            |
-| 8 — Expansions   | 27      | Solo, spectator, replay, expansions                        | 🔲                                            |
+| Phase            | Prompts | Description                                                | Status                                               |
+| ---------------- | ------- | ---------------------------------------------------------- | ---------------------------------------------------- |
+| 0 — Bootstrap    | 00      | Repo setup, docs, skills audit, first ticket               | ✅ complete                                          |
+| 1 — Foundation   | 01–04   | Toolchain, rights, spec, monorepo scaffold                 | ✅ complete (01 ✅, 02 ✅, 03 ✅, 04 ✅)             |
+| 2 — Rules engine | 05–12   | Domain model, turn loop, all actions, combat, test harness | 🟡 in-progress (05 ✅, 06 ✅, 07 ✅, Prompt 08 next) |
+| 3 — Multiplayer  | 13–14   | Colyseus server, accounts, persistence, reconnect          | 🔲                                                   |
+| 4 — Presentation | 15–20   | UI shell, 3D board, components, animations, cinematics     | 🔲                                                   |
+| 5 — Audio + UX   | 21–22   | Audio system, onboarding tutorial                          | 🔲                                                   |
+| 6 — Polish + QA  | 23–24   | Accessibility, performance, E2E testing                    | 🔲                                                   |
+| 7 — Release      | 25–26   | Deployment, CI/CD, final audit                             | 🔲                                                   |
+| 8 — Expansions   | 27      | Solo, spectator, replay, expansions                        | 🔲                                                   |
 
 ---
 
@@ -89,14 +89,25 @@
 
 ---
 
-## Prompt 07 (next) — Turn loop and top-row actions
+## Prompt 07 — Completed ✅
 
-- [ ] Implement turn engine lifecycle: active seat cycling, prior section tracking, Rusviet Relentless exception, action omission
-- [ ] Implement Move action: unit movement limits, worker & resource transport, river crossing validations
-- [ ] Implement Produce action: territory selection, worker supply track costs, resource placement, village worker spawning, Mill production
-- [ ] Implement Trade action: 1 coin for 2 resources or 1 popularity
-- [ ] Implement Bolster action: 1 coin for 2 power or 1 combat card (power track cap at 16)
-- [ ] Unit tests for all action precondition validations, resource costs, state immutability, and domain event emissions
+- [x] Implement turn engine lifecycle (`packages/rules/src/turn.ts`): active seat cycling, prior section tracking, Rusviet Relentless exception, dead turn fallback, turn number advance on round completion
+- [x] Implement Trade action (`packages/rules/src/actions/trade.ts`): $1 cost, 2 resources to territory with friendly worker or +1 popularity, Armory structure bonus (+1 power)
+- [x] Implement Bolster action (`packages/rules/src/actions/bolster.ts`): $1 cost, +2 power (capped at 16) or 1 combat card draw (discard reshuffle on empty deck), Monument structure bonus (+1 popularity)
+- [x] Implement Produce action (`packages/rules/src/actions/produce.ts`): worker supply track cost deduction (0, 1 pow, 1 pow + 1 pop, 1 pow + 1 pop + 1 coin), biome resource generation, Village worker meeple spawning (up to 8 total), Mill 3rd bonus territory and extra production
+- [x] Implement Move action (`packages/rules/src/actions/move.ts`): Gain $1 option, up to 2 distinct unit moves (up to 3 with upgrade), mech worker & resource carriage, tunnel/mine routing, river crossing permissions (Riverwalk/Swim), forced enemy worker retreat and popularity loss (Polania Camaraderie 0 loss)
+- [x] 113 unit tests passing across all 17 test suites with zero failures
+
+---
+
+## Prompt 08 (next) — Bottom-row actions and engine building
+
+- [ ] Implement Upgrade action: pay oil cost from Player Mat, move technology cube from top action green box to bottom action red bracketed slot, unlock coin reward
+- [ ] Implement Deploy action: pay metal cost from Player Mat, deploy mech to territory with friendly worker, unlock mech ability, gain coin reward
+- [ ] Implement Build action: pay wood cost from Player Mat, place structure on territory with worker, limit 1 per territory, unlock ongoing top-action bonus, gain coin reward
+- [ ] Implement Enlist action: pay food cost from Player Mat, place recruit on Faction Mat open slot, gain immediate one-time bonus, unlock ongoing recruit neighbor bonus, gain coin reward
+- [ ] Implement recruit ongoing neighbor bonus distribution (active -> left -> right)
+- [ ] Invariant tests for all bottom-row actions, player mat variations, and state non-mutation
 
 ---
 

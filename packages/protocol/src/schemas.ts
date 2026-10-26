@@ -33,7 +33,8 @@ export const UnitMoveRouteSchema = z.object({
 export const MoveUnitsCommandSchema = z.object({
   ...BaseCommandFields,
   type: z.literal("MOVE_UNITS"),
-  moves: z.array(UnitMoveRouteSchema),
+  moves: z.array(UnitMoveRouteSchema).optional().default([]),
+  gainCoin: z.boolean().optional(),
 });
 
 /** 3. Produce */

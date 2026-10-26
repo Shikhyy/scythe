@@ -148,6 +148,19 @@ describe("DomainEvent Discriminated Union & Type Guards", () => {
     expect(isDomainEvent(ev)).toBe(true);
   });
 
+  it("validates WorkerProducedEvent", () => {
+    const ev: DomainEvent = {
+      id: makeEventId("ev-wp-1"),
+      timestamp: Date.now(),
+      type: "WORKER_PRODUCED",
+      seatId: makeSeatId("s1"),
+      workerId: makeUnitId("unit-Nordic-worker-3"),
+      hexId: makeHexId("HEX_VIL_1"),
+      totalWorkersOnBoard: 3,
+    };
+    expect(isDomainEvent(ev)).toBe(true);
+  });
+
   it("validates MatchEndedEvent with final score rankings", () => {
     const ev: DomainEvent = {
       id: makeEventId("ev-11"),

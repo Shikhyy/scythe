@@ -32,26 +32,26 @@
 
 ## 3. Turn Structure & Section Selection (`RULE-TURN-*`)
 
-| Rule ID         | Statement                    | Source               | Preconditions & Timing              | State Transitions / Effects                                                                          | Visibility | Test ID         | Package | Status      |
-| --------------- | ---------------------------- | -------------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------- | --------------- | ------- | ----------- |
-| `RULE-TURN-001` | Section Selection Invariant  | `SRC-001` p. 10      | Start of active turn                | Player must select a different section on their Player Mat (or Factory card) than the previous turn  | Public     | `TEST-TURN-001` | `rules` | not-started |
-| `RULE-TURN-002` | Rusviet Relentless Exception | `SRC-001` p. 21      | Start of Rusviet turn               | Rusviet player may select the same section as the immediately preceding turn(s)                      | Public     | `TEST-TURN-002` | `rules` | not-started |
-| `RULE-TURN-003` | Action Execution Ordering    | `SRC-001` pp. 10, 31 | After section selected              | Top-row action must be executed or skipped before bottom-row action is executed                      | Public     | `TEST-TURN-003` | `rules` | not-started |
-| `RULE-TURN-004` | Resource Reinvestment        | `SRC-001` p. 10      | Same turn execution                 | Resources produced or gained from top-row action may be immediately spent on bottom-row action       | Public     | `TEST-TURN-004` | `rules` | not-started |
-| `RULE-TURN-005` | Dead Turn Fallback           | `SRC-001` p. 13      | Player has no legal actions / costs | Player selects another section without executing any action; action token updates; turn ends cleanly | Public     | `TEST-TURN-005` | `rules` | not-started |
+| Rule ID         | Statement                    | Source               | Preconditions & Timing              | State Transitions / Effects                                                                          | Visibility | Test ID         | Package | Status |
+| --------------- | ---------------------------- | -------------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------- | --------------- | ------- | ------ |
+| `RULE-TURN-001` | Section Selection Invariant  | `SRC-001` p. 10      | Start of active turn                | Player must select a different section on their Player Mat (or Factory card) than the previous turn  | Public     | `TEST-TURN-001` | `rules` | tested |
+| `RULE-TURN-002` | Rusviet Relentless Exception | `SRC-001` p. 21      | Start of Rusviet turn               | Rusviet player may select the same section as the immediately preceding turn(s)                      | Public     | `TEST-TURN-002` | `rules` | tested |
+| `RULE-TURN-003` | Action Execution Ordering    | `SRC-001` pp. 10, 31 | After section selected              | Top-row action must be executed or skipped before bottom-row action is executed                      | Public     | `TEST-TURN-003` | `rules` | tested |
+| `RULE-TURN-004` | Resource Reinvestment        | `SRC-001` p. 10      | Same turn execution                 | Resources produced or gained from top-row action may be immediately spent on bottom-row action       | Public     | `TEST-TURN-004` | `rules` | tested |
+| `RULE-TURN-005` | Dead Turn Fallback           | `SRC-001` p. 13      | Player has no legal actions / costs | Player selects another section without executing any action; action token updates; turn ends cleanly | Public     | `TEST-TURN-005` | `rules` | tested |
 
 ---
 
 ## 4. Top-Row Actions (`RULE-TOP-*`)
 
-| Rule ID        | Statement                              | Source          | Preconditions & Timing      | State Transitions / Effects                                                                                  | Visibility       | Test ID        | Package | Status      |
-| -------------- | -------------------------------------- | --------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------ | ---------------- | -------------- | ------- | ----------- |
-| `RULE-TOP-001` | Move Action — Unit Traversal           | `SRC-001` p. 11 | Move section selected       | Move up to 2 different units to adjacent legal territories, OR gain $1. Mechs can carry workers/resources    | Public           | `TEST-TOP-001` | `rules` | not-started |
-| `RULE-TOP-002` | Move Action — Worker Transport         | `SRC-001` p. 11 | Mech movement               | Mech picks up / drops off workers without consuming worker move quota                                        | Public           | `TEST-TOP-002` | `rules` | not-started |
-| `RULE-TOP-003` | Produce Action — Execution             | `SRC-001` p. 13 | Produce section selected    | Pay exposed cost; select 2 controlled territories; each worker there produces 1 resource of that hex's biome | Public           | `TEST-TOP-003` | `rules` | not-started |
-| `RULE-TOP-004` | Produce Action — Worker Creation       | `SRC-001` p. 13 | Worker on Village territory | Producing on Village moves leftmost worker from Player Mat to Village; future Produce cost increases         | Public           | `TEST-TOP-004` | `rules` | not-started |
-| `RULE-TOP-005` | Trade Action — Resources or Popularity | `SRC-001` p. 12 | Trade section selected      | Pay $1; gain any 2 resources on territory with a worker, OR increase popularity by 1 on Popularity Track     | Public           | `TEST-TOP-005` | `rules` | not-started |
-| `RULE-TOP-006` | Bolster Action — Power or Cards        | `SRC-001` p. 12 | Bolster section selected    | Pay $1; gain 2 power on Power Track, OR draw 1 combat card into private hand                                 | Public / Private | `TEST-TOP-006` | `rules` | not-started |
+| Rule ID        | Statement                              | Source          | Preconditions & Timing      | State Transitions / Effects                                                                                  | Visibility       | Test ID        | Package | Status |
+| -------------- | -------------------------------------- | --------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------ | ---------------- | -------------- | ------- | ------ |
+| `RULE-TOP-001` | Move Action — Unit Traversal           | `SRC-001` p. 11 | Move section selected       | Move up to 2 different units to adjacent legal territories, OR gain $1. Mechs can carry workers/resources    | Public           | `TEST-TOP-001` | `rules` | tested |
+| `RULE-TOP-002` | Move Action — Worker Transport         | `SRC-001` p. 11 | Mech movement               | Mech picks up / drops off workers without consuming worker move quota                                        | Public           | `TEST-TOP-002` | `rules` | tested |
+| `RULE-TOP-003` | Produce Action — Execution             | `SRC-001` p. 13 | Produce section selected    | Pay exposed cost; select 2 controlled territories; each worker there produces 1 resource of that hex's biome | Public           | `TEST-TOP-003` | `rules` | tested |
+| `RULE-TOP-004` | Produce Action — Worker Creation       | `SRC-001` p. 13 | Worker on Village territory | Producing on Village moves leftmost worker from Player Mat to Village; future Produce cost increases         | Public           | `TEST-TOP-004` | `rules` | tested |
+| `RULE-TOP-005` | Trade Action — Resources or Popularity | `SRC-001` p. 12 | Trade section selected      | Pay $1; gain any 2 resources on territory with a worker, OR increase popularity by 1 on Popularity Track     | Public           | `TEST-TOP-005` | `rules` | tested |
+| `RULE-TOP-006` | Bolster Action — Power or Cards        | `SRC-001` p. 12 | Bolster section selected    | Pay $1; gain 2 power on Power Track, OR draw 1 combat card into private hand                                 | Public / Private | `TEST-TOP-006` | `rules` | tested |
 
 ---
 

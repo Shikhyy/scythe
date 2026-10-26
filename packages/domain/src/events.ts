@@ -91,6 +91,15 @@ export interface CombatCardDrawnEvent extends BaseEvent {
   readonly cardId: CardId;
 }
 
+/** Worker produced on a village */
+export interface WorkerProducedEvent extends BaseEvent {
+  readonly type: "WORKER_PRODUCED";
+  readonly seatId: SeatId;
+  readonly workerId: UnitId;
+  readonly hexId: HexId;
+  readonly totalWorkersOnBoard: number;
+}
+
 /** 8. Mech deployed */
 export interface MechDeployedEvent extends BaseEvent {
   readonly type: "MECH_DEPLOYED";
@@ -221,6 +230,7 @@ export type DomainEvent =
   | EncounterResolvedEvent
   | ObjectiveCompletedEvent
   | StarPlacedEvent
+  | WorkerProducedEvent
   | TurnEndedEvent
   | MatchEndedEvent;
 
@@ -234,6 +244,7 @@ const VALID_EVENT_TYPES = new Set([
   "POWER_CHANGED",
   "COINS_CHANGED",
   "COMBAT_CARD_DRAWN",
+  "WORKER_PRODUCED",
   "MECH_DEPLOYED",
   "STRUCTURE_BUILT",
   "UPGRADE_COMPLETED",

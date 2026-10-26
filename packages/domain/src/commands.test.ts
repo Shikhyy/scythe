@@ -40,7 +40,7 @@ describe("GameCommand Runtime Type Guards & Helpers", () => {
     };
     expect(isGameCommand(cmd)).toBe(true);
     if (cmd.type === "MOVE_UNITS") {
-      expect(cmd.moves[0]?.targetHexId).toBe("h2");
+      expect(cmd.moves?.[0]?.targetHexId).toBe("h2");
     }
   });
 

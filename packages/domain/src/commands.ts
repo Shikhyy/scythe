@@ -31,7 +31,8 @@ export interface UnitMoveRoute {
 /** 2. Move Units */
 export interface MoveUnitsCommand extends BaseCommand {
   readonly type: "MOVE_UNITS";
-  readonly moves: readonly UnitMoveRoute[];
+  readonly moves?: readonly UnitMoveRoute[];
+  readonly gainCoin?: boolean;
 }
 
 /** 3. Produce resources on territories with friendly workers */

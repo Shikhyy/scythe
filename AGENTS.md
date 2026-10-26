@@ -13,7 +13,7 @@
 | Scope               | Base game, 1–5 players, online multiplayer with private rooms                                                   |
 | Remote repository   | `https://github.com/Shikhyy/scythe.git`                                                                         |
 | Phase guide         | `docs/ANTIGRAVITY_SCYTHE_3D_MULTIPLAYER_PROMPT_PACK.md` (canonical)                                             |
-| Current phase       | **Prompt 06 complete → Prompt 07 next**                                                                         |
+| Current phase       | **Prompt 07 complete → Prompt 08 next**                                                                         |
 | Rights status       | **No licensed Scythe assets are cleared yet.** Placeholders only. Rulebook supplied for mechanics verification. |
 | Repository root     | `/Users/shikhar/scythe`                                                                                         |
 | Git branch strategy | `main` for stable milestones; conventional commits (`feat:`, `fix:`, `chore:`, `test:`, `docs:`, `refactor:`)   |
@@ -200,8 +200,9 @@ Discovered across `~/.gemini/config/skills/` and `~/.gemini/config/plugins/`:
 | 04     | Architecture and monorepo foundation         | ✅ complete |
 | 05     | Domain model, state machine, commands/events | ✅ complete |
 | 06     | Setup, board graph, terrain, initial state   | ✅ complete |
-| 07     | Turn loop and top-row actions                | 🔲 next     |
-| 08–12  | Bottom-row actions through test harness      | 🔲          |
+| 07     | Turn loop and top-row actions                | ✅ complete |
+| 08     | Bottom-row actions and engine building       | 🔲 next     |
+| 09–12  | Movement through rules test harness          | 🔲          |
 | 13–14  | Multiplayer server, accounts, persistence    | 🔲          |
 | 15–23  | UI, 3D, animation, audio, onboarding, a11y   | 🔲          |
 | 24–26  | E2E testing, deployment, final audit         | 🔲          |

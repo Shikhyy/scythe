@@ -8,6 +8,8 @@ import type {
   StarCondition,
   PlayerMatId,
   TerrainType,
+  TopAction,
+  BottomAction,
 } from "./enums.js";
 import type { HexId, MatchId, PlayerId, SeatId, UnitId, CardId } from "./identifiers.js";
 import type { HexCoord } from "./coords.js";
@@ -34,6 +36,8 @@ export interface HexState {
   resources: ResourceBundle;
   /** Structure present (at most one per territory) */
   structure: { type: StructureType; ownerId: SeatId } | null;
+  /** Faction whose home base this is, if terrain is HomeBase */
+  homeBaseFaction?: Faction;
 }
 
 // ---------------------------------------------------------------------------
@@ -67,6 +71,25 @@ export interface SeatState {
   objectiveCardIds: CardId[];
   // Units this player owns
   unitIds: UnitId[];
+  // Turn tracking
+  lastSelectedSection?: TopAction | null;
+  // Structures built by this seat
+  structures?: StructureType[];
+  // Recruits unlocked by this seat
+  recruits?: BottomAction[];
+  // Upgrades completed (e.g. top actions upgraded)
+  upgradedTopActions?: TopAction[];
+}
+
+// ---------------------------------------------------------------------------
+// Turn Lifecycle
+// ---------------------------------------------------------------------------
+export interface ActiveTurnState {
+  readonly seatId: SeatId;
+  readonly turnNumber: number;
+  selectedSection: TopAction | null;
+  topActionCompleted: boolean;
+  bottomActionCompleted: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -83,4 +106,9 @@ export interface MatchState {
   seats: SeatState[];
   hexes: Map<HexId, HexState>;
   units: Map<UnitId, UnitState>;
+  // Active turn tracking
+  activeTurn?: ActiveTurnState | null;
+  // Decks
+  combatDeck?: CardId[];
+  combatDiscard?: CardId[];
 }

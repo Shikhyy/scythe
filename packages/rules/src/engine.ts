@@ -1,12 +1,15 @@
-import type {
-  MatchState,
-  DomainError,
-  GameCommand,
-  DomainEvent,
-  EventId,
-  SectionSelectedEvent,
-} from "@scythe/domain";
+import type { MatchState, DomainError, GameCommand, DomainEvent, EventId } from "@scythe/domain";
 import { MatchPhase, domainError } from "@scythe/domain";
+import {
+  validateSelectSection,
+  applySelectSection,
+  validatePassBottomAction,
+  applyPassBottomAction,
+} from "./turn.js";
+import { validateTrade, applyTrade } from "./actions/trade.js";
+import { validateBolster, applyBolster } from "./actions/bolster.js";
+import { validateProduce, applyProduce } from "./actions/produce.js";
+import { validateMoveUnits, applyMoveUnits } from "./actions/move.js";
 
 /** Injectable deterministic execution context for rules reducer */
 export interface DeterministicContext {
@@ -51,7 +54,23 @@ export function validateCommand(state: MatchState, command: GameCommand): Domain
     );
   }
 
-  return null;
+  // 4. Command-specific validation
+  switch (command.type) {
+    case "SELECT_SECTION":
+      return validateSelectSection(state, command);
+    case "PASS_BOTTOM_ACTION":
+      return validatePassBottomAction(state, command);
+    case "TRADE":
+      return validateTrade(state, command);
+    case "BOLSTER":
+      return validateBolster(state, command);
+    case "PRODUCE":
+      return validateProduce(state, command);
+    case "MOVE_UNITS":
+      return validateMoveUnits(state, command);
+    default:
+      return null;
+  }
 }
 
 /**
@@ -63,34 +82,28 @@ export function applyCommand(
   command: GameCommand,
   context: DeterministicContext,
 ): CommandApplyResult {
-  const events: DomainEvent[] = [];
-
   switch (command.type) {
-    case "SELECT_SECTION": {
-      const event: SectionSelectedEvent = {
-        id: context.generateEventId(),
-        timestamp: context.now,
-        type: "SECTION_SELECTED",
-        seatId: command.actorSeatId,
-        topAction: command.topAction,
-        ...(command.bottomAction ? { bottomAction: command.bottomAction } : {}),
-      };
-      events.push(event);
-      break;
-    }
+    case "SELECT_SECTION":
+      return applySelectSection(state, command, context);
+    case "PASS_BOTTOM_ACTION":
+      return applyPassBottomAction(state, command, context);
+    case "TRADE":
+      return applyTrade(state, command, context);
+    case "BOLSTER":
+      return applyBolster(state, command, context);
+    case "PRODUCE":
+      return applyProduce(state, command, context);
+    case "MOVE_UNITS":
+      return applyMoveUnits(state, command, context);
     default: {
-      // Stub for other commands implemented in Prompts 07-12
-      break;
+      const nextState: MatchState = {
+        ...state,
+        stateVersion: state.stateVersion + 1,
+      };
+      return {
+        nextState,
+        events: [],
+      };
     }
   }
-
-  const nextState: MatchState = {
-    ...state,
-    stateVersion: state.stateVersion + 1,
-  };
-
-  return {
-    nextState,
-    events,
-  };
 }
