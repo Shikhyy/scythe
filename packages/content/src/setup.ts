@@ -173,6 +173,8 @@ export function setupDeterministicMatch(config: MatchSetupConfig): MatchState {
       neighbours: h.neighborHexIds,
       blockedEdges: [],
       hasEncounterToken: h.hasEncounter,
+      hasTunnel: h.isTunnel,
+      ...(h.homeBaseFaction ? { homeBaseFaction: h.homeBaseFaction } : {}),
       resources: {},
       structure: null,
     });

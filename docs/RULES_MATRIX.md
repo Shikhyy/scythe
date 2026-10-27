@@ -8,25 +8,25 @@
 
 ## 1. Lifecycle & Game Loop Rules (`RULE-LIFE-*`)
 
-| Rule ID         | Statement                     | Source              | Preconditions & Timing            | State Transitions / Effects                                                                                  | Visibility | Test ID         | Package | Status      |
-| --------------- | ----------------------------- | ------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ------- | ----------- |
-| `RULE-LIFE-001` | Match Setup & Seating         | `SRC-001` p. 6      | Lobby complete; 2–5 players ready | Assign Factions & Player Mats randomly; seat order is Nordic, Rusviet, Crimea, Saxony, Polania clockwise     | Public     | `TEST-LIFE-001` | `rules` | not-started |
-| `RULE-LIFE-002` | Starting Player Determination | `SRC-001` p. 8      | Setup complete                    | Player with lowest number on Player Mat takes first turn; play proceeds clockwise                            | Public     | `TEST-LIFE-002` | `rules` | not-started |
-| `RULE-LIFE-003` | Turn Execution Cycle          | `SRC-001` p. 10     | Active player's turn              | Player places action token on valid section; executes top action and/or bottom action; turn passes clockwise | Public     | `TEST-LIFE-003` | `rules` | not-started |
-| `RULE-LIFE-004` | 6th Star Immediate Game End   | `SRC-001` p. 28     | Any player places 6th star token  | Game ends immediately; in-flight combat canceled with units returning to origin hex; proceed to scoring      | Public     | `TEST-LIFE-004` | `rules` | not-started |
-| `RULE-LIFE-005` | Final Scoring Evaluation      | `SRC-001` pp. 28–29 | Game end triggered                | Calculate final fortunes based on Popularity Tier, coins, stars, territories, resources, and structure tile  | Public     | `TEST-LIFE-005` | `rules` | not-started |
+| Rule ID         | Statement                     | Source              | Preconditions & Timing            | State Transitions / Effects                                                                                  | Visibility | Test ID         | Package | Status |
+| --------------- | ----------------------------- | ------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ------- | ------ |
+| `RULE-LIFE-001` | Match Setup & Seating         | `SRC-001` p. 6      | Lobby complete; 2–5 players ready | Assign Factions & Player Mats randomly; seat order is Nordic, Rusviet, Crimea, Saxony, Polania clockwise     | Public     | `TEST-LIFE-001` | `rules` | tested |
+| `RULE-LIFE-002` | Starting Player Determination | `SRC-001` p. 8      | Setup complete                    | Player with lowest number on Player Mat takes first turn; play proceeds clockwise                            | Public     | `TEST-LIFE-002` | `rules` | tested |
+| `RULE-LIFE-003` | Turn Execution Cycle          | `SRC-001` p. 10     | Active player's turn              | Player places action token on valid section; executes top action and/or bottom action; turn passes clockwise | Public     | `TEST-LIFE-003` | `rules` | tested |
+| `RULE-LIFE-004` | 6th Star Immediate Game End   | `SRC-001` p. 28     | Any player places 6th star token  | Game ends immediately; in-flight combat canceled with units returning to origin hex; proceed to scoring      | Public     | `TEST-LIFE-004` | `rules` | tested |
+| `RULE-LIFE-005` | Final Scoring Evaluation      | `SRC-001` pp. 28–29 | Game end triggered                | Calculate final fortunes based on Popularity Tier, coins, stars, territories, resources, and structure tile  | Public     | `TEST-LIFE-005` | `rules` | tested |
 
 ---
 
 ## 2. Setup Rules (`RULE-SETUP-*`)
 
-| Rule ID          | Statement                         | Source            | Preconditions & Timing | State Transitions / Effects                                                                                 | Visibility                        | Test ID          | Package | Status      |
-| ---------------- | --------------------------------- | ----------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------- | --------------------------------- | ---------------- | ------- | ----------- |
-| `RULE-SETUP-001` | Starting Worker Placement         | `SRC-001` p. 7    | Initial state creation | 2 workers on 2 land territories adjacent to home base; 6 workers placed on Produce rectangle of Player Mat  | Public                            | `TEST-SETUP-001` | `rules` | not-started |
-| `RULE-SETUP-002` | Character Starting Placement      | `SRC-001` p. 7    | Initial state creation | Character placed on faction's home base                                                                     | Public                            | `TEST-SETUP-002` | `rules` | not-started |
-| `RULE-SETUP-003` | Faction Reserves Initialization   | `SRC-001` pp. 7–9 | Initial state creation | 4 mechs, 4 structures, 4 recruits placed on respective mat spaces; 6 technology cubes placed on green boxes | Public                            | `TEST-SETUP-003` | `rules` | not-started |
-| `RULE-SETUP-004` | Initial Tracks & Cards Assignment | `SRC-001` p. 7    | Initial state creation | Set Power and Popularity tokens, grant starting coins, draw starting combat cards and 2 objective cards     | Private (cards) / Public (tracks) | `TEST-SETUP-004` | `rules` | not-started |
-| `RULE-SETUP-005` | Encounter & Factory Tokens Setup  | `SRC-001` p. 6    | Initial board setup    | 11 encounter tokens placed on compass hexes; $N_{players} + 1$ Factory cards placed face-down on board      | Public / Hidden                   | `TEST-SETUP-005` | `rules` | not-started |
+| Rule ID          | Statement                         | Source            | Preconditions & Timing | State Transitions / Effects                                                                                 | Visibility                        | Test ID          | Package | Status |
+| ---------------- | --------------------------------- | ----------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------- | --------------------------------- | ---------------- | ------- | ------ |
+| `RULE-SETUP-001` | Starting Worker Placement         | `SRC-001` p. 7    | Initial state creation | 2 workers on 2 land territories adjacent to home base; 6 workers placed on Produce rectangle of Player Mat  | Public                            | `TEST-SETUP-001` | `rules` | tested |
+| `RULE-SETUP-002` | Character Starting Placement      | `SRC-001` p. 7    | Initial state creation | Character placed on faction's home base                                                                     | Public                            | `TEST-SETUP-002` | `rules` | tested |
+| `RULE-SETUP-003` | Faction Reserves Initialization   | `SRC-001` pp. 7–9 | Initial state creation | 4 mechs, 4 structures, 4 recruits placed on respective mat spaces; 6 technology cubes placed on green boxes | Public                            | `TEST-SETUP-003` | `rules` | tested |
+| `RULE-SETUP-004` | Initial Tracks & Cards Assignment | `SRC-001` p. 7    | Initial state creation | Set Power and Popularity tokens, grant starting coins, draw starting combat cards and 2 objective cards     | Private (cards) / Public (tracks) | `TEST-SETUP-004` | `rules` | tested |
+| `RULE-SETUP-005` | Encounter & Factory Tokens Setup  | `SRC-001` p. 6    | Initial board setup    | 11 encounter tokens placed on compass hexes; $N_{players} + 1$ Factory cards placed face-down on board      | Public / Hidden                   | `TEST-SETUP-005` | `rules` | tested |
 
 ---
 
@@ -118,21 +118,21 @@
 
 ## 10. Faction & Mech Specific Abilities (`RULE-SPEC-*`)
 
-| Rule ID         | Faction / Ability      | Source          | Description & Mechanics                                                    | Visibility      | Test ID         | Package | Status      |
-| --------------- | ---------------------- | --------------- | -------------------------------------------------------------------------- | --------------- | --------------- | ------- | ----------- |
-| `RULE-SPEC-001` | Rusviet: Relentless    | `SRC-001` p. 21 | May choose the same section on Player Mat as previous turn(s)              | Public          | `TEST-SPEC-001` | `rules` | not-started |
-| `RULE-SPEC-002` | Rusviet: Township      | `SRC-001` p. 16 | Controlled villages and the Factory are adjacent for character and mechs   | Public          | `TEST-SPEC-002` | `rules` | not-started |
-| `RULE-SPEC-003` | Rusviet: People's Army | `SRC-001` p. 16 | May play +1 combat card in combat containing $\ge 1$ worker                | Public          | `TEST-SPEC-003` | `rules` | tested      |
-| `RULE-SPEC-004` | Crimea: Coercion       | `SRC-001` p. 21 | Once per turn, may spend 1 combat card as any 1 resource token             | Public          | `TEST-SPEC-004` | `rules` | not-started |
-| `RULE-SPEC-005` | Crimea: Wayfare        | `SRC-001` p. 17 | May move character/mechs to any inactive faction's home base or own base   | Public          | `TEST-SPEC-005` | `rules` | not-started |
-| `RULE-SPEC-006` | Crimea: Scout          | `SRC-001` p. 17 | Before combat, steal 1 random combat card from opponent's hand             | Public / Secret | `TEST-SPEC-006` | `rules` | tested      |
-| `RULE-SPEC-007` | Nordic: Swim           | `SRC-001` p. 21 | Workers (only) may move across rivers onto any land terrain                | Public          | `TEST-SPEC-007` | `rules` | not-started |
-| `RULE-SPEC-008` | Nordic: Seaworthy      | `SRC-001` p. 16 | Character/mechs move to/from lakes and retreat onto adjacent lakes         | Public          | `TEST-SPEC-008` | `rules` | tested      |
-| `RULE-SPEC-009` | Nordic: Artillery      | `SRC-001` p. 16 | Before combat, pay 1 power to force opponent to lose 2 power               | Public          | `TEST-SPEC-009` | `rules` | tested      |
-| `RULE-SPEC-010` | Polania: Meander       | `SRC-001` p. 21 | Pick up to 2 options per encounter card (in any order)                     | Public          | `TEST-SPEC-010` | `rules` | tested      |
-| `RULE-SPEC-011` | Polania: Submerge      | `SRC-001` p. 17 | Character/mechs move to/from lakes and from any lake to another lake       | Public          | `TEST-SPEC-011` | `rules` | not-started |
-| `RULE-SPEC-012` | Polania: Camaraderie   | `SRC-001` p. 17 | Do not lose popularity when forcing opponent's workers to retreat          | Public          | `TEST-SPEC-012` | `rules` | tested      |
-| `RULE-SPEC-013` | Saxony: Dominate       | `SRC-001` p. 21 | No limit to stars from completing objectives or winning combat             | Public          | `TEST-SPEC-013` | `rules` | tested      |
-| `RULE-SPEC-014` | Saxony: Underpass      | `SRC-001` p. 15 | Controlled mountains and all tunnels/Mine are adjacent for character/mechs | Public          | `TEST-SPEC-014` | `rules` | not-started |
-| `RULE-SPEC-015` | Saxony: Disarm         | `SRC-001` p. 15 | Before combat on tunnel/Mine hex, opponent loses 2 power                   | Public          | `TEST-SPEC-015` | `rules` | tested      |
-| `RULE-SPEC-016` | All: Speed             | `SRC-001` p. 15 | Character and mechs gain +1 movement per Move action                       | Public          | `TEST-SPEC-016` | `rules` | not-started |
+| Rule ID         | Faction / Ability      | Source          | Description & Mechanics                                                    | Visibility      | Test ID         | Package | Status |
+| --------------- | ---------------------- | --------------- | -------------------------------------------------------------------------- | --------------- | --------------- | ------- | ------ |
+| `RULE-SPEC-001` | Rusviet: Relentless    | `SRC-001` p. 21 | May choose the same section on Player Mat as previous turn(s)              | Public          | `TEST-SPEC-001` | `rules` | tested |
+| `RULE-SPEC-002` | Rusviet: Township      | `SRC-001` p. 16 | Controlled villages and the Factory are adjacent for character and mechs   | Public          | `TEST-SPEC-002` | `rules` | tested |
+| `RULE-SPEC-003` | Rusviet: People's Army | `SRC-001` p. 16 | May play +1 combat card in combat containing $\ge 1$ worker                | Public          | `TEST-SPEC-003` | `rules` | tested |
+| `RULE-SPEC-004` | Crimea: Coercion       | `SRC-001` p. 21 | Once per turn, may spend 1 combat card as any 1 resource token             | Public          | `TEST-SPEC-004` | `rules` | tested |
+| `RULE-SPEC-005` | Crimea: Wayfare        | `SRC-001` p. 17 | May move character/mechs to any inactive faction's home base or own base   | Public          | `TEST-SPEC-005` | `rules` | tested |
+| `RULE-SPEC-006` | Crimea: Scout          | `SRC-001` p. 17 | Before combat, steal 1 random combat card from opponent's hand             | Public / Secret | `TEST-SPEC-006` | `rules` | tested |
+| `RULE-SPEC-007` | Nordic: Swim           | `SRC-001` p. 21 | Workers (only) may move across rivers onto any land terrain                | Public          | `TEST-SPEC-007` | `rules` | tested |
+| `RULE-SPEC-008` | Nordic: Seaworthy      | `SRC-001` p. 16 | Character/mechs move to/from lakes and retreat onto adjacent lakes         | Public          | `TEST-SPEC-008` | `rules` | tested |
+| `RULE-SPEC-009` | Nordic: Artillery      | `SRC-001` p. 16 | Before combat, pay 1 power to force opponent to lose 2 power               | Public          | `TEST-SPEC-009` | `rules` | tested |
+| `RULE-SPEC-010` | Polania: Meander       | `SRC-001` p. 21 | Pick up to 2 options per encounter card (in any order)                     | Public          | `TEST-SPEC-010` | `rules` | tested |
+| `RULE-SPEC-011` | Polania: Submerge      | `SRC-001` p. 17 | Character/mechs move to/from lakes and from any lake to another lake       | Public          | `TEST-SPEC-011` | `rules` | tested |
+| `RULE-SPEC-012` | Polania: Camaraderie   | `SRC-001` p. 17 | Do not lose popularity when forcing opponent's workers to retreat          | Public          | `TEST-SPEC-012` | `rules` | tested |
+| `RULE-SPEC-013` | Saxony: Dominate       | `SRC-001` p. 21 | No limit to stars from completing objectives or winning combat             | Public          | `TEST-SPEC-013` | `rules` | tested |
+| `RULE-SPEC-014` | Saxony: Underpass      | `SRC-001` p. 15 | Controlled mountains and all tunnels/Mine are adjacent for character/mechs | Public          | `TEST-SPEC-014` | `rules` | tested |
+| `RULE-SPEC-015` | Saxony: Disarm         | `SRC-001` p. 15 | Before combat on tunnel/Mine hex, opponent loses 2 power                   | Public          | `TEST-SPEC-015` | `rules` | tested |
+| `RULE-SPEC-016` | All: Speed             | `SRC-001` p. 15 | Character and mechs gain +1 movement per Move action                       | Public          | `TEST-SPEC-016` | `rules` | tested |

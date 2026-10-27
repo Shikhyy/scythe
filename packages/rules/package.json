@@ -15,6 +15,7 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc",
     "test": "vitest run",
+    "test:match": "vitest run src/harness/full_match.test.ts",
     "test:watch": "vitest"
   },
   "dependencies": {
@@ -22,6 +23,7 @@
     "@scythe/content": "workspace:*"
   },
   "devDependencies": {
+    "@scythe/test-fixtures": "workspace:*",
     "@vitest/coverage-v8": "2.1.5",
     "typescript": "5.7.2",
     "vitest": "2.1.5"

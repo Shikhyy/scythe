@@ -25,9 +25,9 @@ export interface UnitMoveRoute {
   /** Optional intermediate waypoint for 2-step moves (e.g. Speed mech ability) */
   readonly intermediateHexId?: HexId | undefined;
   /** Workers transported by mech (if moving a mech) */
-  readonly carriedWorkers: readonly UnitId[];
+  readonly carriedWorkers?: readonly UnitId[] | undefined;
   /** Resources transported by unit/mech */
-  readonly carriedResources: ResourceBundle;
+  readonly carriedResources?: ResourceBundle | undefined;
 }
 
 /** 2. Move Units */

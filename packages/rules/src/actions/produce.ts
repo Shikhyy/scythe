@@ -10,6 +10,7 @@ import {
   type UnitId,
   type UnitState,
   ResourceType,
+  StarCondition,
   StructureType,
   TerrainType,
   TopAction,
@@ -19,6 +20,7 @@ import {
   makeUnitId,
 } from "@scythe/domain";
 import type { CommandApplyResult, DeterministicContext } from "../engine.js";
+import { awardStarIfEligible } from "./stars.js";
 
 /** Map terrain to the resource type it produces */
 function getTerrainResourceType(terrain: TerrainType): ResourceType | null {
@@ -258,6 +260,15 @@ export function applyProduce(
     }
   }
 
+  let finalSeatStars = seat.stars;
+  if (totalWorkersOnBoard >= 8) {
+    const starRes = awardStarIfEligible(seat, StarCondition.AllWorkers, context);
+    if (starRes.event) {
+      events.push(starRes.event);
+      finalSeatStars = starRes.updatedSeat.stars;
+    }
+  }
+
   const updatedSeats = state.seats.map((s) => {
     if (s.seatId === seat.seatId) {
       return {
@@ -266,6 +277,7 @@ export function applyProduce(
         popularity: newPopularity,
         coins: newCoins,
         unitIds: newSeatUnitIds,
+        stars: finalSeatStars,
         lastSelectedSection: TopAction.Produce,
       };
     }

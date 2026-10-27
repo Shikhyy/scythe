@@ -13,7 +13,7 @@
 | Scope               | Base game, 1–5 players, online multiplayer with private rooms                                                   |
 | Remote repository   | `https://github.com/Shikhyy/scythe.git`                                                                         |
 | Phase guide         | `docs/ANTIGRAVITY_SCYTHE_3D_MULTIPLAYER_PROMPT_PACK.md` (canonical)                                             |
-| Current phase       | **Prompt 11 complete → Prompt 12 next**                                                                         |
+| Current phase       | **Prompt 12 complete → Prompt 13 next**                                                                         |
 | Rights status       | **No licensed Scythe assets are cleared yet.** Placeholders only. Rulebook supplied for mechanics verification. |
 | Repository root     | `/Users/shikhar/scythe`                                                                                         |
 | Git branch strategy | `main` for stable milestones; conventional commits (`feat:`, `fix:`, `chore:`, `test:`, `docs:`, `refactor:`)   |
@@ -205,8 +205,8 @@ Discovered across `~/.gemini/config/skills/` and `~/.gemini/config/plugins/`:
 | 09     | Movement, control, and mech abilities        | ✅ complete |
 | 10     | Cards, encounters, objectives, Factory       | ✅ complete |
 | 11     | Combat, stars, end-game, and scoring         | ✅ complete |
-| 12     | Rules test harness and parity checklist      | 🔲 next     |
-| 13–14  | Multiplayer server, accounts, persistence    | 🔲          |
+| 12     | Rules test harness and parity checklist      | ✅ complete |
+| 13–14  | Multiplayer server, accounts, persistence    | 🔲 next     |
 | 15–23  | UI, 3D, animation, audio, onboarding, a11y   | 🔲          |
 | 24–26  | E2E testing, deployment, final audit         | 🔲          |
 | 27     | Optional expansions/solo/spectator           | 🔲          |

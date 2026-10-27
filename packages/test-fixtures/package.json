@@ -18,6 +18,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@scythe/content": "workspace:*",
     "@scythe/domain": "workspace:*"
   },
   "devDependencies": {

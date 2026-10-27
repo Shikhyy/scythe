@@ -97,6 +97,18 @@ export function validateCommand(state: MatchState, command: GameCommand): Domain
         `Seat ${command.actorSeatId} cannot act; active seat is ${state.activeSeatId}.`,
       );
     }
+    // Action ordering: must select section first before taking turn actions (RULE-TURN-003)
+    if (
+      command.type !== "SELECT_SECTION" &&
+      command.type !== "CLAIM_OBJECTIVE" &&
+      (state.activeTurn === null ||
+        (state.activeTurn !== undefined && !state.activeTurn.selectedSection))
+    ) {
+      return domainError(
+        "INVALID_ACTION_ORDER",
+        `Cannot execute ${command.type} before selecting a player-mat section.`,
+      );
+    }
   }
 
   // 4. Command-specific validation

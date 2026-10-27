@@ -105,7 +105,7 @@ export function validateMoveUnits(state: MatchState, cmd: MoveUnitsCommand): Dom
     }
 
     // Worker carriage check: only Mechs can carry workers
-    if (m.carriedWorkers.length > 0) {
+    if ((m.carriedWorkers?.length ?? 0) > 0) {
       if (unit.unitType !== UnitType.Mech) {
         return domainError(
           "INVALID_COMMAND",
@@ -113,7 +113,7 @@ export function validateMoveUnits(state: MatchState, cmd: MoveUnitsCommand): Dom
         );
       }
 
-      for (const wId of m.carriedWorkers) {
+      for (const wId of m.carriedWorkers ?? []) {
         const carriedWorker = state.units.get(wId);
         if (
           !carriedWorker ||
@@ -284,7 +284,7 @@ export function applyMoveUnits(
     });
 
     // Move carried workers
-    for (const wId of m.carriedWorkers) {
+    for (const wId of m.carriedWorkers ?? []) {
       const carriedWorker = nextUnits.get(wId)!;
       nextUnits.set(wId, {
         ...carriedWorker,
@@ -340,7 +340,7 @@ export function applyMoveUnits(
       fromHexId: m.sourceHexId,
       toHexId: m.targetHexId,
       intermediateHexId: m.intermediateHexId,
-      carriedWorkerIds: [...m.carriedWorkers],
+      carriedWorkerIds: [...(m.carriedWorkers ?? [])],
       carriedResources: carriedRes,
     });
 
@@ -466,7 +466,8 @@ export function applyMoveUnits(
         hasEncounterToken: false,
       });
 
-      const encCardId = makeCardId(`enc-${context.generateEventId()}`);
+      const nextEncounterDeck = state.encounterDeck ? [...state.encounterDeck] : [];
+      const encCardId = nextEncounterDeck.shift() ?? makeCardId("ENC_01");
       pendingEncounter = {
         hexId: charHex.id,
         seatId: seat.seatId,

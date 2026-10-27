@@ -67,6 +67,21 @@ export function awardStarIfEligible(
       condition === StarCondEnum.FirstObjective ||
       condition === StarCondEnum.SecondObjective);
 
+  // Non-Saxony restrictions (SRC-001 p. 14, 21)
+  if (!isSaxony) {
+    if (condition === StarCondEnum.SecondObjective) {
+      return { updatedSeat: seat, event: null };
+    }
+    if (
+      condition === StarCondEnum.CombatVictory3 ||
+      condition === StarCondEnum.CombatVictory4 ||
+      condition === StarCondEnum.CombatVictory5 ||
+      condition === StarCondEnum.CombatVictory6
+    ) {
+      return { updatedSeat: seat, event: null };
+    }
+  }
+
   if (!isSaxonyMultiple && seat.stars.includes(condition)) {
     return { updatedSeat: seat, event: null };
   }
