@@ -18,6 +18,7 @@ export default [
     },
     rules: {
       ...tsPlugin.configs.recommended.rules,
+      "no-undef": "off",
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/consistent-type-imports": "error",
       "no-unused-vars": "off",

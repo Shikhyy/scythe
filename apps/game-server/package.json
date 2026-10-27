@@ -1,0 +1,30 @@
+{
+  "name": "@scythe/game-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@colyseus/schema": "^2.0.0",
+    "@scythe/content": "workspace:*",
+    "@scythe/domain": "workspace:*",
+    "@scythe/protocol": "workspace:*",
+    "@scythe/rules": "workspace:*",
+    "colyseus": "^0.15.57",
+    "ws": "^8.22.0",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@scythe/test-fixtures": "workspace:*",
+    "@types/ws": "^8.18.2",
+    "typescript": "5.7.2",
+    "vitest": "2.1.5"
+  }
+}

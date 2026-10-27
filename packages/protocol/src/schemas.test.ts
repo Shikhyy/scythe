@@ -4,6 +4,8 @@ import {
   SelectSectionCommandSchema,
   MoveUnitsCommandSchema,
   PROTOCOL_VERSION,
+  ClientMessageSchema,
+  ServerMessageSchema,
 } from "./index.js";
 
 describe("Protocol Zod Schemas", () => {
@@ -53,5 +55,52 @@ describe("Protocol Zod Schemas", () => {
       ],
     });
     expect(valid.success).toBe(true);
+  });
+
+  it("validates ClientMessage types (JOIN, COMMAND, RECONNECT, PING)", () => {
+    const joinMsg = ClientMessageSchema.safeParse({
+      type: "JOIN",
+      sessionToken: "sess-123",
+      displayName: "Player 1",
+    });
+    expect(joinMsg.success).toBe(true);
+
+    const cmdMsg = ClientMessageSchema.safeParse({
+      type: "COMMAND",
+      commandId: "cmd-uuid-1",
+      clientSeq: 1,
+      command: {
+        type: "BOLSTER",
+        actorSeatId: "seat-1",
+        clientSeq: 1,
+        choice: "POWER",
+      },
+    });
+    expect(cmdMsg.success).toBe(true);
+
+    const pingMsg = ClientMessageSchema.safeParse({
+      type: "PING",
+      timestamp: Date.now(),
+    });
+    expect(pingMsg.success).toBe(true);
+  });
+
+  it("validates ServerMessage types (SEAT_ASSIGNED, STATE_SYNC, ERROR)", () => {
+    const seatMsg = ServerMessageSchema.safeParse({
+      type: "SEAT_ASSIGNED",
+      seatId: "seat-1",
+      reconnectionToken: "reconn-xyz",
+      faction: "NORDIC",
+      playerMatId: "INDUSTRIAL",
+    });
+    expect(seatMsg.success).toBe(true);
+
+    const errorMsg = ServerMessageSchema.safeParse({
+      type: "ERROR",
+      code: "NOT_YOUR_TURN",
+      message: "It is not your turn to act.",
+      commandId: "cmd-uuid-1",
+    });
+    expect(errorMsg.success).toBe(true);
   });
 });

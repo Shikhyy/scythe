@@ -281,6 +281,7 @@ export function setupDeterministicMatch(config: MatchSetupConfig): MatchState {
     turnNumber: 1,
     phase: MatchPhase.Active,
     activeSeatId,
+    activeTurn: null,
     seats: orderedSeats,
     hexes,
     units,

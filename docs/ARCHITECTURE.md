@@ -167,9 +167,100 @@ CREATE TABLE match_events (
 
 ## 6. Build and Verification Verification Matrix
 
-| Tool       | Config File                           | Command              | Target                                  |
-| ---------- | ------------------------------------- | -------------------- | --------------------------------------- |
-| TypeScript | `tsconfig.base.json`, `tsconfig.json` | `pnpm run typecheck` | Strict compilation across all packages  |
-| ESLint     | `eslint.config.mjs`                   | `pnpm run lint`      | Code quality, import boundaries, no-any |
-| Vitest     | `vitest.config.ts` per package        | `pnpm run test`      | Fast unit & invariant tests             |
-| Build      | Package `package.json`                | `pnpm run build`     | ESM distribution bundles                |
+| Tool        | Config File                           | Command               | Target                                  |
+| ----------- | ------------------------------------- | --------------------- | --------------------------------------- |
+| TypeScript  | `tsconfig.base.json`, `tsconfig.json` | `pnpm run typecheck`  | Strict compilation across all packages  |
+| ESLint      | `eslint.config.mjs`                   | `pnpm run lint`       | Code quality, import boundaries, no-any |
+| Vitest      | `vitest.config.ts` per package        | `pnpm run test`       | Fast unit & invariant tests             |
+| Match Tests | Package `package.json`                | `pnpm run test:match` | Full match and end-game scoring tests   |
+| Build       | Package `package.json`                | `pnpm run build`      | ESM distribution bundles                |
+
+---
+
+## 7. Authoritative Multiplayer Protocol & Network Architecture (Prompt 13)
+
+### Wire Protocol Contracts (`@scythe/protocol`)
+
+All client-server messages are defined using strict Zod schemas with TypeScript type inference:
+
+#### Client → Server Messages (`ClientMessageSchema`)
+
+```typescript
+type ClientMessage =
+  | {
+      type: "JOIN";
+      matchId: string;
+      displayName: string;
+      preferredSeatId?: SeatId;
+      spectator?: boolean;
+    }
+  | { type: "RECONNECT"; matchId: string; reconnectionToken: string }
+  | { type: "COMMAND"; commandId: string; clientSeq: number; command: GameCommand }
+  | { type: "PING"; timestamp: number };
+```
+
+#### Server → Client Messages (`ServerMessageSchema`)
+
+```typescript
+type ServerMessage =
+  | {
+      type: "SEAT_ASSIGNED";
+      seatId: SeatId;
+      reconnectionToken: string;
+      faction: Faction;
+      playerMatId: PlayerMatId;
+    }
+  | {
+      type: "STATE_SYNC";
+      stateVersion: number;
+      publicState: PublicMatchState;
+      myPrivateState?: { myHand: ViewerHandState; myCombatSubmission?: CombatSubmission };
+    }
+  | { type: "EVENT_BATCH"; stateVersion: number; events: DomainEvent[] }
+  | {
+      type: "ERROR";
+      code: string;
+      message: string;
+      commandId?: string;
+      details?: Record<string, unknown>;
+    }
+  | { type: "PONG"; clientTimestamp: number; serverTimestamp: number };
+```
+
+### Authoritative Server Architecture (`apps/game-server`)
+
+The game server is implemented in `apps/game-server` using Colyseus 0.15+:
+
+1. **Authoritative `MatchRoom`**:
+
+   - Owns canonical `MatchState` instantiated via `@scythe/content` deterministic setup.
+   - Strictly enforces that only the assigned player can submit commands for their own seat (`UNAUTHORIZED_SEAT` defense).
+   - Validates all commands via pure rules engine (`validateCommand`) before execution.
+   - Reduces valid commands deterministically via `applyCommand` to advance `stateVersion`.
+   - Generates personalized state projections per connected client so that hidden cards are never sent over the wire.
+   - Emits ordered `EVENT_BATCH` payloads for animations, sound cues, and client state synchronizers.
+
+2. **Session Management (`SessionManager`)**:
+
+   - Maps persistent physical WebSocket connection sessions (`sessionId`) to game seats (`seatId`).
+   - Issues cryptographically secure, unpredictable reconnection tokens (`randomBytes(24)`).
+   - Configurable disconnection grace timer (default 60 seconds). When a player disconnects, seat connection status transitions to `DISCONNECTED`.
+   - When reconnecting with a valid token, session ownership is restored, status returns to `CONNECTED`, and a refreshed reconnection token is issued.
+   - Distinguishes active player seats from read-only spectator connections.
+
+3. **Command Idempotency & Sequencing (`IdempotencyManager`)**:
+
+   - Enforces strictly monotonic client sequence numbers (`clientSeq`).
+   - Caches completed command outcomes keyed by `commandId` (LRU window of 500 commands).
+   - Replays of identical `commandId` immediately return cached success without duplicate rules execution.
+   - Stale sequence numbers (`clientSeq <= lastAcknowledged`) with new command IDs are rejected with `STALE_COMMAND_SEQUENCE`.
+
+4. **Combat Secrecy & Simultaneous Reveal**:
+
+   - During `MatchPhase.PendingCombat`, incoming combat bids (`SUBMIT_COMBAT_SELECTION`) are received separately from attacker and defender.
+   - Before both bids are submitted, state sync projections mark `attackerHasSubmitted: true` / `defenderHasSubmitted: true` while completely withholding power dials and combat card IDs from opposing players.
+   - When the second bid is submitted, the server atomically resolves combat simultaneously, transitions out of `PendingCombat`, reveals both bids in the resulting `COMBAT_RESOLVED` event, and broadcasts the outcome to all clients.
+
+5. **Structured Logging (`StructuredLogger`)**:
+   - Emits NDJSON formatted logs with room ID, timestamps, log levels, and contextual metadata.
+   - Recursively redacts sensitive fields (`combatCardIds`, `objectiveCardIds`, `powerDial`, tokens) to guarantee that hidden game state is never leaked to operational logs.

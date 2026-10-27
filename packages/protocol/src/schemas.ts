@@ -10,7 +10,7 @@ export const ResourceBundleSchema = z.record(ResourceTypeSchema, z.number().int(
 /** Base Command schema */
 const BaseCommandFields = {
   actorSeatId: z.string().min(1),
-  clientSeq: z.number().int().nonnegative(),
+  clientSeq: z.number().int().nonnegative().optional(),
 };
 
 /** 1. Select Section */
@@ -165,3 +165,91 @@ export const ServerEventEnvelopeSchema = z.object({
 });
 
 export type ServerEventEnvelope = z.infer<typeof ServerEventEnvelopeSchema>;
+
+/** Inbound client message types */
+export const ClientJoinMessageSchema = z.object({
+  type: z.literal("JOIN"),
+  sessionToken: z.string().min(1),
+  displayName: z.string().min(1),
+  preferredSeatId: z.string().optional(),
+  spectator: z.boolean().optional(),
+});
+export type ClientJoinMessage = z.infer<typeof ClientJoinMessageSchema>;
+
+export const ClientReconnectMessageSchema = z.object({
+  type: z.literal("RECONNECT"),
+  reconnectionToken: z.string().min(1),
+});
+export type ClientReconnectMessage = z.infer<typeof ClientReconnectMessageSchema>;
+
+export const ClientCommandMessageSchema = z.object({
+  type: z.literal("COMMAND"),
+  commandId: z.string().min(1),
+  clientSeq: z.number().int().nonnegative(),
+  command: GameCommandSchema,
+});
+export type ClientCommandMessage = z.infer<typeof ClientCommandMessageSchema>;
+
+export const ClientPingMessageSchema = z.object({
+  type: z.literal("PING"),
+  timestamp: z.number().nonnegative(),
+});
+export type ClientPingMessage = z.infer<typeof ClientPingMessageSchema>;
+
+export const ClientMessageSchema = z.discriminatedUnion("type", [
+  ClientJoinMessageSchema,
+  ClientReconnectMessageSchema,
+  ClientCommandMessageSchema,
+  ClientPingMessageSchema,
+]);
+export type ClientMessage = z.infer<typeof ClientMessageSchema>;
+
+/** Outbound server message types */
+export const ServerSeatAssignedMessageSchema = z.object({
+  type: z.literal("SEAT_ASSIGNED"),
+  seatId: z.string().min(1),
+  reconnectionToken: z.string().min(1),
+  faction: z.string(),
+  playerMatId: z.string(),
+});
+export type ServerSeatAssignedMessage = z.infer<typeof ServerSeatAssignedMessageSchema>;
+
+export const ServerSyncStateMessageSchema = z.object({
+  type: z.literal("STATE_SYNC"),
+  stateVersion: z.number().int().nonnegative(),
+  publicState: z.record(z.unknown()),
+  myPrivateState: z.record(z.unknown()).optional(),
+});
+export type ServerSyncStateMessage = z.infer<typeof ServerSyncStateMessageSchema>;
+
+export const ServerEventBatchMessageSchema = z.object({
+  type: z.literal("EVENT_BATCH"),
+  stateVersion: z.number().int().nonnegative(),
+  events: z.array(z.record(z.unknown())),
+});
+export type ServerEventBatchMessage = z.infer<typeof ServerEventBatchMessageSchema>;
+
+export const ServerErrorMessageSchema = z.object({
+  type: z.literal("ERROR"),
+  code: z.string().min(1),
+  message: z.string(),
+  commandId: z.string().optional(),
+  details: z.record(z.unknown()).optional(),
+});
+export type ServerErrorMessage = z.infer<typeof ServerErrorMessageSchema>;
+
+export const ServerPongMessageSchema = z.object({
+  type: z.literal("PONG"),
+  clientTimestamp: z.number().nonnegative(),
+  serverTimestamp: z.number().nonnegative(),
+});
+export type ServerPongMessage = z.infer<typeof ServerPongMessageSchema>;
+
+export const ServerMessageSchema = z.discriminatedUnion("type", [
+  ServerSeatAssignedMessageSchema,
+  ServerSyncStateMessageSchema,
+  ServerEventBatchMessageSchema,
+  ServerErrorMessageSchema,
+  ServerPongMessageSchema,
+]);
+export type ServerMessage = z.infer<typeof ServerMessageSchema>;
